@@ -20,6 +20,7 @@
     <section v-if="blacklabQuery">
       <h2>BlackLab dependency query</h2>
       <code class="query">{{ blacklabQuery }}</code>
+      <form @submit="search"><button>Search</button></form>
     </section>
   </main>
 </template>
@@ -46,6 +47,7 @@ const blacklabQuery = ref('');
 
 const opts = defaultSentenceSVGOptions();
 opts.interactive = true;  
+opts.shownFeatures = ["LEMMA","UPOS"]
 
 function updateQuery()
 {
@@ -146,7 +148,7 @@ async function parse() {
   try {
     // UDPipe endpoint: tokenizer + tagger + parser
     const url = `https://lindat.mff.cuni.cz/services/udpipe/api/process` +
-                `?tokenizer&tagger&parser&model=english` +
+                `?tokenizer&tagger&parser&model=nl` +
                 `&data=${encodeURIComponent(sentence.value)}`;
 
     const { data } = await axios.get(url);
@@ -163,6 +165,15 @@ async function parse() {
   } finally {
     loading.value = false;
   }
+}
+
+async function search() {
+  // http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=_with-spans%28XXX%29&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
+  const length_part = ' within <s sentence_length=in[5,12]/>'
+  const pattern =  `_with-spans(${blacklabQuery.value}) ${length_part}`
+  //alert(pattern)
+  const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${encodeURI(pattern)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+  window.open(url)
 }
 
 
@@ -227,7 +238,7 @@ async function parse() {
       return `${" ".repeat(indent)} -${k.rel}-> ${wrapped}`;
     });
 
-    return `${tokPattern(t)} ${childBits.join(';\n')}`;
+    return `${tokPattern(t)}\n${childBits.join(';\n')}`;
   }
 
   // --- 5. stitch together ---------------------------------------------
