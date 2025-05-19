@@ -1,6 +1,6 @@
 <template>
   <main class="wrapper">
-    <h1>Interactive dependency tree → BlackLab query</h1>
+    <h1>Query builder prototype</h1>
 
     <!-- input box -->
     <form @submit.prevent="parse">
@@ -14,11 +14,12 @@
     <p v-if="error" class="error">{{ error }}</p>
 
     <!-- SVG target for DependencyTreeJS -->
-    <svg ref="svgEl" class="tree"></svg>
-
+     <div id="treeWrapper" style="padding: 1em">
+        <svg width="800px" height="600px" ref="svgEl" class="tree"></svg>
+     </div>
     <!-- generated BlackLab query -->
     <section v-if="blacklabQuery">
-      <h2>BlackLab dependency query</h2>
+      <h2>Query</h2>
       <code class="query">{{ blacklabQuery }}</code>
       <form @submit="search"><button>Search</button></form>
     </section>
@@ -26,6 +27,7 @@
 </template>
 
 <script setup>
+// https://github.com/kirianguiller/reactive-dep-tree
 import { ref, onMounted, watch } from 'vue';
 import axios from 'axios';
 import {
@@ -35,7 +37,7 @@ import {
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
 
-const sentence = ref('Ik ben geen hond');
+const sentence  = ref('Het is goed dat je fietst');
 const loading  = ref(false);
 const error    = ref(null);
 const svgEl    = ref(null);
@@ -49,6 +51,18 @@ const opts = defaultSentenceSVGOptions();
 opts.interactive = true;  
 opts.shownFeatures = ["LEMMA","UPOS"]
 
+function findToken(tokenId)  {
+  const nodesJson = reactiveSentence.state.treeJson.nodesJson
+  const id =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId) 
+  return nodesJson[id]
+}
+
+function hasProperty(tokenId, property)  {
+  const t = findToken(tokenId)
+  const key = `MISC.${property}_Active`
+  return (key in t && (t[key]))
+}
+
 function updateQuery()
 {
   const conllu = reactiveSentence.exportConll()
@@ -56,6 +70,7 @@ function updateQuery()
 }
 
 onMounted(() => {
+  
   // prepare empty sentence + SVG renderer
   reactiveSentence = new ReactiveSentence();
   sentenceSvg      = new SentenceSVG(
@@ -72,8 +87,8 @@ onMounted(() => {
    *    e.detail.dragged   ← id of the dependent token being dragged
    *    e.detail.droppedOn ← id of the token we dropped onto    */
  
-  console.log(e)
-  console.log(e.detail)
+  //console.log(e)
+  //console.log(e.detail)
 
   const depId   = e.detail.hovered;
   const headId  = e.detail.dragged;
@@ -102,15 +117,110 @@ onMounted(() => {
 });
 
 // text edit listener
+function makeSvgTextEditable(svgText,tokenId,targetLabel) {
+      svgText.addEventListener('click', () => {
+        const bbox = svgText.getBBox();
+        const container = svgText.closest('div');
+        // console.log(container)
+        const svgRect = svgText.ownerSVGElement.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
 
-sentenceSvg.addEventListener('svg-click', e => {
-  const { targetLabel, clicked: tokenId } = e.detail;
-  //alert(`${targetLabel} ${tokenId}`)
-  // pick which fields you allow users to edit
-  if (!['FORM', 'LEMMA', 'UPOS', 'DEPREL'].includes(targetLabel)) return;
+        const divje = document.createElement('div');
+          divje.tabIndex = 0
+          divje.style.position = 'absolute';
+          divje.style.left = `${bbox.x + svgRect.left}px`; // - containerRect.left
+          divje.style.top = `${bbox.y + svgRect.top  - bbox.height}px`; // - containerRect.top
+          divje.style.border = '1pt solid #000';
+          divje.style.zIndex = 1000
+          divje.style.backgroundColor = '#eee'
+          divje.style.padding = '1em'
 
-  console.log(reactiveSentence.state)
-  // fetch the current token + value
+        const input = document.createElement('input');
+          input.type = 'text';
+          input.setAttribute('size', '15')
+          input.value = svgText.textContent.trim();
+          input.style = {};
+          input.style.fontSize = '11pt' // `${svgText.getAttribute('font-size') || 11}pt`;
+          // input.style.fontFamily = svgText.getAttribute('font-family') || 'sans-serif';
+        
+          input.style.width = `${bbox.width + 25}px`;
+          input.style.height = `${bbox.height + 15}px`;
+          input.style.border = 'solid'
+          input.style.padding = '4px';
+          input.style.backgroundColor = '#eee'
+
+        
+        container.appendChild(divje)
+        const label = document.createElement("label");
+        const label0 = document.createElement("span");
+        const label0Content = document.createTextNode(`${targetLabel.toLowerCase()}: `);
+        divje.appendChild(label0);
+        
+        divje.appendChild(input);
+
+
+        label0.appendChild(label0Content)
+        
+        const checkbox = document.createElement("input");
+        checkbox.type="checkbox";
+        checkbox.id=`${tokenId}.${targetLabel}`;
+        checkbox.name=`${tokenId}.${targetLabel}`;
+        const token = findToken(tokenId)
+        if (Object.keys(token).includes(`MISC.${targetLabel}_Active`)) {
+          // alert('whoohoo ' + findToken(tokenId)['MISC.Active'])  
+          checkbox.checked = token[`MISC.${targetLabel}_Active`]
+        } else {
+          // console.log(Object.keys(token))
+          checkbox.checked = targetLabel != 'LEMMA'
+        }
+
+        const textContent = document.createTextNode(`include in query? `);
+
+        label.appendChild(checkbox);
+        label.appendChild(textContent);
+
+        divje.appendChild(label)
+        divje.appendChild(checkbox)
+        divje.focus()
+        // input.focus();
+
+        function finish(reason) {
+          console.log(`finish (${reason}) called,  label=${targetLabel} value=${input.value} MISC.Active=${token['MISC.Active']} checked=${checkbox.checked}!`)
+          //svgText.textContent = input.value;
+          // updateToken(tokenId,targetLabel,input.value)
+          // updateToken(tokenId, 'MISC.Active', checkbox.value)
+          updateQuery() // dit werkt niet zonder updateToken, dus zo moet je het aanpakken
+          try {
+            divje.remove(); }
+          catch(e) {
+            console.log(e)
+          }
+        }
+        checkbox.addEventListener('change', e =>  { updateToken(tokenId, `MISC.${targetLabel}_Active`, checkbox.checked) } )
+        // input.addEventListener('blur', finish);
+        //divje.addEventListener('blur', finish);
+        divje.addEventListener('mouseout', (e) =>  { 
+          const toElement = e.relatedTarget;
+           if (!toElement || !divje.contains(toElement)) {
+    // Mouse truly left the parent
+            console.log('Mouse truely left parent!');
+            finish(`div mouseout ${toElement}`)
+            }
+           } )
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {  updateToken(tokenId,targetLabel,input.value); finish('input keydown') }  else svgText.textContent = input.value;
+        });
+        divje.addEventListener('keydown', (e) => {
+          if (e.key == 'Escape') finish('div keydown');
+        });
+      });
+    }
+
+
+
+function updateToken(tokenId, targetLabel, targetValue) {
+  
+  console.log(`update Token: ${tokenId} ${targetLabel} ${targetValue}`)
   const nodesJson = reactiveSentence.state.treeJson.nodesJson
 
   const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
@@ -120,19 +230,69 @@ sentenceSvg.addEventListener('svg-click', e => {
   const oldValue = oldTok[targetLabel];
 
   /* --- quick UI: browser prompt --------------------------------------- */
+ 
+  if (targetValue === null || targetValue === oldValue) return;   // cancel / no change
+
+  /* --- commit change --------------------------------------------------- */
+  const newTok = { ...oldTok, [targetLabel]: targetValue };
+  console.log(newTok)
+  caretaker.backup();                       // for undo / redo
+  reactiveSentence.updateToken(newTok);
+  //console.log(`Should be updated now .... `)
+  // console.log(reactiveSentence.state.treeJson.nodesJson)
+  updateQuery()
+}
+
+sentenceSvg.addEventListener('svg-click', e => {
+  let textElem
+  if (e.detail.event) {
+    console.log()
+    textElem = e.detail.event.srcElement
+    
+    
+   
+    
+  } else {
+    return;
+  }
+  
+  
+  const { targetLabel, clicked: tokenId } = e.detail;
+  if (textElem) {
+    makeSvgTextEditable(textElem,tokenId, targetLabel)
+    return;
+  }
+  //alert(`${targetLabel} ${tokenId}`)
+  // pick which fields you allow users to edit
+  if (!['FORM', 'LEMMA', 'UPOS', 'DEPREL', 'UFEATS'].includes(targetLabel)) return;
+
+  //console.log(reactiveSentence.state)
+  // fetch the current token + value
   const newValue = window.prompt(`New ${targetLabel}:`, oldValue);
+
+
+  const nodesJson = reactiveSentence.state.treeJson.nodesJson
+
+  const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
+                     
+  if (!oldTokId) return;
+  const oldTok = nodesJson[oldTokId]
+  const oldValue = oldTok[targetLabel];
+
+  /* --- quick UI: browser prompt --------------------------------------- */
+  
   if (newValue === null || newValue === oldValue) return;   // cancel / no change
 
   /* --- commit change --------------------------------------------------- */
   const newTok = { ...oldTok, [targetLabel]: newValue };
-  console.log(newTok)
+  //console.log(newTok)
   caretaker.backup();                       // for undo / redo
   reactiveSentence.updateToken(newTok);
-  console.log(`Should be updated now .... `)
-  console.log(reactiveSentence.state.treeJson.nodesJson)
+  //console.log(`Should be updated now .... `)
+  // console.log(reactiveSentence.state.treeJson.nodesJson)
   updateQuery()
 });
-
+  parse()
 });
 
 
@@ -155,7 +315,8 @@ async function parse() {
 
     if (!data.result) throw new Error('Unexpected UDPipe response');
 
-    const conllu = data.result;            // CoNLL-U string
+    const conllu = data.result // .split('\n').map(x => x + "optional=false").join('\n')      // CoNLL-U string
+    // alert(conllu)
     reactiveSentence.fromSentenceConll(conllu);
 
     // Generate BlackLab query
@@ -167,13 +328,16 @@ async function parse() {
   }
 }
 
-async function search() {
-  // http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=_with-spans%28XXX%29&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
-  const length_part = ' within <s sentence_length=in[5,12]/>'
-  const pattern =  `_with-spans(${blacklabQuery.value}) ${length_part}`
-  //alert(pattern)
-  const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${encodeURI(pattern)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
-  window.open(url)
+function search() {
+  
+  const length_part = ' within <s sentence_length=in[5,14]/>'
+  const pattern =  encodeURI(`_with-spans(${blacklabQuery.value}) ${length_part}`)
+
+  // alert(`searching for ${pattern}`)
+  const filter = 'languageName:"Dutch"'
+
+  const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&filter=${encodeURI(filter)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+  window.open(url,'blacklab')
 }
 
 
@@ -190,6 +354,7 @@ async function search() {
   // --- 1. parse tokens -------------------------------------------------
   const useLemma = false;
   const toks = {};                      // id → token object
+  // console.log(conllu)
   conllu.split('\n').forEach(line => {
     if (!line || line.startsWith('#')) return;
     const c = line.split('\t');
@@ -219,6 +384,8 @@ async function search() {
 
   function tokPattern(t) {
     const props = [];
+    // console.log(t)
+    const useLemma = hasProperty(t.id,'LEMMA')
     if (useLemma && t.lemma && t.lemma !== '_')
       props.push(`lemma='${esc(t.lemma)}'`);
     if (t.upos  && t.upos  !== '_')
@@ -242,7 +409,7 @@ async function search() {
   }
 
   // --- 5. stitch together ---------------------------------------------
-  return `^--> ${walk(root,0)}`;
+  return `${walk(root,0)}`; // of ^--> ${} als je het patroon als root wilt hebben
 }
 
 </script>
@@ -251,7 +418,7 @@ async function search() {
 .wrapper { max-width: 800px; margin: auto; padding: 2rem; font: 16px/1.4 system-ui; }
 textarea { width: 100%; font: inherit; margin-bottom: 0.5rem; }
 button   { padding: 0.4rem 1rem; font-weight: 600; }
-.tree    { width: 100%; min-height: 180px; border: 1px solid #ddd; margin-top: 1.5rem; }
+.tree    { width: 100%; min-height: 180px; border: 0px solid #ddd; margin-top: 1.5rem }
 .error   { color: red; }
 .query   { display: block; white-space: pre; background: #f6f8fa; padding: 0.75rem; }
 </style>
