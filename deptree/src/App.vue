@@ -149,6 +149,8 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
           input.style.padding = '4px';
           input.style.backgroundColor = '#eee'
 
+        let deleteRelButton
+
         
         container.appendChild(divje)
         const label = document.createElement("label");
@@ -181,6 +183,13 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
 
         divje.appendChild(label)
         divje.appendChild(checkbox)
+
+        if (targetLabel == 'DEPREL') {
+          deleteRelButton = document.createElement('button')
+          deleteRelButton.innerHTML = ' delete relation '
+          deleteRelButton.addEventListener('click', e =>  { removeDepRel(tokenId) } )
+          divje.appendChild(deleteRelButton)
+        }
         divje.focus()
         // input.focus();
 
@@ -217,7 +226,12 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
       });
     }
 
-
+function removeDepRel(tokenId) {
+  const t = findToken(tokenId)
+  // if ('HEAD' in t) delete t['HEAD']
+  t['HEAD']  = '_'
+  reactiveSentence.updateToken(t);
+}
 
 function updateToken(tokenId, targetLabel, targetValue) {
   
@@ -249,10 +263,6 @@ sentenceSvg.addEventListener('svg-click', e => {
   if (e.detail.event) {
     console.log()
     textElem = e.detail.event.srcElement
-    
-    
-   
-    
   } else {
     return;
   }
