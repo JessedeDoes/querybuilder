@@ -60,7 +60,7 @@ function findToken(tokenId)  {
 function hasProperty(tokenId, property)  {
   const t = findToken(tokenId)
   const key = `MISC.${property}_Active`
-  return (key in t && (t[key]))
+  return (key in t && (t[key])) || (!(key in t ) && (property == "UPOS" || property == "DEPREL"))
 }
 
 function updateQuery()
@@ -127,7 +127,7 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
 
         const divje = document.createElement('div');
           divje.tabIndex = 0
-          divje.style.position = 'absolute';
+          divje.style.position = 'fixed';
           divje.style.left = `${bbox.x + svgRect.left}px`; // - containerRect.left
           divje.style.top = `${bbox.y + svgRect.top  - bbox.height}px`; // - containerRect.top
           divje.style.border = '1pt solid #000';
@@ -194,6 +194,7 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
             divje.remove(); }
           catch(e) {
             console.log(e)
+            divje.destroy();
           }
         }
         checkbox.addEventListener('change', e =>  { updateToken(tokenId, `MISC.${targetLabel}_Active`, checkbox.checked) } )
@@ -204,7 +205,7 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
            if (!toElement || !divje.contains(toElement)) {
     // Mouse truly left the parent
             console.log('Mouse truely left parent!');
-            finish(`div mouseout ${toElement}`)
+            finish(`div mouseout, related Target=${toElement.tagName}`)
             }
            } )
         input.addEventListener('keydown', (e) => {
@@ -331,12 +332,13 @@ async function parse() {
 function search() {
   
   const length_part = ' within <s sentence_length=in[5,14]/>'
-  const pattern =  encodeURI(`_with-spans(${blacklabQuery.value}) ${length_part}`)
+  const pattern =  encodeURIComponent(`_with-spans(${blacklabQuery.value}) ${length_part}`)
 
   // alert(`searching for ${pattern}`)
   const filter = 'languageName:"Dutch"'
 
   const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&filter=${encodeURI(filter)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+  console.log(url)
   window.open(url,'blacklab')
 }
 
@@ -386,11 +388,13 @@ function search() {
     const props = [];
     // console.log(t)
     const useLemma = hasProperty(t.id,'LEMMA')
+    const usePoS =  hasProperty(t.id,'UPOS')
+    const useRel =  hasProperty(t.id,'DEPREL')
     if (useLemma && t.lemma && t.lemma !== '_')
       props.push(`lemma='${esc(t.lemma)}'`);
-    if (t.upos  && t.upos  !== '_')
+    if (usePoS && t.upos  && t.upos  !== '_')
       props.push(`pos='${esc(t.upos)}'`);
-    const propStr = props.length ? ` [${props.join(' & ')}]` : '';
+    const propStr = props.length ? ` [${props.join(' & ')}]` : '_';
     return `${propStr}`;
   }
 
@@ -402,7 +406,9 @@ function search() {
     const childBits = t.kids.map(k => {
       const sub = walk(k,indent+2);
       const wrapped = k.kids.length ? `(${sub})` : sub;
-      return `${" ".repeat(indent)} -${k.rel}-> ${wrapped}`;
+      const useRel =  hasProperty(k.id,'DEPREL')
+      const rel = useRel? k.rel : ''
+      return `${" ".repeat(indent)} -${rel}-> ${wrapped}`;
     });
 
     return `${tokPattern(t)}\n${childBits.join(';\n')}`;
