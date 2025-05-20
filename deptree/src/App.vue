@@ -1,6 +1,6 @@
 <template>
   <main class="wrapper">
-    <h1>Query builder prototype</h1>
+    <h1 style="font-size: 14pt; margin-bottom: 1em">Example-based query building prototype</h1>
 
     <!-- input box -->
     <form @submit.prevent="parse">
