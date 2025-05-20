@@ -21,7 +21,7 @@
     <section v-if="blacklabQuery">
       <h2>Query</h2>
       <code class="query">{{ blacklabQuery }}</code>
-      <form @submit="search"><button>Search</button></form>
+      <form @submit.prevent="search"><button>Search</button></form>
     </section>
   </main>
 </template>
@@ -339,8 +339,9 @@ async function parse() {
   }
 }
 
-function search() {
+function search(e) {
   
+  e.preventDefault()
   const length_part = ' within <s sentence_length=in[5,14]/>'
   const pattern =  encodeURIComponent(`_with-spans(${blacklabQuery.value}) ${length_part}`)
 
