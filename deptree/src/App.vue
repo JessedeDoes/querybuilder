@@ -363,7 +363,7 @@ function search(e) {
   const pattern =  encodeURIComponent(`_with-spans(${blacklabQuery.value}) ${length_part}`)
 
   // alert(`searching for ${pattern}`)
-  const filter = 'languageName:"Dutch"'
+  const filter = `languageName:"${language.value}"`
 
   const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&filter=${encodeURI(filter)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
   console.log(url)
