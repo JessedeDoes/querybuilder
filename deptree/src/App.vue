@@ -49,7 +49,7 @@ const languages = {
   "German" : "de",
   "French" : "fr",
   "Japanese" : "ja",
-  "Czech" : "cz",
+  "Czech" : "cs",
   "Russian": "ru",
   "Latin" : "la"
 }
