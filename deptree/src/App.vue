@@ -7,15 +7,19 @@
       <textarea v-model="sentence"
                 placeholder="Type any sentence …"
                 rows="2"></textarea>
+             
+      <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select>
+      
       <button :disabled="loading || !sentence.trim()">Parse</button>
+      
     </form>
 
     <!-- show errors -->
     <p v-if="error" class="error">{{ error }}</p>
 
     <!-- SVG target for DependencyTreeJS -->
-     <div id="treeWrapper" style="padding: 1em">
-        <svg width="800px" height="600px" ref="svgEl" class="tree"></svg>
+     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: scroll">
+        <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
      </div>
     <!-- generated BlackLab query -->
     <section v-if="blacklabQuery">
@@ -38,6 +42,17 @@ import {
 } from 'dependencytreejs/lib';
 
 const sentence  = ref('Het is goed dat je fietst');
+const language = ref('Dutch')
+const languages = {
+  "Dutch" : "nl",
+  "English" : "en",
+  "German" : "de",
+  "French" : "fr",
+  "Japanese" : "ja",
+  "Czech" : "cz",
+  "Russian": "ru"
+}
+
 const loading  = ref(false);
 const error    = ref(null);
 const svgEl    = ref(null);
@@ -120,7 +135,7 @@ onMounted(() => {
 function makeSvgTextEditable(svgText,tokenId,targetLabel) {
       svgText.addEventListener('click', () => {
         const bbox = svgText.getBBox();
-        const container = svgText.closest('div');
+        const container = document.getElementById("treeWrapper") // svgText.closest('div'); // niet goed, neem altijd zelfde ding
         // console.log(container)
         const svgRect = svgText.ownerSVGElement.getBoundingClientRect();
         const containerRect = container.getBoundingClientRect();
@@ -316,10 +331,11 @@ async function parse() {
   error.value   = null;
   loading.value = true;
 
+  console.log(`language=${language.value}`)
   try {
     // UDPipe endpoint: tokenizer + tagger + parser
     const url = `https://lindat.mff.cuni.cz/services/udpipe/api/process` +
-                `?tokenizer&tagger&parser&model=nl` +
+                `?tokenizer&tagger&parser&model=${languages[language.value]}` +
                 `&data=${encodeURIComponent(sentence.value)}`;
 
     const { data } = await axios.get(url);
@@ -432,10 +448,10 @@ function search(e) {
 </script>
 
 <style scoped>
-.wrapper { max-width: 800px; margin: auto; padding: 2rem; font: 16px/1.4 system-ui; }
+.wrapper { max-width: 1200px; margin: auto; padding: 2rem; font: 16px/1.4 system-ui; }
 textarea { width: 100%; font: inherit; margin-bottom: 0.5rem; }
 button   { padding: 0.4rem 1rem; font-weight: 600; }
-.tree    { width: 100%; min-height: 180px; border: 0px solid #ddd; margin-top: 1.5rem }
+.tree    { width: 1200px; min-height: 180px; border: 0px solid #ddd; margin-top: 1.5rem }
 .error   { color: red; }
 .query   { display: block; white-space: pre; background: #f6f8fa; padding: 0.75rem; }
 </style>
