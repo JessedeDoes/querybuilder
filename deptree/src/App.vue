@@ -50,7 +50,8 @@ const languages = {
   "French" : "fr",
   "Japanese" : "ja",
   "Czech" : "cz",
-  "Russian": "ru"
+  "Russian": "ru",
+  "Latin" : "la"
 }
 
 const loading  = ref(false);
