@@ -51,7 +51,8 @@ const languages = {
   "Japanese" : "ja",
   "Czech" : "cs",
   "Russian": "ru",
-  "Latin" : "la"
+  "Latin" : "la",
+  "All" : "_"
 }
 
 const loading  = ref(false);
@@ -355,17 +356,21 @@ async function parse() {
     loading.value = false;
   }
 }
-
+// http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Russian%22%29&first=0&group=field%3AlanguageName%3Ai&number=20&patt=_with-spans%28%5B%5D+within+%3Cs+sentence_length%3Din%5B5%2C14%5D%2F%3E%29&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
 function search(e) {
   
   e.preventDefault()
+  const lang = language.value
+  // alert(`${lang} ${lang=='All'}`)
+  const groupByLanguage = lang=='All'
   const length_part = ' within <s sentence_length=in[5,14]/>'
   const pattern =  encodeURIComponent(`_with-spans(${blacklabQuery.value}) ${length_part}`)
 
   // alert(`searching for ${pattern}`)
-  const filter = `languageName:"${language.value}"`
+  const langFilter = `languageName:"${language.value}"`
+  const filterOrGroup = groupByLanguage ? `group=${encodeURIComponent('field:languageName:i')}` : `filter=${encodeURIComponent(langFilter)}` ;
 
-  const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&filter=${encodeURI(filter)}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+  const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&${filterOrGroup}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
   console.log(url)
   window.open(url,'blacklab')
 }
