@@ -28,6 +28,7 @@
       <form @submit.prevent="search"><button>Search</button></form>
     </section>
   </main>
+  <QueryBuilder/>
 </template>
 
 <script setup>
@@ -40,6 +41,9 @@ import {
   SentenceCaretaker,
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
+
+
+import QueryBuilder from './QueryBuilder.vue';
 
 const sentence  = ref('Het is goed dat je fietst');
 const language = ref('Dutch')
@@ -217,6 +221,10 @@ function makeSvgTextEditable(svgText,tokenId,targetLabel) {
           // updateToken(tokenId, 'MISC.Active', checkbox.value)
           updateQuery() // dit werkt niet zonder updateToken, dus zo moet je het aanpakken
           try {
+            console.log('trying to close div')
+            divje.style.backgroundColor = 'pink'
+            console.log(divje.style)
+            divje.style.display = 'none'
             divje.remove(); }
           catch(e) {
             console.log(e)
