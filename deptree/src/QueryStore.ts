@@ -38,6 +38,7 @@ export interface QueryState {
   parse: unknown | null;
   /** latest generated BlackLab query */
   query: string;
+  currentToken: TokenState
 }
 
 /**
@@ -58,6 +59,7 @@ export const useQueryStore = defineStore('query', {
   getters: {
     /** quick lookup of the token currently being edited */
     currentToken(state): TokenState | undefined {
+      alert('getting current token')
       return state.tokens.find(t => t.id === state.currentTokenId);
     },
     hasParse: state => Boolean(state.parse),

@@ -1,5 +1,7 @@
 <template>
   <main class="wrapper">
+    <QueryBuilder/>
+    <hr/>
     <h1 style="font-size: 14pt; margin-bottom: 1em">Example-based query building prototype</h1>
 
     <!-- input box -->
@@ -28,7 +30,7 @@
       <form @submit.prevent="search"><button>Search</button></form>
     </section>
   </main>
-  <QueryBuilder/>
+
 </template>
 
 <script setup>
