@@ -1,6 +1,8 @@
 <!-- QueryBuilder.vue -->
 <template>
   <div class="query-builder">
+    <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select>
+      
     <textarea
       v-model="localSentence"
       rows="2"
@@ -29,6 +31,7 @@
      </div>
      <h3>Query</h3>
      <textarea rows="5" cols="80" v-model="query"/>
+     <button @click="search">Search</button>
   </div>
 </template>
 
@@ -281,6 +284,22 @@ export default {
        }
     },
 
+    search(e) {
+      e.preventDefault()
+      const lang = this.language
+      // alert(`${lang} ${lang=='All'}`)
+      const groupByLanguage = lang=='All'
+      const length_part = ' within <s sentence_length=in[5,14]/>'
+      const pattern =  encodeURIComponent(`_with-spans(${this.query}) ${length_part}`)
+
+  // alert(`searching for ${pattern}`)
+      const langFilter = `languageName:"${lang}"`
+      const filterOrGroup = groupByLanguage ? `group=${encodeURIComponent('field:languageName:i')}` : `filter=${encodeURIComponent(langFilter)}` ;
+
+      const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&${filterOrGroup}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+      console.log(url)
+      window.open(url,'blacklab')
+    },
     clear() {
       this.localSentence = 'Bruine bonen met spek';
       this.setTokens([]);
