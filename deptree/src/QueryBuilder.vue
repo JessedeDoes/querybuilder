@@ -13,22 +13,29 @@
       <button :disabled="isEmpty" @click="clear">Clear</button>
     </div>
 
-    <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: scroll">
+    <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
         <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
      </div>
 
      <div :style="{display: 'block'}">
-      <form>
-        
-      </form>
+      <button  @click="previousToken">&lt;</button>{{ currentTokenId }}
+      <button value="previous" @click="nextToken">&gt;</button><br/>
+      <table>
+        <tr><td>Form</td> <td><input v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
+        <tr><td>Lemma</td> <td><input v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
+        <tr><td>Upos</td> <td><input v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
+        <tr><td>Deprel</td> <td><input v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/></td>  </tr>
+      </table>
      </div>
+     <h3>Query</h3>
+     <textarea rows="5" cols="80" v-model="query"/>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'pinia';
 import { useQueryStore } from './QueryStore';
-import { conlluToBlackLab } from './util'
+
 import { ref, onMounted, watch, useTemplateRef } from 'vue';
 import axios from 'axios';
 import {
@@ -87,18 +94,55 @@ export default {
       return !this.localSentence.trim();
     },
 
-    reactiveSentence() {return  new ReactiveSentence() },
-    sentenceSvg() {
+    reactiveSentence() { 
+      const r =   new ReactiveSentence() 
       const svgEl = this.$refs.svgEl
       console.log(svgEl)
       const opts = defaultSentenceSVGOptions();
       opts.interactive = true;  
       opts.shownFeatures = ["LEMMA","UPOS"]
-      return new SentenceSVG(
+      const ssvg = new SentenceSVG(
         svgEl,
-        this.reactiveSentence,
+        r,
        opts
      );
+     const self = this;
+
+     ssvg.addEventListener('svg-drop', e => {
+      const depId   = e.detail.hovered;
+      const headId  = e.detail.dragged;
+      
+
+      if (!depId || !headId) return;
+      console.log(`depId ${depId} headId ${headId}`)
+      //console.log(self.setHead)
+      self.setHead(depId,headId)
+     });
+
+     ssvg.addEventListener('svg-click', e => {
+      /*
+  let textElem
+  if (e.detail.event) {
+    console.log()
+    textElem = e.detail.event.srcElement
+  } else {
+    return;
+  }
+    if (textElem) {
+    makeSvgTextEditable(textElem,tokenId, targetLabel)
+    return;
+  }
+  */
+     const { targetLabel, clicked: tokenId } = e.detail;
+
+     //this.setReactiveSentence(r)
+     self.setCurrentTokenId(Number(tokenId))
+     })
+     return r;
+    },
+
+    sentenceSvg() {
+      
     },
 
     // tap into the pinia store
@@ -109,10 +153,37 @@ export default {
       'currentToken'
     ]),
 
+    form : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.form.value},
+       set(v)  { this.updateTokenField(this.currentTokenId, 'form', v) },
+    },
     lemma : {
-       
        get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.lemma.value},
-       set(v)  { updateTokenField(setCurrentTokenId, 'lemma', v) },
+       set(v)  { this.updateTokenField(this.currentTokenId, 'lemma', v) },
+    },
+    upos : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.upos.value},
+       set(v)  { this.updateTokenField(this.currentTokenId, 'upos', v) },
+    },
+    deprel : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.deprel.value},
+       set(v)  { this.updateTokenField(this.currentTokenId, 'deprel', v) },
+    },
+    form_active : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.form.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'form', v) },
+    },
+    lemma_active : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.lemma.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'lemma', Boolean(v)) },
+    },
+    upos_active : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.upos.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
+    },
+    deprel_active : {
+       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.deprel.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
     }
   },
 
@@ -131,7 +202,14 @@ export default {
       'setQuery',
       'setTokens',
       'setCurrentTokenId',
-      'updateTokenField'
+      'updateTokenField',
+      'setTokensFromConllu',
+      'setReactiveSentence',
+      'nextToken',
+      'previousToken',
+      'setHead',
+      'updateQuery',
+      'setTokenFieldActive'
     ]),
 
     /**
@@ -189,11 +267,13 @@ export default {
           const conllu = data.result // .split('\n').map(x => x + "optional=false").join('\n')      // CoNLL-U string
           // console.log(conllu)
           this.reactiveSentence.fromSentenceConll(conllu);
-
-        
+          this.setReactiveSentence(this.reactiveSentence)
+          this.setTokensFromConllu(conllu)
+          this.setCurrentTokenId(1)
           // this.blacklabQuery = conlluToBlackLab(conllu);
+          this.updateQuery()
         } catch (e) {
-      console.log('Exception')
+      console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
       console.log(e)
         // error.value = 'Could not parse sentence – ' + e.message;
       } finally {
@@ -214,7 +294,7 @@ export default {
 
 <style scoped>
 .query-builder {
-  max-width: 500px;
+  max-width: 1200px;
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 8px;

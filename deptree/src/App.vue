@@ -1,6 +1,7 @@
 <template>
   <main class="wrapper">
     <QueryBuilder/>
+    <div v-if="false">
     <hr/>
     <h1 style="font-size: 14pt; margin-bottom: 1em">Example-based query building prototype</h1>
 
@@ -20,7 +21,7 @@
     <p v-if="error" class="error">{{ error }}</p>
 
     <!-- SVG target for DependencyTreeJS -->
-     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: scroll">
+     <div v-if="false" xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: scroll">
         <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
      </div>
     <!-- generated BlackLab query -->
@@ -29,6 +30,7 @@
       <code class="query">{{ blacklabQuery }}</code>
       <form @submit.prevent="search"><button>Search</button></form>
     </section>
+  </div>
   </main>
 
 </template>
@@ -342,7 +344,7 @@ sentenceSvg.addEventListener('svg-click', e => {
 async function parse() {
   error.value   = null;
   loading.value = true;
-
+  return;
   console.log(`language=${language.value}`)
   try {
     // UDPipe endpoint: tokenizer + tagger + parser
