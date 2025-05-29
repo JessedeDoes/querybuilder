@@ -3,27 +3,35 @@
 -->
 <template>
   <div class="query-builder">
-    <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select>
-      
+    <h2>Query building prototype</h2>
+    <h3>Enter sentence</h3>
+    
+    <div class="queryEditing">
     <textarea
       v-model="localSentence"
       rows="2"
       placeholder="Type any sentence…"
       class="sentence-input"
     ></textarea>
-
-    <div class="actions">
-      <button :disabled="isEmpty" @click="parse">Parse</button>
-      <button :disabled="isEmpty" @click="clear">Clear</button>
+    <button :disabled="isEmpty" @click="clear">Clear</button>
     </div>
 
+
+    <h3>Parse</h3>
+    <div class="queryEditing">
+    <div class="actions">
+      Parsing language: <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> <button :disabled="isEmpty" @click="parse">Go</button>
+    </div>
+    </div>
+    <h3>Edit query</h3>
+
+    <div class="queryEditing">
     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
         <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
      </div>
 
      <div :style="{display: 'block'}">
-      <button  @click="previousToken">&lt;</button>{{ currentTokenId }}
-      <button value="previous" @click="nextToken">&gt;</button><br/>
+      <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       <table>
         <tr>
           <td>
@@ -50,9 +58,15 @@
        </tr>
     </table>
      </div>
+    </div>
+
      <h3>Query</h3>
+     <div class="queryEditing">
      <textarea rows="5" cols="80" v-model="query"/>
+     Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
+     Search language:<select v-model="searchLanguage"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
      <button @click="search">Search</button>
+    </div>
   </div>
 </template>
 
@@ -76,7 +90,7 @@ export default {
   props: {
     modelValue: {
       type: String,
-      default: 'mooie zin',
+      default: 'bruine bonen met spek',
     },
   },
 
@@ -94,6 +108,7 @@ export default {
       blacklabQuery: null,
 
       language: 'Dutch',
+      searchLanguage : 'Dutch',
       languages : {
       "Dutch" : "nl",
       "English" : "en",
@@ -105,7 +120,11 @@ export default {
       "Latin" : "la",
       "All" : "_"
       },
-      
+      corpus: "UD 2.16",
+      corpora : {
+        "UD 2.16" : "http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/",
+        "GCND" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
+      }
     };
   },
 
@@ -278,17 +297,20 @@ export default {
 
     search(e) {
       e.preventDefault()
-      const lang = this.language
-      // alert(`${lang} ${lang=='All'}`)
+      const lang = this.searchLanguage;
+      const corpusURL = this.corpora[this.corpus]
+    
       const groupByLanguage = lang=='All'
-      const length_part = ' within <s sentence_length=in[5,14]/>'
+      let length_part = ' within <s sentence_length=in[5,14]/>'
+      if (this.corpus != "UD 2.16") length_part = "";
       const pattern =  encodeURIComponent(`_with-spans(${this.query}) ${length_part}`)
 
-  // alert(`searching for ${pattern}`)
+ 
       const langFilter = `languageName:"${lang}"`
-      const filterOrGroup = groupByLanguage ? `group=${encodeURIComponent('field:languageName:i')}` : `filter=${encodeURIComponent(langFilter)}` ;
-
-      const url = `http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/search/hits?first=0&number=20&patt=${pattern}&${filterOrGroup}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+      let filterOrGroup = groupByLanguage ? `group=${encodeURIComponent('field:languageName:i')}` : `filter=${encodeURIComponent(langFilter)}` ;
+      if (this.corpus != "UD 2.16") filterOrGroup = "";
+      let url = `${corpusURL}/search/hits?first=0&number=20&patt=${pattern}&${filterOrGroup}&adjusthits=yes&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D`
+      url = url.replaceAll('&&', '&')
       console.log(url)
       window.open(url,'blacklab')
     },
@@ -305,28 +327,46 @@ export default {
 
 <style scoped>
 .query-builder {
-  max-width: 1200px;
+  max-width: 1500px;
   padding: 1rem;
   border: 1px solid #ddd;
+  background-color: aliceblue;
   border-radius: 8px;
   font-family: system-ui, sans-serif;
 }
 
 .b {
-  font-weight: bold;
+  font-style: italic;
 }
 .tokenEditor {
-  background-color: bisque;
+  background-color: lightblue;
 }
 .tokenDisplay {
   color: #808080;
   background-color: aliceblue;
 }
+
+h3 {
+  margin-top: 1em;
+}
+.queryEditing {
+  border: 1px solid #000000;
+  border-radius: 8px;
+  background-color: white;
+  padding: 1em;
+  margin-top: 0em;
+  margin-bottom: 0em;
+}
+
 .sentence-input {
   width: 100%;
   font: inherit;
   padding: 0.4rem;
   margin-bottom: 0.5rem;
+}
+
+textarea {
+ border: 1px solid #ddd
 }
 
 .actions {
@@ -335,7 +375,9 @@ export default {
 }
 
 button {
-  padding: 0.4rem 1rem;
+  padding: 0.2rem 0.5rem;
+  xbackground-color: lightblue;
+  xborder-color: lightblue;
   font-weight: 600;
   cursor: pointer;
 }
