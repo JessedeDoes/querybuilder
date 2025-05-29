@@ -466,7 +466,7 @@ function search(e) {
 </script>
 
 <style scoped>
-.wrapper { max-width: 100%; margin: auto; padding: 2rem; font: 16px/1.4 system-ui; }
+.wrapper { max-width: 100%; margin: auto; padding: 2rem }
 textarea { width: 100%; font: inherit; margin-bottom: 0.5rem; }
 button   { padding: 0.4rem 1rem; font-weight: 600; }
 .tree    { width: auto; min-height: 180px; border: 0px solid #ddd; margin-top: 1.5rem }

@@ -49,6 +49,15 @@ export interface QueryState {
   reactiveSentence: ReactiveSentence
 }
 
+function isTokenReachable(tokens: TokenState[], id: number): boolean {
+  const token = tokens.find(t => t.id == id)
+  if (token) {
+    if (token.head == 0) return true;
+    else if (!token.head) return false;
+    else return isTokenReachable(tokens, token.head)
+  }
+  return false
+}
 function conlluToBlackLab(tokens: TokenState[]) {
 
 
@@ -161,8 +170,8 @@ function removeRelInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId
   const newTok =  { ...oldTok }
   newTok['HEAD']  = '_'
   //oldTok['HEAD'] = '_'
-  console.log(`${oldTok['HEAD']} --> ${newTok['HEAD']}`)
-  console.log(newTok)
+  //console.log(`${oldTok['HEAD']} --> ${newTok['HEAD']}`)
+  //console.log(newTok)
   reactiveSentence.updateToken(newTok);
 }
 
@@ -193,6 +202,8 @@ function setHeadInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: 
  *  Pinia Store
  * ----------------------------
  */
+
+type fx = (number,string) => boolean;
 export const useQueryStore = defineStore('query', {
   /** state ---------------------- */
   state: (): QueryState => ({
@@ -211,7 +222,19 @@ export const useQueryStore = defineStore('query', {
       return state.tokens.find(t => t.id === state.currentTokenId);
     },
     hasParse: state => Boolean(state.parse),
-    getQuery(state) : string { return state.query}
+    getQuery(state) : string { return state.query},
+    isActive(state) : fx {
+      const f =  (id: number,property: string) => {
+        const token = state.tokens.find(t => t.id == id)
+        if (token && isTokenReachable(state.tokens, id)) {
+          const r = token.fields[property].active
+          return r
+        }
+       
+        return false
+      }
+      return f
+    } 
   },
 
   /** actions -------------------- */
@@ -299,10 +322,11 @@ export const useQueryStore = defineStore('query', {
     },
 
     removeRel() {
-      console.log(`store: removing rel from ${this.currentTokenId}`)
+      // console.log(`store: removing rel from ${this.currentTokenId}`)
       const token = this.currentToken
       delete token.head;
-  
+      console.log(`removeRel: rel removed from token ${this.currentTokenId}`)
+      console.log(token)
       removeRelInReactiveSentence(this.reactiveSentence, this.currentTokenId)
       this.updateQuery()
     },

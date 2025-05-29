@@ -43,16 +43,16 @@
           </table></td>
           <td v-for="t in tokens" :index="t.id">
       <table v-if="currentTokenId == t.id" class="tokenEditor">
-        <tr><td></td> <td><input v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
-        <tr><td></td> <td><input v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
-        <tr><td></td> <td><input v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
-        <tr><td></td> <td><input v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
+        <tr><td></td> <td><input :class="propertyStyle(t.id,'form')" v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
+        <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
+        <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
+        <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
       </table>
       <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
-        <tr><td>{{ t.fields['form'].value }}</td></tr>
-        <tr><td>{{ t.fields['lemma'].value }}</td></tr>
-        <tr><td>{{ t.fields['upos'].value }}</td></tr>
-        <tr><td>{{ t.fields['deprel'].value }}</td></tr>
+        <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
+        <tr><td :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</td></tr>
+        <tr><td :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</td></tr>
+        <tr><td :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</td></tr>
       </table>
     </td>
        </tr>
@@ -116,8 +116,11 @@ export default {
       "French" : "fr",
       "Japanese" : "ja",
       "Czech" : "cs",
+      "Polish" : "pl",
+      "Slovenian" : "sl",
       "Russian": "ru",
       "Latin" : "la",
+      "Hungarian" : "hu",
       "All" : "_"
       },
       corpus: "UD 2.16",
@@ -199,7 +202,8 @@ export default {
       'currentToken',
       'tokens',
       'query',
-      'getQuery'
+      'getQuery',
+      'isActive'
     ]),
 
     blacklabQuery: {
@@ -267,6 +271,10 @@ export default {
       'removeRel'
     ]),
 
+    propertyStyle(id, property) {
+      const f = this.isActive
+      return f(id,property)? 'property_active' : 'property_inactive'
+    },
     noRel() {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
@@ -338,7 +346,8 @@ export default {
   border: 1px solid #ddd;
   background-color: aliceblue;
   border-radius: 8px;
-  font-family: system-ui, sans-serif;
+  font-family: verdana, system-ui, sans-serif;
+  font-size: 11pt
 }
 
 .b {
@@ -351,7 +360,17 @@ export default {
   color: #808080;
   background-color: aliceblue;
 }
-
+.property_active {
+  color: #606060;
+  font-weight: bold;
+  xborder-width: 2pt;
+  xborder-style: solid;
+  xborder-color: lightblue;
+  xborder-style: inset
+}
+.property_inactive {
+  color: #808080;
+}
 h3 {
   margin-top: 1em;
 }
