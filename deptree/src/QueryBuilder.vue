@@ -17,7 +17,7 @@
     </div>
 
 
-    <h3>Parse</h3>
+    <h3>Parse sentence</h3>
     <div class="queryEditing">
     <div class="actions">
       Parsing language: <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> <button :disabled="isEmpty" @click="parse">Go</button>
@@ -31,7 +31,7 @@
      </div>
 
      <div :style="{display: 'block'}">
-      <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
+      Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       <table>
         <tr>
           <td>
@@ -60,7 +60,7 @@
      </div>
     </div>
 
-     <h3>Query</h3>
+     <h3>Query corpus</h3>
      <div class="queryEditing">
      <textarea rows="5" cols="80" v-model="query"/>
      Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
