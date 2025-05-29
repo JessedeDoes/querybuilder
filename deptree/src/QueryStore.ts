@@ -211,6 +211,7 @@ export const useQueryStore = defineStore('query', {
       return state.tokens.find(t => t.id === state.currentTokenId);
     },
     hasParse: state => Boolean(state.parse),
+    getQuery(state) : string { return state.query}
   },
 
   /** actions -------------------- */

@@ -62,7 +62,7 @@
 
      <h3>Query corpus</h3>
      <div class="queryEditing">
-     <textarea rows="5" cols="80" v-model="query"/>
+     <textarea rows="5" cols="80" v-model="blacklabQuery"/>
      Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
      Search language:<select v-model="searchLanguage"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
      <button @click="search">Search</button>
@@ -105,7 +105,7 @@ export default {
   data() {
     return {
       localSentence: this.modelValue,
-      blacklabQuery: null,
+      
 
       language: 'Dutch',
       searchLanguage : 'Dutch',
@@ -194,12 +194,18 @@ export default {
     // tap into the pinia store
     ...mapState(useQueryStore, [
       'currentTokenId',
-      'query',
+      
       'hasParse',
       'currentToken',
-      'tokens'
+      'tokens',
+      'query',
+      'getQuery'
     ]),
 
+    blacklabQuery: {
+      get()  { return this.getQuery },
+      set(v) { this.setQuery(v)}
+    },
     form : {
        get() { if (!this.currentToken) return '';  return this.currentToken.fields.form.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'form', v) },
@@ -303,7 +309,7 @@ export default {
       const groupByLanguage = lang=='All'
       let length_part = ' within <s sentence_length=in[5,14]/>'
       if (this.corpus != "UD 2.16") length_part = "";
-      const pattern =  encodeURIComponent(`_with-spans(${this.query}) ${length_part}`)
+      const pattern =  encodeURIComponent(`_with-spans(${this.blacklabQuery}) ${length_part}`)
 
  
       const langFilter = `languageName:"${lang}"`
