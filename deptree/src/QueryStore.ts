@@ -60,7 +60,7 @@ function conlluToBlackLab(tokens: TokenState[]) {
     if (t.head != 0) {
        const head = tokens.find(t1 => t1.id == t.head)
        if (head)  {
-        console.log(`found ${head}`)
+        //console.log(`found ${head}`)
         head.children.push(t) 
        }
      }
@@ -109,16 +109,21 @@ function conlluToBlackLab(tokens: TokenState[]) {
   return `${walk(root,0)}`; // of ^--> ${} als je het patroon als root wilt hebben
 }
 
+function findToken(reactiveSentence: ReactiveSentence, tokenId)  {
+  const nodesJson = reactiveSentence.state.treeJson.nodesJson
+  const id =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId) 
+  return nodesJson[id]
+}
 function updateTokenInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number, targetLabelLC: string, targetValue: string) {
   const targetLabel = targetLabelLC.toUpperCase()
 
-  console.log(`update Token in tree: ${tokenId} ${targetLabel} ${targetValue}`)
+  //console.log(`update Token in tree: ${tokenId} ${targetLabel} ${targetValue}`)
   const nodesJson = reactiveSentence.state.treeJson.nodesJson
-  console.log(nodesJson)
+  //console.log(nodesJson)
   const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
                      
   if (!oldTokId)  {
-    console.log(`Cannot update: ${tokenId} not found`)
+    //console.log(`Cannot update: ${tokenId} not found`)
     return;
   }
  
@@ -132,13 +137,33 @@ function updateTokenInReactiveSentence(reactiveSentence: ReactiveSentence, token
 
   /* --- commit change --------------------------------------------------- */
   const newTok = { ...oldTok, [targetLabel]: targetValue };
-  console.log('newTok=')
-  console.log(newTok)
+  //console.log('newTok=')
+  //console.log(newTok)
   
   reactiveSentence.updateToken(newTok);
   //console.log(`Should be updated now .... `)
   // console.log(reactiveSentence.state.treeJson.nodesJson)
   // updateQuery()
+}
+
+function removeRelInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number) {
+  const nodesJson = reactiveSentence.state.treeJson.nodesJson
+  //console.log(nodesJson)
+  const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
+                     
+  if (!oldTokId)  {
+    //console.log(`Cannot update: ${tokenId} not found`)
+    return;
+  }
+ 
+
+  const oldTok = nodesJson[oldTokId]
+  const newTok =  { ...oldTok }
+  newTok['HEAD']  = '_'
+  //oldTok['HEAD'] = '_'
+  console.log(`${oldTok['HEAD']} --> ${newTok['HEAD']}`)
+  console.log(newTok)
+  reactiveSentence.updateToken(newTok);
 }
 
 function setHeadInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number, headId: number) {
@@ -161,6 +186,8 @@ function setHeadInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: 
   reactiveSentence.updateToken(newTok);
 }
 
+
+
 /**
  * ----------------------------
  *  Pinia Store
@@ -180,7 +207,7 @@ export const useQueryStore = defineStore('query', {
   getters: {
     /** quick lookup of the token currently being edited */
     currentToken(state): TokenState | undefined {
-      console.log('getting current token')
+      //console.log('getting current token')
       return state.tokens.find(t => t.id === state.currentTokenId);
     },
     hasParse: state => Boolean(state.parse),
@@ -194,14 +221,14 @@ export const useQueryStore = defineStore('query', {
     },
 
     setReactiveSentence(r: ReactiveSentence) {
-      console.log('setting reactive sentence:')
-      console.log(r)
+      //console.log('setting reactive sentence:')
+      //console.log(r)
       this.reactiveSentence = r
     },
 
     setTokensFromConllu(conllu: string) {
       const tokens: TokenState[] = [];                      // id → token object
-      console.log('Tokens from:' + conllu)
+      //console.log('Tokens from:' + conllu)
       conllu.split('\n').forEach(line => {
         if (!line || line.startsWith('#')) return;
         const c = line.split('\t');
@@ -224,8 +251,8 @@ export const useQueryStore = defineStore('query', {
         };
         tokens.push(token)
       });
-      console.log("Tokens now:") 
-      console.log(tokens)
+      //console.log("Tokens now:") 
+      //console.log(tokens)
       this.setTokens(tokens)
     },
     /** Point the editor at a different token. */
@@ -254,7 +281,7 @@ export const useQueryStore = defineStore('query', {
       if (!token) return;
       token.fields[field].value = newValue;
       if (newActive !== undefined) token.fields[field].active = newActive;
-      console.log(`Updating token ${id}: ${field}=${newValue}`)
+      //console.log(`Updating token ${id}: ${field}=${newValue}`)
       updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
       this.updateQuery()
     },
@@ -270,6 +297,26 @@ export const useQueryStore = defineStore('query', {
       this.updateQuery()
     },
 
+    removeRel() {
+      console.log(`store: removing rel from ${this.currentTokenId}`)
+      const token = this.currentToken
+      delete token.head;
+  
+      removeRelInReactiveSentence(this.reactiveSentence, this.currentTokenId)
+      this.updateQuery()
+    },
+
+    setRoot(id: number) {
+      console.log(id)
+      console.log(`setRoot ${id}`)
+      const token = this.tokens.find(t => t.id == id);
+      token.head = 0;
+      token.deprel = 'root'
+      setHeadInReactiveSentence(this.reactiveSentence, id, 0)
+      updateTokenInReactiveSentence(this.reactiveSentence, id, 'deprel', 'root')
+      this.updateQuery()
+    },
+
     setHead(id: number, head_id: number) {
       console.log(`sethead id=${id} head=${head_id}`)
       console.log(this.tokens)
@@ -279,6 +326,7 @@ export const useQueryStore = defineStore('query', {
       token.head = head_id;
       console.log(`sethead id=${id} head=${head_id} token=${token.id},${token.head}`)
       setHeadInReactiveSentence(this.reactiveSentence, id, head_id)
+      this.updateQuery()
     },
 
     /** Store the raw parse object (or null to clear). */

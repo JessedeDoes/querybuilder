@@ -1,4 +1,6 @@
-<!-- QueryBuilder.vue -->
+<!-- QueryBuilder.vue 
+// https://github.com/kirianguiller/reactive-dep-tree 
+-->
 <template>
   <div class="query-builder">
     <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select>
@@ -23,11 +25,30 @@
       <button  @click="previousToken">&lt;</button>{{ currentTokenId }}
       <button value="previous" @click="nextToken">&gt;</button><br/>
       <table>
-        <tr><td>Form</td> <td><input v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
-        <tr><td>Lemma</td> <td><input v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
-        <tr><td>Upos</td> <td><input v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
-        <tr><td>Deprel</td> <td><input v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/></td>  </tr>
+        <tr>
+          <td>
+            <table>
+              <tr><td class="b">Form</td></tr> 
+              <tr><td class="b">Lemma</td></tr>
+              <tr><td class="b">Upos</td></tr> 
+              <tr><td class="b">Deprel</td></tr> 
+          </table></td>
+          <td v-for="t in tokens" :index="t.id">
+      <table v-if="currentTokenId == t.id" class="tokenEditor">
+        <tr><td></td> <td><input v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
+        <tr><td></td> <td><input v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
+        <tr><td></td> <td><input v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
+        <tr><td></td> <td><input v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
       </table>
+      <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
+        <tr><td>{{ t.fields['form'].value }}</td></tr>
+        <tr><td>{{ t.fields['lemma'].value }}</td></tr>
+        <tr><td>{{ t.fields['upos'].value }}</td></tr>
+        <tr><td>{{ t.fields['deprel'].value }}</td></tr>
+      </table>
+    </td>
+       </tr>
+    </table>
      </div>
      <h3>Query</h3>
      <textarea rows="5" cols="80" v-model="query"/>
@@ -47,10 +68,6 @@ import {
   SentenceCaretaker,
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
-
-let reactiveSentence;    // will hold the current tree
-let sentenceSvg;         // DependencyTreeJS renderer
-let caretaker;
 
 
 export default {
@@ -103,7 +120,7 @@ export default {
       console.log(svgEl)
       const opts = defaultSentenceSVGOptions();
       opts.interactive = true;  
-      opts.shownFeatures = ["LEMMA","UPOS"]
+      opts.shownFeatures = ['FORM'] // ["LEMMA","UPOS"]
       const ssvg = new SentenceSVG(
         svgEl,
         r,
@@ -114,12 +131,19 @@ export default {
      ssvg.addEventListener('svg-drop', e => {
       const depId   = e.detail.hovered;
       const headId  = e.detail.dragged;
+      console.log(e.detail);
+      const treeNode = e.detail.treeNode
+      if (e.detail.isRoot)
+         self.setRoot(headId);
+      else {
       
-
-      if (!depId || !headId) return;
       console.log(`depId ${depId} headId ${headId}`)
+      if (!depId || !headId) return;
+      
+      
       //console.log(self.setHead)
       self.setHead(depId,headId)
+      }
      });
 
      ssvg.addEventListener('svg-click', e => {
@@ -153,39 +177,40 @@ export default {
       'currentTokenId',
       'query',
       'hasParse',
-      'currentToken'
+      'currentToken',
+      'tokens'
     ]),
 
     form : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.form.value},
+       get() { if (!this.currentToken) return '';  return this.currentToken.fields.form.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'form', v) },
     },
     lemma : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.lemma.value},
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'lemma', v) },
     },
     upos : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.upos.value},
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.upos.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'upos', v) },
     },
     deprel : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.deprel.value},
+       get() { if (!this.currentToken) return; return this.currentToken.fields.deprel.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'deprel', v) },
     },
     form_active : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.form.active},
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.form.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'form', v) },
     },
     lemma_active : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.lemma.active},
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'lemma', Boolean(v)) },
     },
     upos_active : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.upos.active},
+       get() { if (!this.currentToken) return '';  return this.currentToken.fields.upos.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
     },
     deprel_active : {
-       get() { if (!this.currentToken) return ''; console.log(this.currentToken); return this.currentToken.fields.deprel.active},
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.deprel.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
     }
   },
@@ -212,48 +237,15 @@ export default {
       'previousToken',
       'setHead',
       'updateQuery',
-      'setTokenFieldActive'
+      'setTokenFieldActive',
+      'setRoot',
+      'removeRel'
     ]),
 
-    /**
-     * Fire the parse event upward and seed store with dummy values so the
-     * example is self‑contained. In a real app, the parent would parse the
-     * sentence and then commit proper tokens/query back into the store.
-     */
-    /*
-    emitParse() {
-      const trimmed = this.localSentence.trim();
-      this.$emit('parse', trimmed);
-
-      // demo – create two dummy tokens
-      this.setTokens([
-        {
-          id: 1,
-          head: 0,
-          fields: {
-            lemma: { value: 'een', active: true },
-            upos: { value: 'DET', active: true },
-            feats: { value: '_', active: false },
-            deprel: { value: 'det', active: false },
-          },
-        },
-        {
-          id: 2,
-          head: 1,
-          fields: {
-            lemma: { value: trimmed.split(' ')[0] || '', active: true },
-            upos: { value: 'NOUN', active: true },
-            feats: { value: '_', active: false },
-            deprel: { value: 'root', active: true },
-          },
-        },
-      ]);
-
-      //this.setCurrentTokenId(2);
-      //this.setParse({ sentence: trimmed, dummy: true });
-      //this.setQuery(`lemma='${trimmed.split(' ')[0]}'`);
+    noRel() {
+      console.log(`removing rel from ${this.currentTokenId}`)
+      this.removeRel()
     },
-    */
     async  parse() {
 
       try {
@@ -320,6 +312,16 @@ export default {
   font-family: system-ui, sans-serif;
 }
 
+.b {
+  font-weight: bold;
+}
+.tokenEditor {
+  background-color: bisque;
+}
+.tokenDisplay {
+  color: #808080;
+  background-color: aliceblue;
+}
 .sentence-input {
   width: 100%;
   font: inherit;
