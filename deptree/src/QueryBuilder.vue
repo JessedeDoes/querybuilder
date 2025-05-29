@@ -64,7 +64,8 @@
      <div class="queryEditing">
      <textarea rows="5" cols="80" v-model="blacklabQuery"/>
      Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
-     Search language:<select v-model="searchLanguage"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
+     Search language: <select v-model="searchLanguage"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
+     Limit to short sentences: <input type="checkbox" v-model="onlyShortSentences"/> <span> </span>
      <button @click="search">Search</button>
     </div>
   </div>
@@ -109,6 +110,7 @@ export default {
 
       language: 'Dutch',
       searchLanguage : 'Dutch',
+      onlyShortSentences: false,
       languages : {
       "Dutch" : "nl",
       "English" : "en",
@@ -316,7 +318,7 @@ export default {
     
       const groupByLanguage = lang=='All'
       let length_part = ' within <s sentence_length=in[5,14]/>'
-      if (this.corpus != "UD 2.16") length_part = "";
+      if (this.corpus != "UD 2.16" || !this.onlyShortSentences) length_part = "";
       const pattern =  encodeURIComponent(`_with-spans(${this.blacklabQuery}) ${length_part}`)
 
  
