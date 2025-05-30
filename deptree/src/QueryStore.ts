@@ -28,9 +28,8 @@ export type TokenFields = Record<FieldName, FieldState>;
 export interface TokenState {
 
   id: number;
-
   head: number;
- 
+  tokenOrder: number;
   fields: TokenFields,
   children : TokenState[]
  }
@@ -77,6 +76,10 @@ function conlluToBlackLab(tokens: TokenState[]) {
   // --- 3. find the (single) root --------------------------------------
   const root = tokens.find(t => t.head == 0);
   if (!root) return '';                 // malformed input
+  
+  
+  const tokensWithOrder = tokens.filter(t => t.tokenOrder != -1)
+  const hasTokenOrder = tokensWithOrder.length > 1
 
   // --- 4. helpers ------------------------------------------------------
   const esc = s => s.replace(/'/g, "\\'");
@@ -87,14 +90,15 @@ function conlluToBlackLab(tokens: TokenState[]) {
     const useLemma = t.fields.lemma.active
     const usePoS =  t.fields.upos.active
     const useForm =  t.fields.form.active
+    const capturePrefix = (t.tokenOrder != -1)? `n${t.tokenOrder}:` : ''
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
     if (useForm && t.fields.form.value && t.fields.form.value !== '_')
       props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
-    const propStr = props.length ? ` [${props.join(' & ')}]` : '_';
-    return `${propStr}`;
+    const propStr = props.length ? `[${props.join(' & ')}]` : '_';
+    return `${capturePrefix}${propStr}`;
   }
 
   function walk(t: TokenState,indent: number) {
@@ -113,8 +117,11 @@ function conlluToBlackLab(tokens: TokenState[]) {
     return `${tokPattern(t)}\n${childBits.join(';\n')}`;
   }
 
+  const sorted = tokensWithOrder.sort( (t1,t2) => t1.tokenOrder - t2.tokenOrder)
+  const orderPart = hasTokenOrder? ' :: ' + sorted.slice(0,-1).map((t,i) => `start(n${t.tokenOrder}) < start(n${sorted[i+1].tokenOrder})`).join(' & ') : ''
+  console.log(`order clause: ${orderPart}`)
   // --- 5. stitch together ---------------------------------------------
-  return `${walk(root,0)}`; // of ^--> ${} als je het patroon als root wilt hebben
+  return `${walk(root,0)} ${orderPart}`; // of ^--> ${} als je het patroon als root wilt hebben
 }
 
 function findToken(reactiveSentence: ReactiveSentence, tokenId)  {
@@ -249,6 +256,7 @@ export const useQueryStore = defineStore('query', {
         const token:TokenState = {
           id:     Number(c[0]),
           head:   Number(c[6]),
+          tokenOrder: -1,
           fields: {
             form:   { value: c[1], active: false },
             lemma:  { value: c[2], active: false },
@@ -294,6 +302,14 @@ export const useQueryStore = defineStore('query', {
       if (newActive !== undefined) token.fields[field].active = newActive;
    
       updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
+      this.updateQuery()
+    },
+
+    updateTokenOrder(id: number, order: number) {
+      const token = this.tokens.find(t => t.id === id);
+      if (!token) return;
+      console.log(`tokenOrder ${id} ${order}`)
+      token.tokenOrder = order;
       this.updateQuery()
     },
 

@@ -40,6 +40,7 @@
               <tr><td class="b">Lemma</td></tr>
               <tr><td class="b">Upos</td></tr> 
               <tr><td class="b">Deprel</td></tr> 
+              <tr><td class="b">Order</td></tr> 
           </table></td>
           <td v-for="t in tokens" :index="t.id">
             <table v-if="currentTokenId == t.id" class="tokenEditor">
@@ -47,12 +48,14 @@
               <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
               <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
               <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="token_order"/></td> <td></td>  </tr>
             </table>
           <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
             <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
             <tr><td :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</td></tr>
             <tr><td :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</td></tr>
             <tr><td :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</td></tr>
+            <tr><td :class="propertyStyle(t.id,'deprel')">{{ (t.tokenOrder != -1)? t.tokenOrder: '_' }}</td></tr>
          </table>
         </td>
        </tr>
@@ -213,8 +216,13 @@ export default {
        get() { if (!this.currentToken) return; return this.currentToken.fields.deprel.value},
        set(v)  { this.updateTokenField(this.currentTokenId, 'deprel', v) },
     },
+    token_order : {
+       get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return '_'; return this.currentToken.tokenOrder},
+       set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
+    },
+
     form_active : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.form.active},
+       get() { if (!this.currentToken ) return ''; return this.currentToken.fields.form.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'form', v) },
     },
     lemma_active : {
@@ -246,6 +254,7 @@ export default {
       'setTokens',
       'setCurrentTokenId',
       'updateTokenField',
+      'updateTokenOrder',
       'setTokensFromConllu',
       'setReactiveSentence',
       'nextToken',
