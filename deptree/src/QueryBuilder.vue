@@ -96,8 +96,6 @@ export default {
   },
 
   mounted() {
-    // this.reactiveSentence = new ReactiveSentence();
-
     this.parse()
   },
 
@@ -165,28 +163,16 @@ export default {
       if (!depId || !headId) return;
       
       
-      //console.log(self.setHead)
+     
       self.setHead(depId,headId)
       }
      });
 
      ssvg.addEventListener('svg-click', e => {
-      /*
-  let textElem
-  if (e.detail.event) {
-    console.log()
-    textElem = e.detail.event.srcElement
-  } else {
-    return;
-  }
-    if (textElem) {
-    makeSvgTextEditable(textElem,tokenId, targetLabel)
-    return;
-  }
-  */
+
      const { targetLabel, clicked: tokenId } = e.detail;
 
-     //this.setReactiveSentence(r)
+
      self.setCurrentTokenId(Number(tokenId))
      })
      return r;
@@ -196,7 +182,6 @@ export default {
       
     },
 
-    // tap into the pinia store
     ...mapState(useQueryStore, [
       'currentTokenId',
       
@@ -277,10 +262,12 @@ export default {
       const f = this.isActive
       return f(id,property)? 'property_active' : 'property_inactive'
     },
+    
     noRel() {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
     },
+
     async  parse() {
 
       try {
@@ -294,18 +281,18 @@ export default {
 
           if (!data.result) throw new Error('Unexpected UDPipe response');
 
-          const conllu = data.result // .split('\n').map(x => x + "optional=false").join('\n')      // CoNLL-U string
-          // console.log(conllu)
+          const conllu = data.result 
+        
           this.reactiveSentence.fromSentenceConll(conllu);
           this.setReactiveSentence(this.reactiveSentence)
           this.setTokensFromConllu(conllu)
           this.setCurrentTokenId(1)
-          // this.blacklabQuery = conlluToBlackLab(conllu);
+        
           this.updateQuery()
-        } catch (e) {
-      console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
-      console.log(e)
-        // error.value = 'Could not parse sentence – ' + e.message;
+       } catch (e) {
+        console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
+        console.log(e)
+      
       } finally {
       
        }
