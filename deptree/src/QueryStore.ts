@@ -309,9 +309,13 @@ export const useQueryStore = defineStore('query', {
       const token = this.tokens.find(t => t.id === id);
       if (!token) return;
       console.log(`tokenOrder ${id} ${order}`)
-      token.tokenOrder = order;
-      this.updateQuery()
-    },
+        if (order.toString().match('[0-9]+')) {
+          token.tokenOrder = Number(order);
+        } else {
+          token.tokenOrder = -1
+        }
+        this.updateQuery()
+      },
 
     setTokenFieldActive(
       id: number,
