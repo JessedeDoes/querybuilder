@@ -90,7 +90,7 @@ function conlluToBlackLab(tokens: TokenState[]) {
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
     if (useForm && t.fields.form.value && t.fields.form.value !== '_')
-      props.push(`word='${esc(t.fields.lemma.value)}'`);
+      props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
     const propStr = props.length ? ` [${props.join(' & ')}]` : '_';
