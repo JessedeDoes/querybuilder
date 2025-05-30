@@ -1,3 +1,7 @@
+# Example based query building prototype
+
+Gebaseerd op grew conllu-editcomponent, zie https://github.com/kirianguiller/reactive-dep-tree 
+
 To do:
 
 * Token geheel uitsluiten
