@@ -9,12 +9,13 @@ Gebaseerd op grew conllu-editcomponent, zie https://github.com/kirianguiller/rea
 * onbereikbare nodes markeren (done)
 * volgorderestricties
 * negatie
-* features aanzetten
+* PoS features (number, tense, etc...) opnemen in matrix
 * nice to have
   * "top node is really sentence root" boolean option
   * boolean voor sentence length filter
   * boolean exclude punct
   * status styling binnen de grew treeview
+  * matrix alignen met treeview nodes (niet nodig voor queries, wel als je een corpus zou willen taggen)
   * taalidentificatie
 
 ## Use scenario
