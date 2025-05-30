@@ -1,6 +1,9 @@
 # Example based query building prototype
 
-Gebaseerd op grew conllu-editcomponent, zie https://github.com/kirianguiller/reactive-dep-tree 
+Concept van GrETEL, natuurlijk.
+Implementatie met behulp van grew conllu-editcomponent, zie https://github.com/kirianguiller/reactive-dep-tree 
+
+Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/static/qbe/index.html
 
 ## To do:
 
