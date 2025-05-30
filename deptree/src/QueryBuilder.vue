@@ -48,7 +48,8 @@
               <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
               <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
               <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="token_order"/></td> <td></td>  </tr>
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="token_order" 
+                @focus="checkAndClear" @blur="unClear"/></td> <td></td>  </tr>
             </table>
           <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
             <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
@@ -275,7 +276,16 @@ export default {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
     },
-
+    checkAndClear() {
+      if (this.token_order === '_') {
+        this.token_order = ''
+      }
+    },
+    unClear() {
+      if (this.token_order === '') {
+        this.token_order = '_'
+      }
+    },
     async  parse() {
 
       try {
