@@ -1,5 +1,5 @@
 <!-- QueryBuilder.vue 
-// https://github.com/kirianguiller/reactive-dep-tree 
+ Gebaseerd op grew conllu-editcomponent, zie https://github.com/kirianguiller/reactive-dep-tree 
 -->
 <template>
   <div class="query-builder">
@@ -42,21 +42,21 @@
               <tr><td class="b">Deprel</td></tr> 
           </table></td>
           <td v-for="t in tokens" :index="t.id">
-      <table v-if="currentTokenId == t.id" class="tokenEditor">
-        <tr><td></td> <td><input :class="propertyStyle(t.id,'form')" v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
-        <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
-        <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
-        <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
-      </table>
-      <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
-        <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
-        <tr><td :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</td></tr>
-        <tr><td :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</td></tr>
-        <tr><td :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</td></tr>
-      </table>
-    </td>
+            <table v-if="currentTokenId == t.id" class="tokenEditor">
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'form')" v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
+              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
+            </table>
+          <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
+            <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
+            <tr><td :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</td></tr>
+            <tr><td :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</td></tr>
+            <tr><td :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</td></tr>
+         </table>
+        </td>
        </tr>
-    </table>
+     </table>
      </div>
     </div>
 
@@ -99,8 +99,6 @@ export default {
     this.parse()
   },
 
-
-
   data() {
     return {
       localSentence: this.modelValue,
@@ -114,6 +112,8 @@ export default {
       "English" : "en",
       "German" : "de",
       "French" : "fr",
+      "Italian" : "it",
+      "Spanish" : "es",
       "Japanese" : "ja",
       "Czech" : "cs",
       "Polish" : "pl",
@@ -184,8 +184,6 @@ export default {
 
     ...mapState(useQueryStore, [
       'currentTokenId',
-      
-      'hasParse',
       'currentToken',
       'tokens',
       'query',
@@ -242,7 +240,6 @@ export default {
 
   methods: {
     ...mapActions(useQueryStore, [
-      'setParse',
       'setQuery',
       'setTokens',
       'setCurrentTokenId',
