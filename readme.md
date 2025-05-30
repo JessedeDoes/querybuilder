@@ -20,7 +20,8 @@ Gebaseerd op grew conllu-editcomponent, zie https://github.com/kirianguiller/rea
 ## Use scenario
 
 ### 1. enter a sentence, choose language, and parse
-![image](https://github.com/user-attachments/assets/31c4b235-8229-4171-abc2-641c9c278042)
+<img src="https://github.com/user-attachments/assets/a2fa22de-e609-4b44-955f-f6092f482442" width="400px"/>
+
 ### 2. edit the query
 
 * Token properties (including the dependency label)  can be set in the "matrix" below the parse
