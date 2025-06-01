@@ -421,6 +421,7 @@ h3 {
 .flexParent {
   display: flex;
   flex-grow: 0 0 auto;
+  column-gap: 4pt;
 }
 
 
