@@ -41,6 +41,7 @@
               <div class="b">Deprel</div>
               <div class="b">Order</div>
           </div>
+         
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" class="tokenEditor">
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
@@ -51,18 +52,18 @@
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
-              <div :class="propertyStyle(t.id,'form')"><div style="max-width: 1em">{{ t.fields['form'].value }}</div>
-              <div :class="propertyStyle(t.id,'lemma')"><span style="max-width: 1em">{{ t.fields['lemma'].value }}</span></div>
-              <div :class="propertyStyle(t.id,'upos')"><span style="max-width: 1em">{{ t.fields['upos'].value }}</span></div>
-              <div :class="propertyStyle(t.id,'deprel')"><span style="max-width: 1em">{{ t.fields['deprel'].value }}</span></div>
+              <div :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</div>
+              <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
+              <div :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</div>
+              <div :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</div>
               <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; max-width: 1em; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
              </div>
-          </div>
         </template>
+        
       </div>
      </div>
-    </div>
     </div>  
+    </div>
 
      <h3>Query corpus</h3>
      <div class="queryEditing">
@@ -392,10 +393,7 @@ export default {
 .property_active {
   color: #606060;
   font-weight: bold;
-  xborder-width: 2pt;
-  xborder-style: solid;
-  xborder-color: lightblue;
-  xborder-style: inset
+
 }
 .property_inactive {
   color: #808080;
