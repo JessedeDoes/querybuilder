@@ -122,8 +122,8 @@ function conlluToBlackLab(tokens: TokenState[]) {
       const rel = useRel? k.fields.deprel.value : ''
       return `${" ".repeat(indent)} !-${rel}-> ${wrapped}`;
     });
-
-    return `${tokPattern(t)}\n${positiveChildren.join(';\n')} ${negativeChildren.join(';\n')}`;
+    const children = [...positiveChildren, ...negativeChildren]
+    return `${tokPattern(t)}\n${children.join(';\n')} `;
   }
 
   const sorted = tokensWithOrder.sort( (t1,t2) => t1.tokenOrder - t2.tokenOrder)
