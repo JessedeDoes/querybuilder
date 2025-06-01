@@ -55,7 +55,7 @@
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="deprel"/> <input type="checkbox" v-model="deprel_active"/> <button style="height: 14pt; font-size: 9pt"
-                @click='noRel'>X</button></div>
+                @click='noRel'>⛓️‍💥</button></div>
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
