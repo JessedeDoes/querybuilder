@@ -46,6 +46,13 @@ In this case the subject is irrelevant and can be dropped, and including the the
 
 
 
+# Voorbeelden van problemen met cross-language zoeken
+
+Attributief adjectief
+* Wij verwachten amod
+* Japans doet acl
+* Chinees doet amod zonder 的, maar met word het NOUN -nmod-> ADJ -case-> 的(PART)
+
 
 
 

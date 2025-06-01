@@ -132,6 +132,7 @@ export default {
       "Latin" : "la",
       "Spanish" : "es",
       "Japanese" : "ja",
+      'Chinese' : 'zh',
       "Czech" : "cs",
       "Polish" : "pl",
       "Russian": "ru",
