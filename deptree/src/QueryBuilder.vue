@@ -3,6 +3,9 @@
 -->
 <template>
   <div class="query-builder">
+
+
+
     <h2>Query building prototype</h2>
     <h3>Enter sentence</h3>
     
@@ -79,7 +82,9 @@
 <script>
 import { mapState, mapActions } from 'pinia';
 import { useQueryStore } from './QueryStore';
-import ContextMenu from '@imengyu/vue3-context-menu'
+
+//import { ContextMenu, ContextMenuGroup, ContextMenuSeparator, ContextMenuItem } from '@imengyu/vue3-context-menu';
+//import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import { ref, onMounted, watch, useTemplateRef } from 'vue';
 import axios from 'axios';
 import {
@@ -401,6 +406,7 @@ export default {
 h3 {
   margin-top: 1em;
 }
+
 .queryEditing {
   border: 1px solid #000000;
   border-radius: 8px;
