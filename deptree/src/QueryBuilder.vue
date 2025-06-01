@@ -6,7 +6,7 @@
     <h2>Query building prototype</h2>
     <h3>Enter sentence</h3>
     
-    <div class="queryEditing">
+    <div class="sentenceEditing">
     <textarea
       v-model="localSentence"
       rows="2"
@@ -26,43 +26,43 @@
     <h3>Edit query</h3>
 
     <div class="queryEditing">
+    <div style="overflow-x: auto">
     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
         <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
      </div>
 
-     <div :style="{display: 'block'}">
+     <div :style="{display: 'block', overflowX: auto}">
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
-      <table>
-        <tr>
-          <td>
-            <table>
-              <tr><td class="b">Form</td></tr> 
-              <tr><td class="b">Lemma</td></tr>
-              <tr><td class="b">Upos</td></tr> 
-              <tr><td class="b">Deprel</td></tr> 
-              <tr><td class="b">Order</td></tr> 
-          </table></td>
-          <td v-for="t in tokens" :index="t.id">
-            <table v-if="currentTokenId == t.id" class="tokenEditor">
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'form')" v-model="form"/></td> <td><input type="checkbox" v-model="form_active"/></td>  </tr>
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'lemma')" v-model="lemma"/></td>  <td><input type="checkbox" v-model="lemma_active"/></td> </tr>
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'upos')" v-model="upos"/></td>  <td><input type="checkbox" v-model="upos_active"/></td> </tr>
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="deprel"/></td> <td><input type="checkbox" v-model="deprel_active"/> <button @click='noRel'>X</button></td>  </tr>
-              <tr><td></td> <td><input :class="propertyStyle(t.id,'deprel')" v-model="token_order" 
-                @focus="checkAndClear" @blur="unClear"/></td> <td></td>  </tr>
-            </table>
-          <table v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
-            <tr><td :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</td></tr>
-            <tr><td :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</td></tr>
-            <tr><td :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</td></tr>
-            <tr><td :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</td></tr>
-            <tr><td :class="propertyStyle(t.id,'deprel')">{{ (t.tokenOrder != -1)? t.tokenOrder: '_' }}</td></tr>
-         </table>
-        </td>
-       </tr>
-     </table>
+      <div class='flexParent'>
+           <div class="flexChild tokenHeader">
+              <div class="b">Form</div>
+              <div class="b">Lemma</div>
+              <div class="b">Upos</div>
+              <div class="b">Deprel</div>
+              <div class="b">Order</div>
+          </div>
+          <template v-for="t in tokens" :index="t.id">
+            <div v-if="currentTokenId == t.id" class="tokenEditor">
+              <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
+              <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
+              <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
+              <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="deprel"/> <input type="checkbox" v-model="deprel_active"/> <button style="height: 14pt; font-size: 9pt"
+                @click='noRel'>X</button></div>
+              <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
+            </div>
+            <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
+              <div :class="propertyStyle(t.id,'form')"><div style="max-width: 1em">{{ t.fields['form'].value }}</div>
+              <div :class="propertyStyle(t.id,'lemma')"><span style="max-width: 1em">{{ t.fields['lemma'].value }}</span></div>
+              <div :class="propertyStyle(t.id,'upos')"><span style="max-width: 1em">{{ t.fields['upos'].value }}</span></div>
+              <div :class="propertyStyle(t.id,'deprel')"><span style="max-width: 1em">{{ t.fields['deprel'].value }}</span></div>
+              <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; max-width: 1em; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
+             </div>
+          </div>
+        </template>
+      </div>
      </div>
     </div>
+    </div>  
 
      <h3>Query corpus</h3>
      <div class="queryEditing">
@@ -78,7 +78,7 @@
 <script>
 import { mapState, mapActions } from 'pinia';
 import { useQueryStore } from './QueryStore';
-
+import ContextMenu from '@imengyu/vue3-context-menu'
 import { ref, onMounted, watch, useTemplateRef } from 'vue';
 import axios from 'axios';
 import {
@@ -87,6 +87,7 @@ import {
   SentenceCaretaker,
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
+
 
 
 export default {
@@ -218,7 +219,7 @@ export default {
        set(v)  { this.updateTokenField(this.currentTokenId, 'deprel', v) },
     },
     token_order : {
-       get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return '_'; return this.currentToken.tokenOrder},
+       get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
        set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
     },
 
@@ -342,6 +343,7 @@ export default {
       this.setParse(null);
       this.setCurrentTokenId(null);
     },
+    
   },
 };
 </script>
@@ -360,13 +362,33 @@ export default {
 .b {
   font-style: italic;
 }
+
+.tokenHeader {
+  padding-right: 1em;
+}
+
 .tokenEditor {
   background-color: lightblue;
+  flex: 0 0 auto
 }
+
+.token {
+  width: 12em;
+  flex-grow: 0;
+  flex: 0 0 auto
+}
+
 .tokenDisplay {
   color: #808080;
   background-color: aliceblue;
+  width: auto;
+  overflow: hidden;
+  flex: 0 0 auto;
+  padding-left: 1em;
+  padding-right: 1em;
 }
+
+
 .property_active {
   color: #606060;
   font-weight: bold;
@@ -388,7 +410,15 @@ h3 {
   padding: 1em;
   margin-top: 0em;
   margin-bottom: 0em;
+  overflow-x: auto;
+  max-width: 1500px;
 }
+
+.flexParent {
+  display: flex;
+  flex-grow: 0 0 auto;
+}
+
 
 .sentence-input {
   width: 100%;
