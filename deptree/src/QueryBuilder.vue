@@ -378,7 +378,9 @@ export default {
 }
 
 .tokenTop {
-  display: flex; justify-content: space-between; width: 100%; background-color: pink
+  display: flex; justify-content: space-between; width: 100%; 
+  background-color: darkblue; color: white; font-weight: bold;
+  padding-left: 3pt; padding-right: 3pt;
 }
 .left {
   text-align: left;
