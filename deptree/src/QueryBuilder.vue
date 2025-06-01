@@ -397,7 +397,7 @@ export default {
 }
 
 .tokenEditor {
-  background-color: lightblue;
+  background-color: aliceblue;
   flex: 0 0 auto
 }
 
