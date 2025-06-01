@@ -38,7 +38,7 @@
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
-              <div class="b">Actions</div>
+             
               <div class="b">Form</div>
               <div class="b">Lemma</div>
               <div class="b">Upos</div>
@@ -48,11 +48,7 @@
          
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" class="tokenEditor">
-              <div class="tokenTop"><span class="left" @click="notImplemented" title="insert node left">↲</span> 
-                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> 
-                <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥</span>
-                <span @click="notImplemented" title="delete node">🗑️</span> 
-                <span @click="notImplemented" class="right" title="insert node right"> ↳</span></div>
+             
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
@@ -61,7 +57,7 @@
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
-              <div><span style="display: block; height:14pt"></span> </div>
+          
               <div :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</div>
               <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
               <div :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</div>
@@ -71,6 +67,11 @@
         </template>
         
       </div>
+      <div class="tokenTop"><span class="left" @click="notImplemented" title="insert node left">↲</span> 
+                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> 
+                <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥</span>
+                <span @click="notImplemented" title="delete node">🗑️</span> 
+                <span @click="notImplemented" class="right" title="insert node right"> ↳</span></div>
      </div>
     </div>  
     </div>
@@ -381,9 +382,10 @@ export default {
 }
 
 .tokenTop {
-  display: flex; justify-content: space-between; width: 100%; 
+  display: flex; justify-content: space-between; width: 15em; 
   background-color: darkblue; color: white; font-weight: bold;
   padding-left: 3pt; padding-right: 3pt;
+  margin-top: 6pt;
 }
 .left {
   text-align: left;
@@ -447,6 +449,12 @@ h3 {
   column-gap: 4pt;
 }
 
+.tokenEditor input {
+  background-color: aliceblue;
+  border-style: solid;
+  border-color: darkgrey;
+  border-width: 1pt;
+}
 
 .sentence-input {
   width: 100%;
