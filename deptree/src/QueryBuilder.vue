@@ -48,7 +48,9 @@
          
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" class="tokenEditor">
-              <div class="tokenTop"><span class="left" title="insert node left">⇤</span> <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> <span title="delete node">🗑️</span> <span class="right" title="insert node right"> ⇥</span></div>
+              <div class="tokenTop"><span class="left" @click="notImplemented" title="insert node left">⇤</span> 
+                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> 
+                <span @click="notImplemented" title="delete node">🗑️</span> <span @click="notImplemented" class="right" title="insert node right"> ⇥</span></div>
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
@@ -291,7 +293,10 @@ export default {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
     },
-
+    notImplemented() {
+          alert('Not implemented')
+        }
+        ,
     reversePolarity() {
       if (this.token_polarity == 'negative') this.token_polarity = 'positive'; else this.token_polarity = 'negative'
     },

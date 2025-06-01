@@ -337,6 +337,7 @@ export const useQueryStore = defineStore('query', {
           }
           this.updateQuery()
         },
+
     setTokenFieldActive(
       id: number,
       field: FieldName,
