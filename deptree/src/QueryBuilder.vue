@@ -56,7 +56,7 @@
               <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
               <div :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</div>
               <div :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</div>
-              <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; max-width: 1em; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
+              <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
              </div>
         </template>
         
@@ -385,8 +385,8 @@ export default {
   width: auto;
   overflow: hidden;
   flex: 0 0 auto;
-  padding-left: 1em;
-  padding-right: 1em;
+  padding-left: 4pt;
+  padding-right: 4pt;
 }
 
 
