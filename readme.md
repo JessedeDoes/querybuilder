@@ -51,7 +51,7 @@ In this case the subject is irrelevant and can be dropped, and including the the
 Attributief adjectief
 * Wij verwachten amod
 * Japans doet acl
-* Chinees doet amod zonder 的, maar met word het NOUN -nmod-> ADJ -case-> 的(PART)
+* Chinees (棕色的书) doet amod zonder 的, maar met word het NOUN -nmod-> ADJ -case-> 的(PART)
 
 
 
