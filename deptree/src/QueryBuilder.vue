@@ -38,6 +38,7 @@
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
+              <div>Actions</div>
               <div class="b">Form</div>
               <div class="b">Lemma</div>
               <div class="b">Upos</div>
@@ -47,6 +48,7 @@
          
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" class="tokenEditor">
+              <div class="tokenTop"><span class="left" title="insert node left">⇤</span> <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> <span title="delete node">🗑️</span> <span class="right" title="insert node right"> ⇥</span></div>
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
@@ -55,6 +57,7 @@
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
+              <div><span style="display: block; height:14pt"></span> </div>
               <div :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</div>
               <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
               <div :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</div>
@@ -228,6 +231,10 @@ export default {
        get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
        set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
     },
+    token_polarity : {
+       get() { if (!this.currentToken) return null; return this.currentToken.polarity },
+       set(v)  { console.log('yep'); this.updateTokenPolarity(this.currentTokenId,  v) },
+    },
 
     form_active : {
        get() { if (!this.currentToken ) return ''; return this.currentToken.fields.form.active},
@@ -263,6 +270,7 @@ export default {
       'setCurrentTokenId',
       'updateTokenField',
       'updateTokenOrder',
+      'updateTokenPolarity',
       'setTokensFromConllu',
       'setReactiveSentence',
       'nextToken',
@@ -283,16 +291,11 @@ export default {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
     },
-    checkAndClear() {
-      if (this.token_order === '_') {
-        this.token_order = ''
-      }
+
+    reversePolarity() {
+      if (this.token_polarity == 'negative') this.token_polarity = 'positive'; else this.token_polarity = 'negative'
     },
-    unClear() {
-      if (this.token_order === '') {
-        this.token_order = '_'
-      }
-    },
+
     async  parse() {
 
       try {
@@ -369,6 +372,16 @@ export default {
   font-style: italic;
 }
 
+.tokenTop {
+  display: flex; justify-content: space-between; width: 100%; background-color: pink
+}
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
 .tokenHeader {
   padding-right: 1em;
 }

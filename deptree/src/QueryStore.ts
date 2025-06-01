@@ -14,7 +14,7 @@ import {
 
 
 export type FieldName = 'form' | 'lemma' | 'upos' | 'feats' | 'deprel' | 'xpos' | 'misc' | 'deps';
-
+export type Polarity = 'positive' | 'negative'
 
 export interface FieldState {
   value: string;
@@ -30,6 +30,7 @@ export interface TokenState {
   id: number;
   head: number;
   tokenOrder: number;
+  polarity: Polarity,
   fields: TokenFields,
   children : TokenState[]
  }
@@ -106,7 +107,7 @@ function conlluToBlackLab(tokens: TokenState[]) {
 
     // recurse for each child; wrap the child subtree in (…) if it
     // itself has children, to preserve operator precedence.
-    const childBits = t.children.map(k => {
+    const positiveChildren = t.children.filter(t => t.polarity == 'positive').map(k => {
       const sub = walk(k,indent+2);
       const wrapped = k.children.length > 0 ? `(${sub})` : sub;
       const useRel =  k.fields.deprel.active
@@ -114,7 +115,15 @@ function conlluToBlackLab(tokens: TokenState[]) {
       return `${" ".repeat(indent)} -${rel}-> ${wrapped}`;
     });
 
-    return `${tokPattern(t)}\n${childBits.join(';\n')}`;
+    const negativeChildren = t.children.filter(t => t.polarity == 'negative').map(k => {
+      const sub = walk(k,indent+2);
+      const wrapped = k.children.length > 0 ? `(${sub})` : sub;
+      const useRel =  k.fields.deprel.active
+      const rel = useRel? k.fields.deprel.value : ''
+      return `${" ".repeat(indent)} !-${rel}-> ${wrapped}`;
+    });
+
+    return `${tokPattern(t)}\n${positiveChildren.join(';\n')} ${negativeChildren.join(';\n')}`;
   }
 
   const sorted = tokensWithOrder.sort( (t1,t2) => t1.tokenOrder - t2.tokenOrder)
@@ -257,6 +266,7 @@ export const useQueryStore = defineStore('query', {
           id:     Number(c[0]),
           head:   Number(c[6]),
           tokenOrder: -1,
+          polarity: 'positive',
           fields: {
             form:   { value: c[1], active: false },
             lemma:  { value: c[2], active: false },
@@ -317,6 +327,16 @@ export const useQueryStore = defineStore('query', {
         this.updateQuery()
       },
 
+      updateTokenPolarity(id: number, p: Polarity) {
+        const token = this.tokens.find(t => t.id === id);
+        if (!token) return;
+          if (p.toString().match('(positive)|(negative)')) {
+            token.polarity = p;
+          } else {
+           
+          }
+          this.updateQuery()
+        },
     setTokenFieldActive(
       id: number,
       field: FieldName,
