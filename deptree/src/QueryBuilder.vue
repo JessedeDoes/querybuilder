@@ -400,7 +400,12 @@ export default {
 
 .tokenEditor {
   background-color: aliceblue;
-  flex: 0 0 auto
+  flex: 0 0 auto;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1pt;
+  padding: 2pt
+
 }
 
 .token {
@@ -417,6 +422,12 @@ export default {
   flex: 0 0 auto;
   padding-left: 4pt;
   padding-right: 4pt;
+    flex: 0 0 auto;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1pt;
+  padding: 2pt
+
 }
 
 
