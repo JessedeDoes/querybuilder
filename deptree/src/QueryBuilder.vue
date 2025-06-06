@@ -343,7 +343,7 @@ export default {
       const groupByLanguage = lang=='All'
       let length_part = ' within <s sentence_length=in[5,14]/>'
       if (this.corpus != "UD 2.16" || !this.onlyShortSentences) length_part = "";
-      const pattern =  encodeURIComponent(`_with-spans(${this.blacklabQuery}) ${length_part}`)
+      const pattern =  encodeURIComponent(`(((${this.blacklabQuery}) ${length_part}))`)
 
  
       const langFilter = `languageName:"${lang}"`
