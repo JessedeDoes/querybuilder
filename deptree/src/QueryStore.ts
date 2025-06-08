@@ -435,7 +435,6 @@ export const useQueryStore = defineStore('query', {
       }
       for (const [i, token] of this.tokens.entries()) {
         if (token.head == -1 || token.head == 0) {
-
         } else {
           token.head = idMapping[token.head]
         }
