@@ -439,6 +439,8 @@ export const useQueryStore = defineStore('query', {
           token.head = idMapping[token.head]
         }
       }
+      console.log('New token array')
+      console.log(this.tokens)
     },
 
     updateTokenField(
