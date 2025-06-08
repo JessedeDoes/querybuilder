@@ -52,15 +52,12 @@ function isTokenReachable(tokens: TokenState[], id: number): boolean {
   const token = tokens.find(t => t.id == id)
   if (token) {
     if (token.head == 0) return true;
-    else if (!token.head) return false;
+    else if (!token.head || token.head == -1) return false;
     else return isTokenReachable(tokens, token.head)
   }
   return false
 }
 function conlluToBlackLab(tokens: TokenState[]) {
-
-
-
   tokens.forEach(t => t.children = [])
   
   
@@ -201,7 +198,93 @@ function setHeadInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: 
   reactiveSentence.updateToken(newTok);
 }
 
+ 
+  export interface featuresJson_T {
+  [key: string]: string;
+}
 
+export type tokenJson_T = {
+  ID: string;
+  FORM: string;
+  LEMMA: string;
+  UPOS: string;
+  XPOS: string;
+  FEATS: featuresJson_T;
+  HEAD: number;
+  DEPREL: string;
+  DEPS: featuresJson_T;
+  MISC: featuresJson_T;
+  [key: string]: string | number | featuresJson_T;
+};
+
+export interface nodesJson_T {
+  [key: string]: tokenJson_T;
+}
+
+export interface groupsJson_T {
+  [key: string]: tokenJson_T;
+}
+
+export interface metaJson_T {
+  [key: string]: string | number;
+}
+
+export interface treeJson_T {
+  nodesJson: nodesJson_T;
+  groupsJson: groupsJson_T;
+}
+
+export interface sentenceJson_T {
+  treeJson: treeJson_T;
+  metaJson: metaJson_T;
+}
+
+function getField(t: TokenState, field: string) {
+  if (field in t.fields) return t.fields[field].value; return '_'
+}
+
+function tokenToGrewJson(token: TokenState): tokenJson_T {
+  return {
+    ID: String(token.id),
+    FORM: getField(token, 'form'),
+    LEMMA: getField(token, 'lemma'),
+    UPOS: getField(token, 'upos'),
+    XPOS: getField(token, 'xpos'),
+    FEATS: {},
+    HEAD: token.head,
+    DEPREL: getField(token, 'deprel'),
+    DEPS: {},
+    MISC: {}
+  }
+}
+
+function tokensToGrewJson(tokens: TokenState[]): nodesJson_T {
+   let x = {}
+   tokens.forEach(token => {
+    const tGrew = tokenToGrewJson(token)
+    x[tGrew.ID] = tGrew
+   })
+   return x
+}
+
+function sentenceJsonFromTokens(tokens: TokenState[]): sentenceJson_T {
+  const grewTokens = tokensToGrewJson(tokens)
+  const x: sentenceJson_T = {
+    treeJson : {
+      nodesJson: grewTokens,
+      groupsJson: {}
+    },
+    metaJson: {} // dit zal vast wel op zijn minst een sentence id en een text moeten bevatten
+  }
+  return x
+}
+
+/*
+  public fromSentenceJson(sentenceJson: sentenceJson_T): void {
+    this.state = JSON.parse(JSON.stringify(sentenceJson));
+    this.notify();
+  }
+*/
 
 /**
  * ----------------------------
@@ -220,7 +303,10 @@ export const useQueryStore = defineStore('query', {
     reactiveSentence: null
   }),
 
+
   /** getters -------------------- */
+  
+ 
   getters: {
    
     currentToken(state): TokenState | undefined {
@@ -248,6 +334,14 @@ export const useQueryStore = defineStore('query', {
    
     setTokens(tokens: TokenState[]) {
       this.tokens = tokens;
+      const grewSentence = sentenceJsonFromTokens(tokens)
+      this.reactiveSentence.fromSentenceJson(grewSentence)
+    },
+
+    setGrewTokens() {
+      const grewSentence = sentenceJsonFromTokens(this.tokens)
+      console.log(grewSentence)
+      this.reactiveSentence.fromSentenceJson(grewSentence)
     },
 
     setReactiveSentence(r: ReactiveSentence) {
@@ -299,7 +393,55 @@ export const useQueryStore = defineStore('query', {
         this.currentTokenId = this.currentTokenId -1
     },
 
-  
+    insertEmptyToken() {
+      this.insertEmptyTokenAt(this.currentTokenId - 1)
+    },
+
+    insertEmptyTokenAt(index: number) {
+      function f(x: string) {
+        return {
+          active: true,
+          value: '_'
+        }
+      }
+
+      const fields = ['form', 'lemma', 'upos', 'xpos', 'deprel', 'deps', ]
+      const ts: TokenState =  {
+        id: -1,
+        head: -1,
+        polarity: 'positive',
+        fields: {
+          'form' : f('form'),
+          'lemma' : f('lemma'),
+          'upos' : f('upos'),
+          'xpos' : f('xpos'),
+          'deprel': f('deprel'),
+          'feats' : f('feats'),
+          'deps': f('deps'),
+          'misc' : f('misc')
+        },
+        tokenOrder: -1,
+        children: []
+      }
+      this.tokens.splice(0,index,ts)
+      this.fixTokenIds()
+      this.setGrewTokens()
+    },
+    fixTokenIds() {
+      const idMapping = {}
+      for (const [i, token] of this.tokens.entries()) {
+        idMapping[token.id] = i+1
+        token.id = i+1
+      }
+      for (const [i, token] of this.tokens.entries()) {
+        if (token.head == -1 || token.head == 0) {
+
+        } else {
+          token.head = idMapping[token.head]
+        }
+      }
+    },
+
     updateTokenField(
       id: number,
       field: FieldName,

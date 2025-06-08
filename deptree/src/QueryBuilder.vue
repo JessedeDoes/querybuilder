@@ -39,8 +39,8 @@
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">{{ p }} 
-                (<span @click="activeAll(p)">all</span>, 
-                <span @click="inActiveAll(p)">none</span>)</div>
+                (<span class='togglePropertyButton' @click="activeAll(p)">all</span>, 
+                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span>)</div>
       
               <div class="b">Order</div>
           </div>
@@ -70,7 +70,7 @@
                 <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }} (reverse polarity)</span> 
                 | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
                 | <span @click="notImplemented" title="delete node">🗑️ (delete token)</span> 
-                | <span class="left" @click="notImplemented" title="insert node left">↲ (insert left)</span> 
+                | <span class="left" @click="insertEmptyToken" title="insert node left">↲ (insert left)</span> 
                 | <span @click="notImplemented" class="right" title="insert node right"> ↳ (insert right)</span></div>
      </div>
     </div>  
@@ -291,7 +291,8 @@ export default {
       'setRoot',
       'removeRel',
       'setFieldActiveAllTokens',
-      'setFieldInActiveAllTokens'
+      'setFieldInActiveAllTokens',
+      'insertEmptyToken'
     ]),
 
     activeAll(p) {
@@ -450,6 +451,14 @@ export default {
 }
 .property_inactive {
   color: #808080;
+}
+
+.togglePropertyButton {
+  background-color: #d0d0ff;
+  border-style: solid;
+  border-width: 1pt;
+  padding-left: 3pt;
+  padding-right: 3pt;
 }
 h3 {
   margin-top: 1em;
