@@ -423,7 +423,7 @@ export const useQueryStore = defineStore('query', {
         tokenOrder: -1,
         children: []
       }
-      this.tokens.splice(0,index,ts)
+      this.tokens.splice(index,0,ts)
       this.fixTokenIds()
       this.setGrewTokens()
     },
