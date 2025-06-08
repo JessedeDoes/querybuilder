@@ -397,6 +397,9 @@ export const useQueryStore = defineStore('query', {
       this.insertEmptyTokenAt(this.currentTokenId - 1)
     },
 
+    insertEmptyTokenAfter() {
+      this.insertEmptyTokenAt(this.currentTokenId)
+    },
     insertEmptyTokenAt(index: number) {
       function f(x: string) {
         return {

@@ -71,7 +71,7 @@
                 | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
                 | <span @click="notImplemented" title="delete node">🗑️ (delete token)</span> 
                 | <span class="left" @click="insertEmptyToken" title="insert node left">↲ (insert left)</span> 
-                | <span @click="notImplemented" class="right" title="insert node right"> ↳ (insert right)</span></div>
+                | <span @click="insertEmptyTokenAfter" class="right" title="insert node right"> ↳ (insert right)</span></div>
      </div>
     </div>  
     </div>
@@ -292,7 +292,8 @@ export default {
       'removeRel',
       'setFieldActiveAllTokens',
       'setFieldInActiveAllTokens',
-      'insertEmptyToken'
+      'insertEmptyToken',
+      'insertEmptyTokenAfter'
     ]),
 
     activeAll(p) {
