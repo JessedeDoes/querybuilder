@@ -98,7 +98,7 @@ function conlluToBlackLab(tokens: TokenState[]) {
       props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
-    const propStr = props.length ? `[${props.join(' & ')}]` : '_';
+    const propStr = props.length ? `[${props.join(' & ')}]` : '[]'; // AHEM: zou _ moeten zijn
     return `${capturePrefix}${propStr}`;
   }
 
@@ -337,6 +337,30 @@ export const useQueryStore = defineStore('query', {
           }
           this.updateQuery()
         },
+
+    setFieldActiveAllTokens(field: FieldName) {
+      const self = this
+      
+    function  set() 
+      {
+      
+        self.tokens.forEach(token => token.fields[field.toLowerCase()].active = true)
+        self.updateQuery()
+      }
+      set()
+      return set;
+    },
+
+    setFieldInActiveAllTokens(field: FieldName) {
+      const self = this
+    function  set() 
+      {
+        self.tokens.forEach(token => token.fields[field.toLowerCase()].active = false)
+        self.updateQuery()
+      }
+      set()
+      return set;
+    },
 
     setTokenFieldActive(
       id: number,

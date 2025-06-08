@@ -38,11 +38,10 @@
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
-             
-              <div class="b">Form</div>
-              <div class="b">Lemma</div>
-              <div class="b">Upos</div>
-              <div class="b">Deprel</div>
+              <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">{{ p }} 
+                (<span @click="activeAll(p)">all</span>, 
+                <span @click="inActiveAll(p)">none</span>)</div>
+      
               <div class="b">Order</div>
           </div>
          
@@ -67,11 +66,12 @@
         </template>
         
       </div>
-      <div class="tokenTop"><span class="left" @click="notImplemented" title="insert node left">↲</span> 
-                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }}</span> 
-                <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥</span>
-                <span @click="notImplemented" title="delete node">🗑️</span> 
-                <span @click="notImplemented" class="right" title="insert node right"> ↳</span></div>
+      <div class="tokenTop">
+                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }} (reverse polarity)</span> 
+                | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
+                | <span @click="notImplemented" title="delete node">🗑️ (delete token)</span> 
+                | <span class="left" @click="notImplemented" title="insert node left">↲ (insert left)</span> 
+                | <span @click="notImplemented" class="right" title="insert node right"> ↳ (insert right)</span></div>
      </div>
     </div>  
     </div>
@@ -125,6 +125,7 @@ export default {
 
       language: 'Dutch',
       searchLanguage : 'Dutch',
+      tokenProperties: ['Form', 'Lemma', 'UPoS', 'Deprel'],
       onlyShortSentences: false,
       languages : {
       "Dutch" : "nl",
@@ -133,6 +134,8 @@ export default {
       "French" : "fr",
       "Italian" : "it",
       "Latin" : "la",
+      'Ancient Greek' : 'grc',
+      'Sanskrit' : 'sa',
       "Spanish" : "es",
       "Japanese" : "ja",
       'Chinese' : 'zh',
@@ -170,6 +173,7 @@ export default {
         r,
        opts
      );
+     r.sentSVG = ssvg
      const self = this;
 
      ssvg.addEventListener('svg-drop', e => {
@@ -285,9 +289,17 @@ export default {
       'updateQuery',
       'setTokenFieldActive',
       'setRoot',
-      'removeRel'
+      'removeRel',
+      'setFieldActiveAllTokens',
+      'setFieldInActiveAllTokens'
     ]),
 
+    activeAll(p) {
+      return this.setFieldActiveAllTokens(p)
+    },
+    inActiveAll(p) {
+      return this.setFieldInActiveAllTokens(p)
+    },
     propertyStyle(id, property) {
       const f = this.isActive
       return f(id,property)? 'property_active' : 'property_inactive'
@@ -343,7 +355,7 @@ export default {
       const groupByLanguage = lang=='All'
       let length_part = ' within <s sentence_length=in[5,14]/>'
       if (this.corpus != "UD 2.16" || !this.onlyShortSentences) length_part = "";
-      const pattern =  encodeURIComponent(`(((${this.blacklabQuery}) ${length_part}))`)
+      const pattern =  encodeURIComponent(`(${this.blacklabQuery}) ${length_part}`)
 
  
       const langFilter = `languageName:"${lang}"`
@@ -377,13 +389,13 @@ export default {
   font-size: 11pt
 }
 
-.b {
-  font-style: italic;
+.tokenPropertyHeader {
+  font-style: normal
 }
 
 .tokenTop {
-  display: flex; justify-content: space-between; width: 15em; 
-  background-color: darkblue; color: white; font-weight: bold;
+  xdisplay: flex; justify-content: space-between; width: 100%; 
+  font-weight: bold;
   padding-left: 3pt; padding-right: 3pt;
   margin-top: 6pt;
 }
@@ -399,7 +411,7 @@ export default {
 }
 
 .tokenEditor {
-  background-color: aliceblue;
+  background-color: #d0d0ff;
   flex: 0 0 auto;
   border-style: solid;
   border-color: grey;
