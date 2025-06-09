@@ -405,6 +405,7 @@ export const useQueryStore = defineStore('query', {
       
       this.fixTokenIds()
       this.setGrewTokens()
+      this.updateQuery()
     }, 
     
     insertEmptyTokenAfter() {
