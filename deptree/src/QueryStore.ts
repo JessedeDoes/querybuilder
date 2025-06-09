@@ -398,7 +398,11 @@ export const useQueryStore = defineStore('query', {
     },
 
     deleteToken() { 
-      this.tokens.splice(this.currentTokenId - 1, 1);        
+      this.tokens.splice(this.currentTokenId - 1, 1);
+      const tid = this.currentTokenId
+      this.tokens.forEach(t => { if (t.head == tid) t.head = -1} )  
+     
+      
       this.fixTokenIds()
       this.setGrewTokens()
     }, 

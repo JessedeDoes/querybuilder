@@ -39,12 +39,17 @@
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">{{ p }} 
-                (<span class='togglePropertyButton' @click="activeAll(p)">all</span>, 
-                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span>)</div>
+                </div>
       
               <div class="b">Order</div>
           </div>
-         
+          <div class="flexChild tokenHeader">
+              <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
+                <span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
+                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span></div>
+      
+              <div class="b"></div>
+          </div>
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" class="tokenEditor">
              
@@ -69,7 +74,7 @@
       <div class="tokenTop">
                 <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? '(+)' : '(-)' }} (reverse polarity)</span> 
                 | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
-                | <span @click="notImplemented" title="delete node">🗑️ (delete token)</span> 
+                | <span @click="deleteToken" title="delete node">🗑️ (delete token)</span> 
                 | <span class="left" @click="insertEmptyToken" title="insert node left">↲ (insert left)</span> 
                 | <span @click="insertEmptyTokenAfter" class="right" title="insert node right"> ↳ (insert right)</span></div>
      </div>
@@ -293,7 +298,8 @@ export default {
       'setFieldActiveAllTokens',
       'setFieldInActiveAllTokens',
       'insertEmptyToken',
-      'insertEmptyTokenAfter'
+      'insertEmptyTokenAfter',
+      'deleteToken'
     ]),
 
     activeAll(p) {
