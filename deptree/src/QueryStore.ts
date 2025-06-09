@@ -254,7 +254,7 @@ function tokenToGrewJson(token: TokenState): tokenJson_T {
     HEAD: token.head,
     DEPREL: getField(token, 'deprel'),
     DEPS: {},
-    MISC: {}
+    MISC: token.polarity == 'negative'? {'highlight' : 'red'} : {}
   }
 }
 

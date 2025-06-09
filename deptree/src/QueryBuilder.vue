@@ -172,7 +172,7 @@ export default {
       console.log(svgEl)
       const opts = defaultSentenceSVGOptions();
       opts.interactive = true;  
-      opts.shownFeatures = ['FORM'] // ["LEMMA","UPOS"]
+      opts.shownFeatures = ['FORM', 'MISC.HIGHLIGHT'] // ["LEMMA","UPOS"]
       const ssvg = new SentenceSVG(
         svgEl,
         r,
