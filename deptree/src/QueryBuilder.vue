@@ -51,7 +51,7 @@
               <div class="b"></div>
           </div>
           <template v-for="t in tokens" :index="t.id">
-            <div v-if="currentTokenId == t.id" class="tokenEditor">
+            <div v-if="currentTokenId == t.id" :class="'tokenEditor' + ' ' + polarityClass(t.polarity)">
              
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
@@ -60,7 +60,7 @@
                </div>
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
-            <div v-else @click="() => setCurrentTokenId(t.id)" class="tokenDisplay">
+            <div v-else @click="() => setCurrentTokenId(t.id)" :class="'tokenDisplay' + ' ' + polarityClass(t.polarity)">
           
               <div :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</div>
               <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
@@ -312,6 +312,12 @@ export default {
       const f = this.isActive
       return f(id,property)? 'property_active' : 'property_inactive'
     },
+
+    polarityClass(s) {
+      if (s == 'negative') {
+        return 'negativePolarity'
+      } else return 'positivePolarity'
+    },
     
     noRel() {
       console.log(`removing rel from ${this.currentTokenId}`)
@@ -392,7 +398,7 @@ export default {
   padding: 1rem;
   border: 1px solid #ddd;
   background-color: aliceblue;
-  border-radius: 8px;
+  border-radius: 2px;
   font-family: verdana, system-ui, sans-serif;
   font-size: 11pt
 }
@@ -462,11 +468,14 @@ export default {
 }
 
 .togglePropertyButton {
-  background-color: #d0d0ff;
+  xbackground-color: #d0d0ff;
   border-style: solid;
-  border-width: 1pt;
+  border-color:#808080;
+  border-width: .5pt;
   padding-left: 3pt;
   padding-right: 3pt;
+  border-radius: 2px;
+  background-color: #eeeeee;
 }
 h3 {
   margin-top: 1em;
@@ -474,7 +483,7 @@ h3 {
 
 .queryEditing {
   border: 1px solid #000000;
-  border-radius: 8px;
+  border-radius: 2px;
   background-color: white;
   padding: 1em;
   margin-top: 0em;
@@ -496,6 +505,9 @@ h3 {
   border-width: 1pt;
 }
 
+.negativePolarity {
+  border-color: red
+}
 .sentence-input {
   width: 100%;
   font: inherit;
