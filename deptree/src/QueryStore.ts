@@ -397,7 +397,12 @@ export const useQueryStore = defineStore('query', {
       this.insertEmptyTokenAt(this.currentTokenId - 1)
     },
 
-    deleteToken() { this.tokens.splice(this.currentTokenId - 1, 1) }, // array.splice(index, 1);
+    deleteToken() { 
+      this.tokens.splice(this.currentTokenId - 1, 1);        
+      this.fixTokenIds()
+      this.setGrewTokens()
+    }, 
+    
     insertEmptyTokenAfter() {
       this.insertEmptyTokenAt(this.currentTokenId)
     },
