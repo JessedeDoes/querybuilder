@@ -433,6 +433,7 @@ export default {
   background-color: aliceblue;
   width: auto;
   overflow: hidden;
+  min-width: 4em;
   flex: 0 0 auto;
   padding-left: 4pt;
   padding-right: 4pt;
