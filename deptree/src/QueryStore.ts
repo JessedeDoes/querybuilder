@@ -240,7 +240,7 @@ export interface sentenceJson_T {
 }
 
 function getField(t: TokenState, field: string) {
-  if (field in t.fields) return t.fields[field].value; return '_'
+  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return '_'
 }
 
 function tokenToGrewJson(token: TokenState): tokenJson_T {
@@ -415,7 +415,7 @@ export const useQueryStore = defineStore('query', {
       function f(x: string) {
         return {
           active: true,
-          value: '_'
+          value: ''
         }
       }
 
@@ -465,7 +465,7 @@ export const useQueryStore = defineStore('query', {
     ) {
       const token = this.tokens.find(t => t.id === id);
       if (!token) return;
-      token.fields[field].value = newValue;
+      token.fields[field].value = newValue.trim();
       if (newActive !== undefined) token.fields[field].active = newActive;
    
       updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
