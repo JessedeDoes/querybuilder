@@ -492,6 +492,7 @@ export const useQueryStore = defineStore('query', {
           } else {
            
           }
+          this.setGrewTokens()
           this.updateQuery()
         },
 
