@@ -62,10 +62,10 @@
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" :class="'tokenDisplay' + ' ' + polarityClass(t.polarity)">
           
-              <div :class="propertyStyle(t.id,'form')">{{ t.fields['form'].value }}</div>
-              <div :class="propertyStyle(t.id,'lemma')">{{ t.fields['lemma'].value }}</div>
-              <div :class="propertyStyle(t.id,'upos')">{{ t.fields['upos'].value }}</div>
-              <div :class="propertyStyle(t.id,'deprel')">{{ t.fields['deprel'].value }}</div>
+              <div :class="propertyStyle(t.id,'form')">{{ valueOrPlaceHolder(t,'form') }}</div>
+              <div :class="propertyStyle(t.id,'lemma')">{{ valueOrPlaceHolder(t,'lemma') }}</div>
+              <div :class="propertyStyle(t.id,'upos')">{{valueOrPlaceHolder(t,'upos') }}</div>
+              <div :class="propertyStyle(t.id,'deprel')">{{valueOrPlaceHolder(t,'deprel') }}</div>
               <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
              </div>
         </template>
@@ -319,6 +319,10 @@ export default {
       } else return 'positivePolarity'
     },
     
+    valueOrPlaceHolder(t,p) {
+      if (t.fields[p].value.length > 0) return  t.fields[p].value;
+      return `[${p}]`
+    },
     noRel() {
       console.log(`removing rel from ${this.currentTokenId}`)
       this.removeRel()
