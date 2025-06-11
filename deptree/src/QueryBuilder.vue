@@ -121,6 +121,8 @@ export default {
 
   mounted() {
     this.parse()
+    //console.log(this.reactiveSentence);
+    //this.setGrewTokens()
   },
 
   data() {
@@ -299,7 +301,8 @@ export default {
       'setFieldInActiveAllTokens',
       'insertEmptyToken',
       'insertEmptyTokenAfter',
-      'deleteToken'
+      'deleteToken',
+      'setGrewTokens'
     ]),
 
     activeAll(p) {
@@ -349,7 +352,7 @@ export default {
           if (!data.result) throw new Error('Unexpected UDPipe response');
 
           const conllu = data.result 
-        
+          
           this.reactiveSentence.fromSentenceConll(conllu);
           this.setReactiveSentence(this.reactiveSentence)
           this.setTokensFromConllu(conllu)

@@ -15,6 +15,8 @@ import {
 
 export type FieldName = 'form' | 'lemma' | 'upos' | 'feats' | 'deprel' | 'xpos' | 'misc' | 'deps';
 export type Polarity = 'positive' | 'negative'
+const potato = '😶'
+const norel = '💫'
 
 export interface FieldState {
   value: string;
@@ -136,6 +138,44 @@ function findToken(reactiveSentence: ReactiveSentence, tokenId)  {
   return nodesJson[id]
 }
 
+function emptyToken() {
+  function f(x: string) {
+    return {
+      active: true,
+      value: ''
+    }
+  }
+
+  const ts: TokenState =  {
+    id: -1,
+    head: -1,
+    polarity: 'positive',
+    fields: {
+      'form' : f('form'),
+      'lemma' : f('lemma'),
+      'upos' : f('upos'),
+      'xpos' : f('xpos'),
+      'deprel': f('deprel'),
+      'feats' : f('feats'),
+      'deps': f('deps'),
+      'misc' : f('misc')
+    },
+    tokenOrder: -1,
+    children: []
+  }
+  return ts
+}
+
+function  initialTokens() {
+  const ts1 = emptyToken();
+  ts1.id =1;
+  const ts2 = emptyToken();
+  ts2.id = 2;
+  ts1.head = 2;
+  return [ts1,ts2]
+} 
+
+
 function updateTokenInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number, targetLabelLC: string, targetValue: string) {
   const targetLabel = targetLabelLC.toUpperCase()
 
@@ -240,7 +280,11 @@ export interface sentenceJson_T {
 }
 
 function getField(t: TokenState, field: string) {
-  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return '_'
+  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return potato
+}
+
+function getField2(t: TokenState, field: string) {
+  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return norel
 }
 
 function tokenToGrewJson(token: TokenState): tokenJson_T {
@@ -252,7 +296,7 @@ function tokenToGrewJson(token: TokenState): tokenJson_T {
     XPOS: getField(token, 'xpos'),
     FEATS: {},
     HEAD: token.head,
-    DEPREL: getField(token, 'deprel'),
+    DEPREL: getField2(token, 'deprel'),
     DEPS: {},
     MISC: token.polarity == 'negative'? {'highlight' : 'red'} : {}
   }
@@ -296,7 +340,7 @@ type fx = (number,string) => boolean;
 export const useQueryStore = defineStore('query', {
   /** state ---------------------- */
   state: (): QueryState => ({
-    tokens: [],
+    tokens: initialTokens(),
     currentTokenId: 1,
  
     query: '',
@@ -346,6 +390,7 @@ export const useQueryStore = defineStore('query', {
 
     setReactiveSentence(r: ReactiveSentence) {
       this.reactiveSentence = r
+      this.setGrewTokens()
     },
 
     setTokensFromConllu(conllu: string) {
@@ -420,23 +465,7 @@ export const useQueryStore = defineStore('query', {
       }
 
       const fields = ['form', 'lemma', 'upos', 'xpos', 'deprel', 'deps', ]
-      const ts: TokenState =  {
-        id: -1,
-        head: -1,
-        polarity: 'positive',
-        fields: {
-          'form' : f('form'),
-          'lemma' : f('lemma'),
-          'upos' : f('upos'),
-          'xpos' : f('xpos'),
-          'deprel': f('deprel'),
-          'feats' : f('feats'),
-          'deps': f('deps'),
-          'misc' : f('misc')
-        },
-        tokenOrder: -1,
-        children: []
-      }
+      const ts: TokenState =  emptyToken()
       this.tokens.splice(index,0,ts)
       this.fixTokenIds()
       this.setGrewTokens()
