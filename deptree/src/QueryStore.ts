@@ -172,6 +172,8 @@ function  initialTokens() {
   const ts2 = emptyToken();
   ts2.id = 2;
   ts1.head = 2;
+  ts2.head = 0;
+  ts2.fields['deprel'].value = 'root'
   return [ts1,ts2]
 } 
 
@@ -376,6 +378,12 @@ export const useQueryStore = defineStore('query', {
   /** actions -------------------- */
   actions: {
    
+    resetTokens() {
+      this.tokens = initialTokens()
+      this.setGrewTokens()
+      this.updateQuery()
+    },
+
     setTokens(tokens: TokenState[]) {
       this.tokens = tokens;
       const grewSentence = sentenceJsonFromTokens(tokens)
@@ -384,6 +392,7 @@ export const useQueryStore = defineStore('query', {
 
     setGrewTokens() {
       const grewSentence = sentenceJsonFromTokens(this.tokens)
+      console.log('setting grew tokens')
       console.log(grewSentence)
       this.reactiveSentence.fromSentenceJson(grewSentence)
     },

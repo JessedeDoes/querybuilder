@@ -23,7 +23,9 @@
     <h3>Parse sentence</h3>
     <div class="queryEditing">
     <div class="actions">
-      Parsing language: <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> <button :disabled="isEmpty" @click="parse">Go</button>
+      Parsing language: <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
+      <button :disabled="isEmpty" @click="parse">Go</button>
+      <button :disabled="isEmpty" @click="resetTokens">Reset</button>
     </div>
     </div>
     <h3>Edit query</h3>
@@ -121,6 +123,7 @@ export default {
 
   mounted() {
     this.parse()
+    //this.resetTokens()
     //console.log(this.reactiveSentence);
     //this.setGrewTokens()
   },
@@ -208,6 +211,8 @@ export default {
 
      self.setCurrentTokenId(Number(tokenId))
      })
+     this.setReactiveSentence(r)
+     this.setGrewTokens()
      return r;
     },
 
@@ -302,7 +307,8 @@ export default {
       'insertEmptyToken',
       'insertEmptyTokenAfter',
       'deleteToken',
-      'setGrewTokens'
+      'setGrewTokens',
+      'resetTokens'
     ]),
 
     activeAll(p) {
@@ -362,7 +368,7 @@ export default {
        } catch (e) {
         console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
         console.log(e)
-      
+        this.resetTokens()
       } finally {
       
        }
