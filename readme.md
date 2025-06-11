@@ -17,9 +17,11 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
   * "top node is really sentence root" boolean option
   * boolean voor sentence length filter
   * boolean exclude punct
-  * status styling binnen de grew treeview
-  * matrix alignen met treeview nodes (niet nodig voor queries, wel als je een corpus zou willen taggen)
-  * taalidentificatie
+  * status en polarity dependent styling binnen de grew treeview
+  * matrix alignen met treeview nodes (niet per se nodig voor queries, wel als je een corpus zou willen taggen)
+  * Multiword tokens!
+  * Enhanced dependencies?
+  * Taalidentificatie
 
 ## Use scenario
 

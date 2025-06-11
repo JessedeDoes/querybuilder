@@ -470,10 +470,12 @@ export default {
 .tokenHeader div {
   height: 1.5em;
   vertical-align: top;
+ 
 }
 
 .tokenEditor div {
   height: 1.5em;
+  vertical-align: top;
 }
 
 .property_active {
