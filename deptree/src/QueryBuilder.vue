@@ -66,7 +66,7 @@
               <div :class="propertyStyle(t.id,'lemma')">{{ valueOrPlaceHolder(t,'lemma') }}</div>
               <div :class="propertyStyle(t.id,'upos')">{{valueOrPlaceHolder(t,'upos') }}</div>
               <div :class="propertyStyle(t.id,'deprel')">{{valueOrPlaceHolder(t,'deprel') }}</div>
-              <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '' }}</span></div>
+              <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '~' }}</span></div>
              </div>
         </template>
         
@@ -461,6 +461,20 @@ export default {
 
 }
 
+.tokenDisplay div  {
+  height: 1.5em;
+  vertical-align: top;
+
+}
+
+.tokenHeader div {
+  height: 1.5em;
+  vertical-align: top;
+}
+
+.tokenEditor div {
+  height: 1.5em;
+}
 
 .property_active {
   color: #606060;
