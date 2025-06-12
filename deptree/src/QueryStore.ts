@@ -304,7 +304,7 @@ function tokenToGrewJson(token: TokenState): tokenJson_T {
   }
 }
 
-function tokensToGrewJson(tokens: TokenState[]): nodesJson_T {
+function tokensToGrewJson(tokens: TokenState[], currentTokenId: Number=-10): nodesJson_T {
    let x = {}
    tokens.forEach(token => {
     const tGrew = tokenToGrewJson(token)
