@@ -282,7 +282,7 @@ export interface sentenceJson_T {
 }
 
 function getField(t: TokenState, field: string) {
-  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return potato
+  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return `[${field}]`
 }
 
 function getField2(t: TokenState, field: string) {
