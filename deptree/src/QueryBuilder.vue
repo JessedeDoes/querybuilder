@@ -37,7 +37,9 @@
      </div>
 
      <div :style="{display: 'block', overflowX: auto}">
+      <!--
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
+      -->
       <div class='flexParent'>
            <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">{{ p }} 
