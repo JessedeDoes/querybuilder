@@ -16,7 +16,7 @@ import {
 export type FieldName = 'form' | 'lemma' | 'upos' | 'feats' | 'deprel' | 'xpos' | 'misc' | 'deps';
 export type Polarity = 'positive' | 'negative'
 const potato = '😶'
-const norel = '💫'
+const norel = '[relatie]'
 
 export interface FieldState {
   value: string;
@@ -365,7 +365,7 @@ export const useQueryStore = defineStore('query', {
       const f =  (id: number,property: string) => {
         const token = state.tokens.find(t => t.id == id)
         if (token && isTokenReachable(state.tokens, id)) {
-          const r = token.fields[property].active
+          const r = token.fields[property].active && token.fields[property].value != ''
           return r
         }
        
