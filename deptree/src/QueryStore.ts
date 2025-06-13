@@ -289,10 +289,11 @@ function getField2(t: TokenState, field: string) {
   if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return norel
 }
 
-function tokenToGrewJson(token: TokenState): tokenJson_T {
+function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): tokenJson_T {
+  console.log(isCurrentToken)
   return {
     ID: String(token.id),
-    FORM: getField(token, 'form'),
+    FORM: (isCurrentToken? '☛': '') + getField(token, 'form'),
     LEMMA: getField(token, 'lemma'),
     UPOS: getField(token, 'upos'),
     XPOS: getField(token, 'xpos'),
@@ -307,14 +308,14 @@ function tokenToGrewJson(token: TokenState): tokenJson_T {
 function tokensToGrewJson(tokens: TokenState[], currentTokenId: Number=-10): nodesJson_T {
    let x = {}
    tokens.forEach(token => {
-    const tGrew = tokenToGrewJson(token)
+    const tGrew = tokenToGrewJson(token, token.id == currentTokenId)
     x[tGrew.ID] = tGrew
    })
    return x
 }
 
-function sentenceJsonFromTokens(tokens: TokenState[]): sentenceJson_T {
-  const grewTokens = tokensToGrewJson(tokens)
+function sentenceJsonFromTokens(tokens: TokenState[], currentTokenId: Number=-10): sentenceJson_T {
+  const grewTokens = tokensToGrewJson(tokens,currentTokenId)
   const x: sentenceJson_T = {
     treeJson : {
       nodesJson: grewTokens,
@@ -359,7 +360,9 @@ export const useQueryStore = defineStore('query', {
    
       return state.tokens.find(t => t.id === state.currentTokenId);
     },
-   
+    grewTokens(state) {
+      return tokensToGrewJson(state.tokens,Number(state.currentTokenId))
+    },
     getQuery(state) : string { return state.query},
     isActive(state) : fx {
       const f =  (id: number,property: string) => {
@@ -391,7 +394,7 @@ export const useQueryStore = defineStore('query', {
     },
 
     setGrewTokens() {
-      const grewSentence = sentenceJsonFromTokens(this.tokens)
+      const grewSentence = sentenceJsonFromTokens(this.tokens,Number(this.currentTokenId))
       console.log('setting grew tokens')
       console.log(grewSentence)
       this.reactiveSentence.fromSentenceJson(grewSentence)
@@ -435,6 +438,7 @@ export const useQueryStore = defineStore('query', {
    
     setCurrentTokenId(id: number | null) {
       this.currentTokenId = id;
+      this.setGrewTokens()
     },
 
     nextToken() {
@@ -506,7 +510,8 @@ export const useQueryStore = defineStore('query', {
       token.fields[field].value = newValue.trim();
       if (newActive !== undefined) token.fields[field].active = newActive;
    
-      updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
+      //updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
+      this.setGrewTokens()
       this.updateQuery()
     },
 
