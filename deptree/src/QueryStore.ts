@@ -551,7 +551,10 @@ export const useQueryStore = defineStore('query', {
       set()
       return set;
     },
-
+    propertyIndeterminate(field: FieldName) {
+      const s = new Set(this.tokens.map(t => t[field].active))
+      return s.size > 1
+    },
     setFieldInActiveAllTokens(field: FieldName) {
       const self = this
     function  set() 
