@@ -299,9 +299,9 @@ function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): toke
     XPOS: getField(token, 'xpos'),
     FEATS: {},
     HEAD: token.head,
-    DEPREL: getField2(token, 'deprel'),
+    DEPREL: (token.polarity=='negative'? '!': '') + getField2(token, 'deprel'),
     DEPS: {},
-    MISC: token.polarity == 'negative'? {'highlight' : 'red'} : {}
+    MISC: isCurrentToken? {'highlight' : 'red'} : {}
   }
 }
 
