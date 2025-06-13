@@ -49,7 +49,7 @@
           </div>
           <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
-                <span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
+                <!--<input type="checkbox" :indeterminate="propertyIndeterminate(p)"/>--><span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
                 <span class='togglePropertyButton' @click="inActiveAll(p)">none</span></div>
       
               <div class="b"></div>
@@ -262,6 +262,7 @@ export default {
        set(v)  { console.log('yep'); this.updateTokenPolarity(this.currentTokenId,  v) },
     },
 
+
     form_active : {
        get() { if (!this.currentToken ) return ''; return this.currentToken.fields.form.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'form', v) },
@@ -275,6 +276,23 @@ export default {
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
     },
     deprel_active : {
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.deprel.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
+    },
+
+    form_all_active : {
+       get() { return this.propertyAllSet('form')},
+       set(v)  { if (v) this.setFieldActiveAllTokens('form'); else this.setFieldInactiveActiveAllTokens('form') }
+    },
+    lemma_all_active : {
+       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'lemma', Boolean(v)) },
+    },
+    upos__all_active : {
+       get() { if (!this.currentToken) return '';  return this.currentToken.fields.upos.active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
+    },
+    deprel_all_active : {
        get() { if (!this.currentToken) return ''; return this.currentToken.fields.deprel.active},
        set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
     }
@@ -308,6 +326,8 @@ export default {
       'removeRel',
       'setFieldActiveAllTokens',
       'setFieldInActiveAllTokens',
+      'propertyIndeterminate',
+      'propertyAllSet',
       'insertEmptyToken',
       'insertEmptyTokenAfter',
       'deleteToken',

@@ -364,6 +364,7 @@ export const useQueryStore = defineStore('query', {
       return tokensToGrewJson(state.tokens,Number(state.currentTokenId))
     },
     getQuery(state) : string { return state.query},
+    
     isActive(state) : fx {
       const f =  (id: number,property: string) => {
         const token = state.tokens.find(t => t.id == id)
@@ -552,8 +553,13 @@ export const useQueryStore = defineStore('query', {
       return set;
     },
     propertyIndeterminate(field: FieldName) {
-      const s = new Set(this.tokens.map(t => t[field].active))
+      
+      const s = new Set(this.tokens.map(t => t.fields[field.toLowerCase()].active))
       return s.size > 1
+    },
+    propertyAllSet(field: FieldName)  {
+      const s = new Set(this.tokens.map(t => t.fields[field.toLowerCase()].active))
+      return s.size == 1 && s[0] == true
     },
     setFieldInActiveAllTokens(field: FieldName) {
       const self = this
