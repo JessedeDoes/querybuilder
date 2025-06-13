@@ -56,20 +56,22 @@
           </div>
           <template v-for="t in tokens" :index="t.id">
             <div v-if="currentTokenId == t.id" :class="'tokenEditor' + ' ' + polarityClass(t.polarity)">
-             
+              <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="deprel"/> <input type="checkbox" v-model="deprel_active"/> 
+              </div>
+              <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'form')" v-model="form"/> <input type="checkbox" v-model="form_active"/></div>
               <div> <input size="10" :class="propertyStyle(t.id,'lemma')" v-model="lemma"/>  <input type="checkbox" v-model="lemma_active"/></div>
-              <div> <input size="10" :class="propertyStyle(t.id,'upos')" v-model="upos"/>  <input type="checkbox" v-model="upos_active"/></div>
-              <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="deprel"/> <input type="checkbox" v-model="deprel_active"/> 
-               </div>
+              
+            
               <div> <input size="10" :class="propertyStyle(t.id,'deprel')" v-model="token_order"/> </div>
             </div>
             <div v-else @click="() => setCurrentTokenId(t.id)" :class="'tokenDisplay' + ' ' + polarityClass(t.polarity)">
-          
+              <div :class="propertyStyle(t.id,'deprel')">{{valueOrPlaceHolder(t,'deprel') }}</div>
+              <div :class="propertyStyle(t.id,'upos')">{{valueOrPlaceHolder(t,'upos') }}</div>
               <div :class="propertyStyle(t.id,'form')">{{ valueOrPlaceHolder(t,'form') }}</div>
               <div :class="propertyStyle(t.id,'lemma')">{{ valueOrPlaceHolder(t,'lemma') }}</div>
-              <div :class="propertyStyle(t.id,'upos')">{{valueOrPlaceHolder(t,'upos') }}</div>
-              <div :class="propertyStyle(t.id,'deprel')">{{valueOrPlaceHolder(t,'deprel') }}</div>
+              
+              
               <div :class="propertyStyle(t.id,'deprel')"><span style="display: block; height:14pt">{{ (t.tokenOrder != -1)? t.tokenOrder: '~' }}</span></div>
              </div>
         </template>
@@ -137,7 +139,7 @@ export default {
 
       language: 'Dutch',
       searchLanguage : 'Dutch',
-      tokenProperties: ['Form', 'Lemma', 'UPoS', 'Deprel'],
+      tokenProperties: ['Deprel', 'UPoS', 'Form', 'Lemma'],
       onlyShortSentences: false,
       languages : {
       "Dutch" : "nl",
