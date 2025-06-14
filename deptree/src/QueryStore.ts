@@ -301,7 +301,7 @@ function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): toke
     HEAD: token.head,
     DEPREL: (token.polarity=='negative'? '!': '') + getField2(token, 'deprel'),
     DEPS: {},
-    MISC: isCurrentToken? {'highlight' : 'red'} : {}
+    MISC: isCurrentToken? {'highlight' : 'darkblue'} : {}
   }
 }
 
