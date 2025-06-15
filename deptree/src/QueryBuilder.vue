@@ -86,7 +86,12 @@
                 | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
                 | <span @click="deleteToken" title="delete node">🗑️ (delete token)</span> 
                 | <span class="left" @click="insertEmptyToken" title="insert node left">↲ (insert left)</span> 
-                | <span @click="insertEmptyTokenAfter" class="right" title="insert node right"> ↳ (insert right)</span></div>
+                | <span @click="insertEmptyTokenAfter" class="right" title="insert node right"> ↳ (insert right)</span>
+              </div>
+              <div class="tokenTop">
+                pattern root is sentence root <input type="checkbox" v-model="keepRoot" title="pattern root is sentence root"></input> 
+                | ignore interpunction <input type="checkbox" v-model="ignoreInterpunction" title="pattern root is sentence root"></input> 
+              </div>
      </div>
     </div>  
     </div>
@@ -239,7 +244,9 @@ export default {
       'tokens',
       'query',
       'getQuery',
-      'isActive'
+      'isActive',
+      'ignoreInterpunction',
+      'keepRoot'
     ]),
 
     blacklabQuery: {
@@ -463,7 +470,7 @@ export default {
 
 .tokenTop {
   xdisplay: flex; justify-content: space-between; width: 100%; 
-  font-weight: bold;
+  font-weight: normal;
   padding-left: 3pt; padding-right: 3pt;
   margin-top: 6pt;
 }

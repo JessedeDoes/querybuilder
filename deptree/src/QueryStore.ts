@@ -43,8 +43,8 @@ export interface QueryState {
   tokens: TokenState[];
  
   currentTokenId: number | null;
- 
- 
+  keepRoot: boolean;
+  ignoreInterpunction: boolean;
   query: string;
  
   reactiveSentence: ReactiveSentence
@@ -345,7 +345,8 @@ export const useQueryStore = defineStore('query', {
   state: (): QueryState => ({
     tokens: initialTokens(),
     currentTokenId: 1,
- 
+    keepRoot: false,
+    ignoreInterpunction: true,
     query: '',
     reactiveSentence: null
   }),
