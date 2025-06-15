@@ -108,7 +108,8 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     // recurse for each child; wrap the child subtree in (…) if it
     // itself has children, to preserve operator precedence.
 
-    function dropPunct(t: TokenState):boolean {return (!ignoreInterpunction && t.fields['deprel'].value === 'punct')}
+    console.log(`Options: ${ignoreInterpunction} ${keepRoot}`)
+    function dropPunct(t: TokenState):boolean {return (ignoreInterpunction && t.fields['deprel'].value === 'punct')}
     const positiveChildren = t.children.filter(t => t.polarity == 'positive' && !dropPunct(t)).map(k => {
       const sub = walk(k,indent+2);
       const wrapped = k.children.length > 0 ? `(${sub})` : sub;
