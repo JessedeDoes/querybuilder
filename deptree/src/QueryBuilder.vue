@@ -49,8 +49,12 @@
           </div>
           <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
-                <!--<input type="checkbox" :indeterminate="propertyIndeterminate(p)"/>--><span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
-                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span></div>
+                <input type="checkbox" :indeterminate="propertyIndeterminate(p)" v-model="propertyActive[p]" @change="toggleFieldActiveAllTokens(p)"> 
+               <!--
+                <span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
+                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span>
+              -->  
+              </div>
       
               <div class="b"></div>
           </div>
@@ -136,7 +140,12 @@ export default {
     return {
       localSentence: this.modelValue,
       
-
+      propertyActive: {
+        'Deprel' : true,
+        'UPoS' : true,
+        'Lemma' : false,
+        'Form' : false
+      },
       language: 'Dutch',
       searchLanguage : 'Dutch',
       tokenProperties: ['Deprel', 'UPoS', 'Form', 'Lemma'],
@@ -334,7 +343,15 @@ export default {
       'setGrewTokens',
       'resetTokens'
     ]),
-
+    toggleFieldActiveAllTokens(p) {
+  
+      const self=this;
+      const b = this.propertyActive[p]
+    
+      if (b) self.setFieldActiveAllTokens(p); else self.setFieldInActiveAllTokens(p)
+      
+      return f;
+    },
     activeAll(p) {
       return this.setFieldActiveAllTokens(p)
     },
@@ -458,7 +475,7 @@ export default {
   text-align: right;
 }
 .tokenHeader {
-  padding-right: 1em;
+  padding-right: 4pt;
 }
 
 .tokenEditor {
@@ -559,9 +576,18 @@ h3 {
   border-width: 1pt;
 }
 
-.negativePolarity {
-  border-color: red
+
+.negativePolarity::before {
+  content: "🚫";
+  position: absolute;
+  transform: translate(-4pt, 0pt);
+  font-size: 3rem;
+  color: rgba(255, 0, 0, 0.2); /* soft red tint */
+  pointer-events: none;
+  z-index: 10000;
+  text-align: center;
 }
+
 .sentence-input {
   width: 100%;
   font: inherit;

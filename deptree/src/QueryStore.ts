@@ -286,7 +286,7 @@ function getField(t: TokenState, field: string) {
 }
 
 function getField2(t: TokenState, field: string) {
-  if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return norel
+  if (field in t.fields && t.fields[field].active && t.fields[field].value != '') return t.fields[field].value; return norel
 }
 
 function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): tokenJson_T {
@@ -299,7 +299,7 @@ function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): toke
     XPOS: getField(token, 'xpos'),
     FEATS: {},
     HEAD: token.head,
-    DEPREL: (token.polarity=='negative'? '!': '') + getField2(token, 'deprel'),
+    DEPREL: (token.polarity=='negative'? '🚫 ': '') + getField2(token, 'deprel'),
     DEPS: {},
     MISC: isCurrentToken? {'highlight' : 'darkblue'} : {}
   }
@@ -581,6 +581,7 @@ export const useQueryStore = defineStore('query', {
       if (!token) return;
       token.fields[field].active = newValue;
       this.updateQuery()
+      this.setGrewTokens()
     },
 
     removeRel() {
