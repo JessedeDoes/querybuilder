@@ -94,17 +94,19 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     const usePoS =  t.fields.upos.active
     const useForm =  t.fields.form.active
     const capturePrefix = (t.tokenOrder != -1)? `n${t.tokenOrder}:` : ''
+    
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
     if (useForm && t.fields.form.value && t.fields.form.value !== '_')
       props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
+   
     const propStr = props.length ? `[${props.join(' & ')}]` : '[]'; // AHEM: zou _ moeten zijn
     return `${capturePrefix}${propStr}`;
   }
 
-  function walk(t: TokenState,indent: number) {
+  function walk(t: TokenState, indent: number) {
     if (!(t.children.length > 0)) return tokPattern(t);
 
     // recurse for each child; wrap the child subtree in (…) if it
