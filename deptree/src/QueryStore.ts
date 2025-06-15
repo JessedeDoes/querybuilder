@@ -61,6 +61,8 @@ function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
 }
 
 function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=true, keepRoot: boolean=false) {
+
+  console.log(`Options: ignore interpunction: ${ignoreInterpunction} keep root: ${keepRoot}`)
   tokens.forEach(t => t.children = [])
   
   
@@ -108,7 +110,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     // recurse for each child; wrap the child subtree in (…) if it
     // itself has children, to preserve operator precedence.
 
-    console.log(`Options: ${ignoreInterpunction} ${keepRoot}`)
+  
     function dropPunct(t: TokenState):boolean {return (ignoreInterpunction && t.fields['deprel'].value === 'punct')}
     const positiveChildren = t.children.filter(t => t.polarity == 'positive' && !dropPunct(t)).map(k => {
       const sub = walk(k,indent+2);
@@ -363,6 +365,8 @@ export const useQueryStore = defineStore('query', {
  
   getters: {
    
+    getKeepRoot(state) : boolean { return state.keepRoot },
+    getIgnoreInterpunction(state): boolean { return state.ignoreInterpunction},
     currentToken(state): TokenState | undefined {
    
       return state.tokens.find(t => t.id === state.currentTokenId);
@@ -389,6 +393,12 @@ export const useQueryStore = defineStore('query', {
   /** actions -------------------- */
   actions: {
    
+    setKeepRoot(b: boolean) {
+      this.keepRoot = b
+    },
+    setIgnoreInterpunction(b: boolean) {
+      this.ignoreInterpunction = b;
+    },
     resetTokens() {
       this.tokens = initialTokens()
       this.setGrewTokens()

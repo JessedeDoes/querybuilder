@@ -110,6 +110,8 @@
 <script>
 import { mapState, mapActions } from 'pinia';
 import { useQueryStore } from './QueryStore';
+const store = useQueryStore;
+
 
 //import { ContextMenu, ContextMenuGroup, ContextMenuSeparator, ContextMenuItem } from '@imengyu/vue3-context-menu';
 //import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
@@ -180,7 +182,8 @@ export default {
       corpora : {
         "UD 2.16" : "http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/",
         "GCND" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
-      }
+      },
+
     };
   },
 
@@ -244,11 +247,22 @@ export default {
       'tokens',
       'query',
       'getQuery',
-      'isActive',
-      'ignoreInterpunction',
-      'keepRoot'
-    ]),
+      'isActive'
 
+    ]),
+    // volgende is redelijk debiel en laat zien dat we vue 3 niet snappen..
+    
+    ignoreInterpunction: {
+      get() { return this.getIgnoreInterpunction},
+      set(v) {this.setIgnoreInterpunction(v); this.updateQuery() }
+    },
+  
+   
+    keepRoot: {
+      get() { return this.getKeepRoot},
+      set(v) {this.setKeepRoot(v); this.updateQuery() }
+    },
+    
     blacklabQuery: {
       get()  { return this.getQuery },
       set(v) { this.setQuery(v)}
@@ -348,7 +362,13 @@ export default {
       'insertEmptyTokenAfter',
       'deleteToken',
       'setGrewTokens',
-      'resetTokens'
+      'resetTokens',
+      'setKeepRoot',
+      'setIgnoreInterpunction',
+      'getRoot',
+
+      'getKeepRoot',
+      'getIgnoreInterpunction'
     ]),
     toggleFieldActiveAllTokens(p) {
   
