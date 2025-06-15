@@ -50,16 +50,17 @@ export interface QueryState {
   reactiveSentence: ReactiveSentence
 }
 
-function isTokenReachable(tokens: TokenState[], id: number): boolean {
+function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
   const token = tokens.find(t => t.id == id)
   if (token) {
     if (token.head == 0) return true;
-    else if (!token.head || token.head == -1) return false;
-    else return isTokenReachable(tokens, token.head)
+    else if ((state.ignoreInterpunction && token.fields['deprel'].value == 'punct') ||  !token.head || token.head == -1) return false;
+    else return isTokenReachable(state, tokens, token.head)
   }
   return false
 }
-function conlluToBlackLab(tokens: TokenState[]) {
+
+function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=true, keepRoot: boolean=false) {
   tokens.forEach(t => t.children = [])
   
   
@@ -106,7 +107,9 @@ function conlluToBlackLab(tokens: TokenState[]) {
 
     // recurse for each child; wrap the child subtree in (…) if it
     // itself has children, to preserve operator precedence.
-    const positiveChildren = t.children.filter(t => t.polarity == 'positive').map(k => {
+
+    function dropPunct(t: TokenState):boolean {return (!ignoreInterpunction && t.fields['deprel'].value === 'punct')}
+    const positiveChildren = t.children.filter(t => t.polarity == 'positive' && !dropPunct(t)).map(k => {
       const sub = walk(k,indent+2);
       const wrapped = k.children.length > 0 ? `(${sub})` : sub;
       const useRel =  k.fields.deprel.active
@@ -121,6 +124,7 @@ function conlluToBlackLab(tokens: TokenState[]) {
       const rel = useRel? k.fields.deprel.value : ''
       return `${" ".repeat(indent)} !-${rel}-> ${wrapped}`;
     });
+
     const children = [...positiveChildren, ...negativeChildren]
     return `${tokPattern(t)}\n${children.join(';\n')} `;
   }
@@ -129,7 +133,8 @@ function conlluToBlackLab(tokens: TokenState[]) {
   const orderPart = hasTokenOrder? ' :: ' + sorted.slice(0,-1).map((t,i) => `start(n${t.tokenOrder}) < start(n${sorted[i+1].tokenOrder})`).join(' & ') : ''
   console.log(`order clause: ${orderPart}`)
   // --- 5. stitch together ---------------------------------------------
-  return `${walk(root,0)} ${orderPart}`; // of ^--> ${} als je het patroon als root wilt hebben
+   const rootPart = keepRoot? '^--> '  : '' 
+  return `${rootPart}${walk(root,0)} ${orderPart}`; // of ^--> ${} als je het patroon als root wilt hebben
 }
 
 function findToken(reactiveSentence: ReactiveSentence, tokenId)  {
@@ -369,7 +374,7 @@ export const useQueryStore = defineStore('query', {
     isActive(state) : fx {
       const f =  (id: number,property: string) => {
         const token = state.tokens.find(t => t.id == id)
-        if (token && isTokenReachable(state.tokens, id)) {
+        if (token && isTokenReachable(state, state.tokens, id)) {
           const r = token.fields[property].active && token.fields[property].value != ''
           return r
         }
@@ -620,7 +625,7 @@ export const useQueryStore = defineStore('query', {
 
  
     updateQuery() {
-      this.query = conlluToBlackLab(this.tokens)
+      this.query = conlluToBlackLab(this.tokens,this.ignoreInterpunction, this.keepRoot)
     },
    
     setQuery(q: string) {
