@@ -1,0 +1,39 @@
+import { computed } from 'vue'
+
+function makeTokenFieldComputed(field, store) {
+  return computed({
+    get() {
+      if (!store.currentToken) return ''
+      return store.currentToken.fields[field]?.value ?? ''
+    },
+    set(v) {
+      store.updateTokenField(store.currentTokenId, field, v)
+    }
+  })
+}
+
+function makeTokenMetaComputed(prop, store, fallback = '') {
+  return computed({
+    get() {
+      if (!store.currentToken) return fallback
+      return store.currentToken[prop] ?? fallback
+    },
+    set(v) {
+      const updateFn = {
+        tokenOrder: store.updateTokenOrder,
+        polarity: store.updateTokenPolarity
+      }[prop]
+      updateFn?.(store.currentTokenId, v)
+    }
+  })
+}
+
+
+const form = makeTokenFieldComputed('form', store)
+const lemma = makeTokenFieldComputed('lemma', store)
+const upos = makeTokenFieldComputed('upos', store)
+const deprel = makeTokenFieldComputed('deprel', store)
+
+const token_order = makeTokenMetaComputed('tokenOrder', store, '')
+const token_polarity = makeTokenMetaComputed('polarity', store, null)
+
