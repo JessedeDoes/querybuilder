@@ -30,8 +30,10 @@
 
     <div class="queryEditing">
     <div style="overflow-x: auto">
+      
     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
-        <svg width="1200px" height="800px" ref="svgEl" class="tree"></svg>
+      <GrewTree v-if="true"/>
+        <svg v-else width="1200px" height="800px" ref="svgEl" class="tree"></svg>
      </div>
 
      <div :style="{display: 'block', overflowX: auto}">
@@ -103,7 +105,7 @@
      <button @click="search">Search</button>
     </div>
   </div>
-  <GrewTree v-if="false"/>
+  
 </template>
 
 <script>

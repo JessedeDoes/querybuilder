@@ -54,6 +54,7 @@ function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
   const token = tokens.find(t => t.id == id)
   if (token) {
     if (token.head == 0) return true;
+    if (token.head < 0) return false;
     else if ((state.ignoreInterpunction && token.fields['deprel'].value == 'punct') ||  !token.head || token.head == -1) return false;
     else return isTokenReachable(state, tokens, token.head)
   }
@@ -378,7 +379,7 @@ export const useQueryStore = defineStore('query', {
       return tokensToGrewJson(state.tokens,Number(state.currentTokenId))
     },
     grewSentence(state) {
-      return sentenceJsonFromTokens(state.tokens)
+      return sentenceJsonFromTokens(state.tokens,Number(state.currentTokenId))
     },
     getQuery(state) : string { return state.query},
     
@@ -627,14 +628,33 @@ export const useQueryStore = defineStore('query', {
       updateTokenInReactiveSentence(this.reactiveSentence, id, 'deprel', 'root')
       this.updateQuery()
     },
+    hasCycles() {
 
+    },
+    isDescendant(t: TokenState, h:number): boolean {
+      const head = this.tokens.find(t => t.id == h)
+      if (head && t.id == head.head) return true;
+      const children = this.tokens.filter(t1 => t1.head == t.id)
+      console.log(`children of ${t.id}`)
+      console.log(children.map(c => c.id).join(', '))
+      console.log(`Descendant? [${this.tokens.map(t => t.head + '->' + t.id)}] ${t.id} ${h} ${children.map(t1 => t1.id)}`)
+      children.forEach(c => {if (this.isDescendant(c,h)) return true })
+      return false;
+    },
+    // todo check cycles.....
     setHead(id: number, head_id: number) {
       console.log(`sethead id=${id} head=${head_id}`)
       console.log(this.tokens)
       const token = this.tokens.find(t => t.id == id);
       if (!token) return;
       console.log(`sethead id=${id} head=${head_id} token=${token.id}`)
+      if (this.isDescendant(token, head_id)) {
+        console.log('Cycle danger!')
+        const th = this.tokens.find(t => t.id == head_id)
+        if (th) th.head = -1
+      }
       token.head = head_id;
+
       console.log(`sethead id=${id} head=${head_id} token=${token.id},${token.head}`)
       setHeadInReactiveSentence(this.reactiveSentence, id, head_id)
       this.updateQuery()

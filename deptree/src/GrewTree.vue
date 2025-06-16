@@ -70,16 +70,16 @@ onMounted(async () => {
   
   const opts = {
     ...defaultSentenceSVGOptions(),
-    interactive: false,
+    interactive: true,
     arcHeight: 40,
-    shownFeatures: ['FORM', 'UPOS'],
+    shownFeatures: ['FORM', 'MISC.HIGHLIGHT'],
   } as const;
 
   svgRenderer = new SentenceSVG(svgEl.value, reactiveSentence, opts);
-  const ssvg = svgEl.value;
+
   const self = qs;
   
-  ssvg.addEventListener('svg-drop', e => {
+  svgRenderer.addEventListener('svg-drop', e => {
       const depId   = e.detail.hovered;
       const headId  = e.detail.dragged;
       console.log(e.detail);
@@ -93,15 +93,12 @@ onMounted(async () => {
      
       self.setHead(depId,headId)
       }
-     });
+  });
 
-     ssvg.addEventListener('svg-click', e => {
-
-     const { targetLabel, clicked: tokenId } = e.detail;
-
-
-     self.setCurrentTokenId(Number(tokenId))
-     })
+  svgRenderer.addEventListener('svg-click', e => {
+      const { targetLabel, clicked: tokenId } = e.detail;
+      self.setCurrentTokenId(Number(tokenId))
+  })
    
   
   renderTree();
