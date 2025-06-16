@@ -199,55 +199,6 @@ export default {
       return !this.localSentence.trim();
     },
 
-    reactiveSentence() { 
-      if (!this.oldTree) return null;
-      const r =   new ReactiveSentence() 
-      const svgEl = this.$refs.svgEl
-      console.log(svgEl)
-      const opts = defaultSentenceSVGOptions();
-      opts.interactive = true;  
-      opts.arcHeight=40;
-      opts.shownFeatures = ['FORM', 'MISC.HIGHLIGHT'] // ["LEMMA","UPOS"]
-      const ssvg = new SentenceSVG(
-        svgEl,
-        r,
-       opts
-     );
-     r.sentSVG = ssvg
-     const self = this;
-
-     ssvg.addEventListener('svg-drop', e => {
-      const depId   = e.detail.hovered;
-      const headId  = e.detail.dragged;
-      console.log(e.detail);
-      const treeNode = e.detail.treeNode
-      if (e.detail.isRoot)
-         self.setRoot(headId);
-      else {
-      
-      console.log(`depId ${depId} headId ${headId}`)
-      if (!depId || !headId) return;
-     
-      self.setHead(depId,headId)
-      }
-     });
-
-     ssvg.addEventListener('svg-click', e => {
-
-     const { targetLabel, clicked: tokenId } = e.detail;
-
-
-     self.setCurrentTokenId(Number(tokenId))
-     })
-     this.setReactiveSentence(r)
-     this.setGrewTokens()
-     return r;
-    },
-
-    sentenceSvg() {
-      
-    },
-
     ...mapState(useQueryStore, [
       'currentTokenId',
       'currentToken',
