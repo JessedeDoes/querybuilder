@@ -103,6 +103,7 @@
      <button @click="search">Search</button>
     </div>
   </div>
+  <GrewTree v-if="false"/>
 </template>
 
 <script>
@@ -110,7 +111,7 @@ import { mapState, mapActions } from 'pinia';
 import { useQueryStore } from './QueryStore';
 const store = useQueryStore;
 
-
+import GrewTree from './GrewTree.vue';
 //import { ContextMenu, ContextMenuGroup, ContextMenuSeparator, ContextMenuItem } from '@imengyu/vue3-context-menu';
 //import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import { ref, onMounted, watch, useTemplateRef, nextTick } from 'vue';
@@ -124,9 +125,13 @@ import {
 
 
 
+
 export default {
   name: 'QueryBuilder',
 
+  components: {
+    GrewTree
+  },
   props: {
     modelValue: {
       type: String,

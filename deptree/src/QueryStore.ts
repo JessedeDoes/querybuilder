@@ -377,6 +377,9 @@ export const useQueryStore = defineStore('query', {
     grewTokens(state) {
       return tokensToGrewJson(state.tokens,Number(state.currentTokenId))
     },
+    grewSentence(state) {
+      return sentenceJsonFromTokens(state.tokens)
+    },
     getQuery(state) : string { return state.query},
     
     isActive(state) : fx {
