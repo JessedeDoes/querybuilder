@@ -15,12 +15,18 @@ import {
   ReactiveSentence,
   SentenceSVG,
   defaultSentenceSVGOptions,
-  TokenSVG,
+
   SVG_CONFIG,
-  getNodeFromTreeJson,
+
   type TokenLike, // <- helper type from dependencytreejs ¹
 } from 'dependencytreejs/lib';
-
+import {
+  sentenceConllToJson,
+  sentenceJsonToConll,
+  emptyTreeJson,
+  returnTokensInOrder,
+  getNodeFromTreeJson,
+} from 'conllup/lib/conll';
 /* ------------------------------------------------------------------ *
  * Store bindings
  * ------------------------------------------------------------------ */
@@ -34,7 +40,15 @@ const { grewSentence }  =  storeToRefs(qs)
 const svgEl            = useTemplateRef('svgElement')
 const reactiveSentence = new ReactiveSentence();
 let   svgRenderer: SentenceSVG | null = null;
-
+const SVG_CONFIG = {
+  startTextY: 10,
+  textgraphdistance: 10,
+  dragclickthreshold: 400, // ms
+  arrowheadsize: 5,
+  gapX: 18,
+  sizeFontY: 18,
+  reverseArcThreshold: 20, // pixels below tokens mouth need to be to reverse the arc
+};
 const example=`# source = Enhanced/WS-U-E-A-0000000226/WS-U-E-A-0000000226.p.2.s.1.xml
 # sent_id = WS-U-E-A-0000000226.p.2.s.1
 # text = Pieter van den Hoogenband moet het doen met zilver
