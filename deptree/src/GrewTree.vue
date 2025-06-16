@@ -56,7 +56,7 @@ const example=`# source = Enhanced/WS-U-E-A-0000000226/WS-U-E-A-0000000226.p.2.s
 function renderTree() {
   if (!svgRenderer) return;
   
-  reactiveSentence.fromSentenceConll(example);
+  //reactiveSentence.fromSentenceConll(example);
   reactiveSentence.fromSentenceJson(grewSentence.value);
   svgRenderer.refresh();
 }

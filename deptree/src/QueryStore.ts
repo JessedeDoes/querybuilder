@@ -189,68 +189,6 @@ function  initialTokens() {
 } 
 
 
-function updateTokenInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number, targetLabelLC: string, targetValue: string) {
-  const targetLabel = targetLabelLC.toUpperCase()
-
-  
-  const nodesJson = reactiveSentence.state.treeJson.nodesJson
-  
-  const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
-                     
-  if (!oldTokId)  {
-   
-    return;
-  }
- 
-
-  const oldTok = nodesJson[oldTokId]
-  const oldValue = oldTok[targetLabel];
-
- 
- 
-  if (targetValue === null || targetValue === oldValue) return;   // cancel / no change
-
-  const newTok = { ...oldTok, [targetLabel]: targetValue };
- 
-  
-  reactiveSentence.updateToken(newTok);
-
-}
-
-function removeRelInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number) {
-  const nodesJson = reactiveSentence.state.treeJson.nodesJson
- 
-  const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
-                     
-  if (!oldTokId)  {
-  
-    return;
-  }
- 
-
-  const oldTok = nodesJson[oldTokId]
-  const newTok =  { ...oldTok }
-  newTok['HEAD']  = '_'
-
-  reactiveSentence.updateToken(newTok);
-}
-
-function setHeadInReactiveSentence(reactiveSentence: ReactiveSentence, tokenId: number, headId: number) {
-  const nodesJson = reactiveSentence.state.treeJson.nodesJson
-
-  const oldTokId   =  Object.keys(nodesJson).find(i => nodesJson[i].ID == tokenId)
-                     
-  if (!oldTokId) return;
-  const oldTok = nodesJson[oldTokId]
-
-  if (!oldTok || oldTok.HEAD === headId) return;      // nothing to change
-
-
-  const newTok  = { ...oldTok, HEAD: headId };
-
-  reactiveSentence.updateToken(newTok);
-}
-
  
   export interface featuresJson_T {
   [key: string]: string;
@@ -360,7 +298,6 @@ export const useQueryStore = defineStore('query', {
     keepRoot: false,
     ignoreInterpunction: true,
     query: '',
-    reactiveSentence: null
   }),
 
 
