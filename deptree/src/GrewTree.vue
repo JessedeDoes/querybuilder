@@ -15,6 +15,9 @@ import {
   ReactiveSentence,
   SentenceSVG,
   defaultSentenceSVGOptions,
+  TokenSVG,
+  SVG_CONFIG,
+  getNodeFromTreeJson,
   type TokenLike, // <- helper type from dependencytreejs ¹
 } from 'dependencytreejs/lib';
 
@@ -49,9 +52,55 @@ const example=`# source = Enhanced/WS-U-E-A-0000000226/WS-U-E-A-0000000226.p.2.s
 8	met	met	ADP	VZ|init	_	9	case	9:case	_
 9	zilver	zilver	NOUN	N|soort|ev|basis|onz|stan	Gender=Neut|Number=Sing	7	obl	7:obl:met	_
 `
-/* ------------------------------------------------------------------ *
- * Utility: convert our TokenState[] into DTJS‑compatible tokens
- * ------------------------------------------------------------------ */
+
+function drawTree(ssgv: SentenceSVG) {
+
+  ssgv.clearTree();
+  ssgv.populateOrderOfTokens();
+  ssgv.populateLevels();
+  populateTokenSVGs(ssgv);
+  ssgv.drawRelations();
+  ssgv.drawEnhancedRelations();
+  ssgv.adaptSvgCanvas();
+  ssgv.showhighlights();
+
+    if (ssgv.options.matches.length > 0) {
+      ssgv.showmatches();
+    }
+
+    if (ssgv.options.packages !== null) {
+      ssgv.showpackages();
+    }
+
+    if (ssgv.options.interactive) {
+      ssgv.snapSentence.addClass('interactive');
+      ssgv.attachDraggers();
+      ssgv.attachEvents();
+      ssgv.attachHovers();
+    }
+    if (ssgv.teacherTreeJson) {
+      ssgv.showDiffs(ssgv.teacherTreeJson);
+    }
+}
+
+function populateTokenSVGs(ssgv: SentenceSVG): void {
+    let runningX = 0;
+    const maxLevelY = Math.max(...ssgv.levelsArray, 2); // 2 would be the minimum possible level size
+    const offsetY = SVG_CONFIG.startTextY + maxLevelY * ssgv.options.arcHeight;
+
+    let tokenSvgIndex = 0;
+    for (const tokenJsonIndex of ssgv.orderOfTokens) {
+      const tokenJson = getNodeFromTreeJson(ssgv.treeJson, tokenJsonIndex);
+      if (tokenJson) {
+        const tokenSVG = new TokenSVG(tokenJson, ssgv);
+        ssgv.tokenSVGs.push(tokenSVG);
+        tokenSVG.createSnap(ssgv.snapSentence, ssgv.options.shownFeatures, runningX, offsetY);
+        tokenSVG.ylevel = ssgv.levelsArray[tokenSvgIndex];
+        runningX += 300 // tokenSVG.width;
+        tokenSvgIndex += 1;
+      }
+    }
+  }
 
 function renderTree() {
   if (!svgRenderer) return;
@@ -59,6 +108,7 @@ function renderTree() {
   //reactiveSentence.fromSentenceConll(example);
   reactiveSentence.fromSentenceJson(grewSentence.value);
   svgRenderer.refresh();
+  //drawTree(svgRenderer)
 }
 
 /* ------------------------------------------------------------------ *
@@ -76,6 +126,8 @@ onMounted(async () => {
   } as const;
 
   svgRenderer = new SentenceSVG(svgEl.value, reactiveSentence, opts);
+
+  reactiveSentence.sentenceSVG = svgRenderer
 
   const self = qs;
   
