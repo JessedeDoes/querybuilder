@@ -76,6 +76,34 @@ onMounted(async () => {
   } as const;
 
   svgRenderer = new SentenceSVG(svgEl.value, reactiveSentence, opts);
+  const ssvg = svgEl.value;
+  const self = qs;
+  
+  ssvg.addEventListener('svg-drop', e => {
+      const depId   = e.detail.hovered;
+      const headId  = e.detail.dragged;
+      console.log(e.detail);
+      const treeNode = e.detail.treeNode
+      if (e.detail.isRoot)
+         self.setRoot(headId);
+      else {
+      
+      console.log(`depId ${depId} headId ${headId}`)
+      if (!depId || !headId) return;
+     
+      self.setHead(depId,headId)
+      }
+     });
+
+     ssvg.addEventListener('svg-click', e => {
+
+     const { targetLabel, clicked: tokenId } = e.detail;
+
+
+     self.setCurrentTokenId(Number(tokenId))
+     })
+   
+  
   renderTree();
 });
 
