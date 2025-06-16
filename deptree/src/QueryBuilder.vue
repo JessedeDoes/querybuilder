@@ -31,7 +31,7 @@
     <div class="queryEditing">
     <div style="overflow-x: auto">
       
-    <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
+    <div xml:id="treeWrapper" id="treeWrapper" style="padding-left: 4em !important; padding-top: 1em; padding-bottom: 1em; overflow-x: auto">
       <GrewTree v-if="!oldTree"/>
         <svg v-else width="1200px" height="800px" ref="svgEl" class="tree"></svg>
      </div>
@@ -435,8 +435,8 @@ export default {
           const conllu = data.result 
           
           if (this.oldTree) {
-          this.reactiveSentence.fromSentenceConll(conllu);
-          this.setReactiveSentence(this.reactiveSentence)
+            this.reactiveSentence.fromSentenceConll(conllu);
+            this.setReactiveSentence(this.reactiveSentence)
           }
           this.setTokensFromConllu(conllu)
           this.setCurrentTokenId(1)
