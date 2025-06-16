@@ -32,7 +32,7 @@
     <div style="overflow-x: auto">
       
     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
-      <GrewTree v-if="true"/>
+      <GrewTree v-if="!oldTree"/>
         <svg v-else width="1200px" height="800px" ref="svgEl" class="tree"></svg>
      </div>
 
@@ -189,6 +189,7 @@ export default {
         "UD 2.16" : "http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/",
         "GCND" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
       },
+      oldTree: false
 
     };
   },
@@ -199,6 +200,7 @@ export default {
     },
 
     reactiveSentence() { 
+      if (!this.oldTree) return null;
       const r =   new ReactiveSentence() 
       const svgEl = this.$refs.svgEl
       console.log(svgEl)
@@ -432,8 +434,10 @@ export default {
 
           const conllu = data.result 
           
+          if (this.oldTree) {
           this.reactiveSentence.fromSentenceConll(conllu);
           this.setReactiveSentence(this.reactiveSentence)
+          }
           this.setTokensFromConllu(conllu)
           this.setCurrentTokenId(1)
         

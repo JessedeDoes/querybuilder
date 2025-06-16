@@ -113,7 +113,7 @@ watch(grewSentence, renderTree, { deep: true });
   max-height: 500px;
   overflow-x: auto;
   display: block;
-  border: 1px solid #ccc;
+  
   background: #fff;
 }
 </style>

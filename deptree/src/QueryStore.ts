@@ -47,7 +47,7 @@ export interface QueryState {
   ignoreInterpunction: boolean;
   query: string;
  
-  reactiveSentence: ReactiveSentence
+  //reactiveSentence: ReactiveSentence
 }
 
 function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
@@ -415,10 +415,11 @@ export const useQueryStore = defineStore('query', {
     setTokens(tokens: TokenState[]) {
       this.tokens = tokens;
       const grewSentence = sentenceJsonFromTokens(tokens)
-      this.reactiveSentence.fromSentenceJson(grewSentence)
+      //this.reactiveSentence.fromSentenceJson(grewSentence)
     },
 
     setGrewTokens() {
+      return;
       const grewSentence = sentenceJsonFromTokens(this.tokens,Number(this.currentTokenId))
       console.log('setting grew tokens')
       console.log(grewSentence)
@@ -614,7 +615,7 @@ export const useQueryStore = defineStore('query', {
       delete token.head;
       console.log(`removeRel: rel removed from token ${this.currentTokenId}`)
       console.log(token)
-      removeRelInReactiveSentence(this.reactiveSentence, this.currentTokenId)
+      //removeRelInReactiveSentence(this.reactiveSentence, this.currentTokenId)
       this.updateQuery()
     },
 
@@ -624,8 +625,8 @@ export const useQueryStore = defineStore('query', {
       const token = this.tokens.find(t => t.id == id);
       token.head = 0;
       token.deprel = 'root'
-      setHeadInReactiveSentence(this.reactiveSentence, id, 0)
-      updateTokenInReactiveSentence(this.reactiveSentence, id, 'deprel', 'root')
+      //setHeadInReactiveSentence(this.reactiveSentence, id, 0)
+      //updateTokenInReactiveSentence(this.reactiveSentence, id, 'deprel', 'root')
       this.updateQuery()
     },
     hasCycles() {
@@ -656,7 +657,7 @@ export const useQueryStore = defineStore('query', {
       token.head = head_id;
 
       console.log(`sethead id=${id} head=${head_id} token=${token.id},${token.head}`)
-      setHeadInReactiveSentence(this.reactiveSentence, id, head_id)
+      //setHeadInReactiveSentence(this.reactiveSentence, id, head_id)
       this.updateQuery()
     },
 
