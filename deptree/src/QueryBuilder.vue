@@ -18,8 +18,6 @@
     ></textarea>
     <button :disabled="isEmpty" @click="clear">Clear</button>
     </div>
-
-
     <h3>Parse sentence</h3>
     <div class="queryEditing">
     <div class="actions">
@@ -33,7 +31,7 @@
     <div class="queryEditing">
     <div style="overflow-x: auto">
     <div xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: auto">
-        <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
+        <svg width="1200px" height="800px" ref="svgEl" class="tree"></svg>
      </div>
 
      <div :style="{display: 'block', overflowX: auto}">
@@ -198,6 +196,7 @@ export default {
       console.log(svgEl)
       const opts = defaultSentenceSVGOptions();
       opts.interactive = true;  
+      opts.arcHeight=40;
       opts.shownFeatures = ['FORM', 'MISC.HIGHLIGHT'] // ["LEMMA","UPOS"]
       const ssvg = new SentenceSVG(
         svgEl,

@@ -296,6 +296,7 @@ function getField(t: TokenState, field: string) {
 }
 
 function getField2(t: TokenState, field: string) {
+  if (field == 'deprel' && t.fields[field].value == 'root') return '';
   if (field in t.fields && t.fields[field].active && t.fields[field].value != '') return t.fields[field].value; return norel
 }
 
