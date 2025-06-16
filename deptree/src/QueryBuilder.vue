@@ -113,7 +113,7 @@ const store = useQueryStore;
 
 //import { ContextMenu, ContextMenuGroup, ContextMenuSeparator, ContextMenuItem } from '@imengyu/vue3-context-menu';
 //import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
-import { ref, onMounted, watch, useTemplateRef } from 'vue';
+import { ref, onMounted, watch, useTemplateRef, nextTick } from 'vue';
 import axios from 'axios';
 import {
   ReactiveSentence,
@@ -134,7 +134,8 @@ export default {
     },
   },
 
-  mounted() {
+  async mounted() {
+    await nextTick();
     this.parse()
     //this.resetTokens()
     //console.log(this.reactiveSentence);
@@ -217,8 +218,6 @@ export default {
       
       console.log(`depId ${depId} headId ${headId}`)
       if (!depId || !headId) return;
-      
-      
      
       self.setHead(depId,headId)
       }
@@ -436,6 +435,8 @@ export default {
         console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
         console.log(e)
         this.resetTokens()
+  
+       
       } finally {
       
        }
