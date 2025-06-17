@@ -82,7 +82,7 @@
         
       </div>
       <div class="tokenTop">
-                <span @click="reversePolarity" title="reverse polarity">{{ (token_polarity == 'positive')? 'make  constraint negative' : 'make constraint positive' }}</span> 
+                <span @click="reversePolarity" title="reverse polarity">+↔− {{ (token_polarity == 'positive')? '(make  constraint negative)' : '(make constraint positive)' }}</span> 
                 | <span title="unlink" style="height: 14pt; color: black" @click='noRel'>⛓️‍💥 (unlink)</span>
                 | <span @click="deleteToken" title="delete node">🗑️ (delete token)</span> 
                 | <span class="left" @click="insertEmptyToken" title="insert node left">↲ (insert left)</span> 
