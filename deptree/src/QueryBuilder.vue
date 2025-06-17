@@ -89,8 +89,8 @@
                 | <span @click="insertEmptyTokenAfter" class="right" title="insert node right"> ↳ (insert right)</span>
               </div>
               <div class="tokenTop">
-                pattern root is sentence root <input type="checkbox" v-model="keepRoot" title="pattern root is sentence root"></input> 
-                | ignore interpunction <input type="checkbox" v-model="ignoreInterpunction" title="pattern root is sentence root"></input> 
+                Options: pattern root is sentence root <input type="checkbox" v-model="keepRoot" title="pattern root is sentence root"></input> 
+                | ignore punctuation <input type="checkbox" v-model="ignoreInterpunction" title="pattern root is sentence root"></input> 
               </div>
      </div>
     </div>  
