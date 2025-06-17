@@ -16,7 +16,7 @@ import {
 export type FieldName = 'form' | 'lemma' | 'upos' | 'feats' | 'deprel' | 'xpos' | 'misc' | 'deps';
 export type Polarity = 'positive' | 'negative'
 const potato = '😶'
-const norel = '[relatie]'
+const norel = '[relation]'
 
 export interface FieldState {
   value: string;
