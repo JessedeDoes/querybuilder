@@ -197,45 +197,6 @@ function  initialTokens() {
   [key: string]: string;
 }
 
-/* // dit slaat nergens op, importeer zoals het hoort
-export type tokenJson_T = {
-  ID: string;
-  FORM: string;
-  LEMMA: string;
-  UPOS: string;
-  XPOS: string;
-  FEATS: featuresJson_T;
-  HEAD: number;
-  DEPREL: string;
-  DEPS: featuresJson_T;
-  MISC: featuresJson_T;
-  [key: string]: string | number | featuresJson_T;
-};
-
-
-export interface nodesJson_T {
-  [key: string]: tokenJson_T;
-}
-
-export interface groupsJson_T {
-  [key: string]: tokenJson_T;
-}
-
-export interface metaJson_T {
-  [key: string]: string | number;
-}
-
-export interface treeJson_T {
-  nodesJson: nodesJson_T;
-  groupsJson: groupsJson_T;
-}
-
-export interface sentenceJson_T {
-  treeJson: treeJson_T;
-  metaJson: metaJson_T;
-}
-*/
-// einde import 
 function getField(t: TokenState, field: string) {
   if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return `[${field}]`
 }
