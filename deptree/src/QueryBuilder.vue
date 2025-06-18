@@ -126,7 +126,36 @@ import {
 } from 'dependencytreejs/lib';
 
 
+export function twoWayComputedTokenField(field) {
+  // ⬇ ordinary *function* expressions ⇒ their `this` is dynamic
+  return {
+    get() {
+      // Vue will later invoke this as  get.call(componentProxy)
+      return this.currentToken
+        ? this.currentToken.fields[field].value
+        : '';
+    },
+    set(v) {
+      if (this.currentTokenId != null)
+        this.updateTokenField(this.currentTokenId, field, v);
+    },
+  };
+}
 
+export function tokenFieldActive(field) {
+  return {
+    
+       get() { if (!this.currentToken ) return ''; return this.currentToken.fields[field].active},
+       set(v)  { this.setTokenFieldActive(this.currentTokenId, field, v) },
+    }
+}
+
+export function tokenFieldActiveAll(field) {
+  return {
+       get() { return this.propertyAllSet(field)},
+       set(v)  { if (v) this.setFieldActiveAllTokens(field); else this.setFieldInactiveActiveAllTokens(field) }
+    }
+}
 
 export default {
   name: 'QueryBuilder',
@@ -214,7 +243,6 @@ export default {
       get() { return this.getIgnoreInterpunction},
       set(v) {this.setIgnoreInterpunction(v); this.updateQuery() }
     },
-  
    
     keepRoot: {
       get() { return this.getKeepRoot},
@@ -225,22 +253,23 @@ export default {
       get()  { return this.getQuery },
       set(v) { this.setQuery(v)}
     },
-    form : {
-       get() { if (!this.currentToken) return '';  return this.currentToken.fields.form.value},
-       set(v)  { this.updateTokenField(this.currentTokenId, 'form', v) },
-    },
-    lemma : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.value},
-       set(v)  { this.updateTokenField(this.currentTokenId, 'lemma', v) },
-    },
-    upos : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.upos.value},
-       set(v)  { this.updateTokenField(this.currentTokenId, 'upos', v) },
-    },
-    deprel : {
-       get() { if (!this.currentToken) return; return this.currentToken.fields.deprel.value},
-       set(v)  { this.updateTokenField(this.currentTokenId, 'deprel', v) },
-    },
+    
+    
+    form : twoWayComputedTokenField('form'),
+    lemma: twoWayComputedTokenField('lemma'),
+    upos: twoWayComputedTokenField('upos'),
+    deprel: twoWayComputedTokenField('deprel'),
+    
+    form_active: tokenFieldActive('form'),
+    lemma_active: tokenFieldActive('lemma'),
+    upos_active: tokenFieldActive('upos'),
+    deprel_active: tokenFieldActive('deprel'),
+
+    form_all_active: tokenFieldActiveAll('form'),
+    lemma_all_active: tokenFieldActiveAll('lemma'),
+    upos_all_active: tokenFieldActiveAll('upos'),
+    deprel_all_active: tokenFieldActiveAll('deprel'),
+
     token_order : {
        get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
        set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
@@ -249,41 +278,6 @@ export default {
        get() { if (!this.currentToken) return null; return this.currentToken.polarity },
        set(v)  { console.log('yep'); this.updateTokenPolarity(this.currentTokenId,  v) },
     },
-
-
-    form_active : {
-       get() { if (!this.currentToken ) return ''; return this.currentToken.fields.form.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'form', v) },
-    },
-    lemma_active : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'lemma', Boolean(v)) },
-    },
-    upos_active : {
-       get() { if (!this.currentToken) return '';  return this.currentToken.fields.upos.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
-    },
-    deprel_active : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.deprel.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
-    },
-
-    form_all_active : {
-       get() { return this.propertyAllSet('form')},
-       set(v)  { if (v) this.setFieldActiveAllTokens('form'); else this.setFieldInactiveActiveAllTokens('form') }
-    },
-    lemma_all_active : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.lemma.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'lemma', Boolean(v)) },
-    },
-    upos__all_active : {
-       get() { if (!this.currentToken) return '';  return this.currentToken.fields.upos.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'upos', v) },
-    },
-    deprel_all_active : {
-       get() { if (!this.currentToken) return ''; return this.currentToken.fields.deprel.active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, 'deprel', v) },
-    }
   },
 
   watch: {
@@ -394,10 +388,9 @@ export default {
         
           this.updateQuery()
        } catch (e) {
-        console.log('!!!!!!!!!!!!!!!!!¡!!!!!!Exception')
+        console.log('!! Parsing Exception')
         console.log(e)
         this.resetTokens()
-  
        
       } finally {
       
