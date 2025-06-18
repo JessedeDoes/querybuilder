@@ -4,8 +4,6 @@
 <template>
   <div class="query-builder">
 
-
-
     <h2>Query building prototype</h2>
     <h3>Enter sentence</h3>
     
@@ -175,8 +173,7 @@ export default {
     await nextTick();
     this.parse()
     //this.resetTokens()
-    //console.log(this.reactiveSentence);
-    //this.setGrewTokens()
+    
   },
 
   data() {
@@ -300,7 +297,6 @@ export default {
       'updateTokenOrder',
       'updateTokenPolarity',
       'setTokensFromConllu',
-      'setReactiveSentence',
       'nextToken',
       'previousToken',
       'setHead',
@@ -315,7 +311,6 @@ export default {
       'insertEmptyToken',
       'insertEmptyTokenAfter',
       'deleteToken',
-      'setGrewTokens',
       'resetTokens',
       'setKeepRoot',
       'setIgnoreInterpunction',
@@ -381,10 +376,7 @@ export default {
 
           const conllu = data.result 
           
-          if (this.oldTree) {
-            this.reactiveSentence.fromSentenceConll(conllu);
-            this.setReactiveSentence(this.reactiveSentence)
-          }
+        
           this.setTokensFromConllu(conllu)
           this.setCurrentTokenId(1)
         

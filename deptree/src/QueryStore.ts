@@ -373,11 +373,6 @@ export const useQueryStore = defineStore('query', {
       this.reactiveSentence.fromSentenceJson(grewSentence)
     },
 
-    setReactiveSentence(r: ReactiveSentence) {
-      this.reactiveSentence = r
-      //this.setGrewTokens()
-    },
-
     setTokensFromConllu(conllu: string) {
       const tokens: TokenState[] = [];                      
       

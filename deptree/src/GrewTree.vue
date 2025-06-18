@@ -67,6 +67,8 @@ const example=`# source = Enhanced/WS-U-E-A-0000000226/WS-U-E-A-0000000226.p.2.s
 9	zilver	zilver	NOUN	N|soort|ev|basis|onz|stan	Gender=Neut|Number=Sing	7	obl	7:obl:met	_
 `
 
+//volgende gaat niet werken, aanpassen van de grew component is onvermijdelijk als je tokens met tree wilt alignen
+
 function drawTree(ssgv: SentenceSVG) {
 
   ssgv.clearTree();
