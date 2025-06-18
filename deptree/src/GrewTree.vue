@@ -49,23 +49,8 @@ const SVG_CONFIG = {
   sizeFontY: 18,
   reverseArcThreshold: 20, // pixels below tokens mouth need to be to reverse the arc
 };
-const example=`# source = Enhanced/WS-U-E-A-0000000226/WS-U-E-A-0000000226.p.2.s.1.xml
-# sent_id = WS-U-E-A-0000000226.p.2.s.1
-# text = Pieter van den Hoogenband moet het doen met zilver
-# auto = ALUD2.8.5
-# meta_source = pre-sonar500
-# meta_type = WS-U-E-A
-# meta_description = Auto cues
-1	Pieter	Pieter	PROPN	SPEC|deeleigen	_	7	nsubj	7:nsubj	_
-2	van	van	PROPN	SPEC|deeleigen	_	1	flat	1:flat	_
-3	den	den	PROPN	SPEC|deeleigen	_	1	flat	1:flat	_
-4	Hoogenband	Hoogenband	PROPN	SPEC|deeleigen	_	1	flat	1:flat	_
-5	moet	moeten	AUX	WW|pv|tgw|ev	Number=Sing|Tense=Pres|VerbForm=Fin	7	aux	7:aux	_
-6	het	het	PRON	VNW|pers|pron|stan|red|3|ev|onz	Person=3|PronType=Prs	7	obj	7:obj	_
-7	doen	doen	VERB	WW|inf|vrij|zonder	VerbForm=Inf	0	root	0:root	_
-8	met	met	ADP	VZ|init	_	9	case	9:case	_
-9	zilver	zilver	NOUN	N|soort|ev|basis|onz|stan	Gender=Neut|Number=Sing	7	obl	7:obl:met	_
-`
+
+
 
 //volgende gaat niet werken, aanpassen van de grew component is onvermijdelijk als je tokens met tree wilt alignen
 
@@ -121,7 +106,7 @@ function populateTokenSVGs(ssgv: SentenceSVG): void {
 function renderTree() {
   if (!svgRenderer) return;
   
-  //reactiveSentence.fromSentenceConll(example);
+ 
   reactiveSentence.fromSentenceJson(grewSentence.value);
   svgRenderer.refresh();
   //drawTree(svgRenderer)
