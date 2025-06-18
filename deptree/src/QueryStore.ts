@@ -17,7 +17,6 @@ export type FieldName = 'form' | 'lemma' | 'upos' | 'feats' | 'deprel' | 'xpos' 
 export type Polarity = 'positive' | 'negative'
 const potato = '😶'
 const norel = '[relation]'
-const forbidden = '⛔'
 
 export interface FieldState {
   value: string;
@@ -47,6 +46,7 @@ export interface QueryState {
   keepRoot: boolean;
   ignoreInterpunction: boolean;
   query: string;
+  manualQuery: boolean;
  
   //reactiveSentence: ReactiveSentence
 }
@@ -299,6 +299,7 @@ export const useQueryStore = defineStore('query', {
     keepRoot: false,
     ignoreInterpunction: true,
     query: '',
+    manualQuery: false
   }),
 
 
@@ -319,7 +320,15 @@ export const useQueryStore = defineStore('query', {
     grewSentence(state) {
       return sentenceJsonFromTokens(state.tokens,Number(state.currentTokenId))
     },
-    getQuery(state) : string { return state.query},
+    computedQuery(state) {
+      console.log('change to computed query...')
+      state.manualQuery = false;
+      return conlluToBlackLab(state.tokens)
+    },
+
+    getQuery(state) : string { 
+      console.log(`getQuery: ${state.manualQuery}, query now ${state.query}`)
+      return state.manualQuery ? state.query : this.computedQuery;},
     
     isActive(state) : fx {
       const f =  (id: number,property: string) => {
@@ -346,8 +355,8 @@ export const useQueryStore = defineStore('query', {
     },
     resetTokens() {
       this.tokens = initialTokens()
-      this.setGrewTokens()
-      this.updateQuery()
+      //this.setGrewTokens()
+     
     },
 
     setTokens(tokens: TokenState[]) {
@@ -366,7 +375,7 @@ export const useQueryStore = defineStore('query', {
 
     setReactiveSentence(r: ReactiveSentence) {
       this.reactiveSentence = r
-      this.setGrewTokens()
+      //this.setGrewTokens()
     },
 
     setTokensFromConllu(conllu: string) {
@@ -402,7 +411,7 @@ export const useQueryStore = defineStore('query', {
    
     setCurrentTokenId(id: number | null) {
       this.currentTokenId = id;
-      this.setGrewTokens()
+      //this.setGrewTokens()
     },
 
     nextToken() {
@@ -426,8 +435,8 @@ export const useQueryStore = defineStore('query', {
      
       
       this.fixTokenIds()
-      this.setGrewTokens()
-      this.updateQuery()
+      //this.setGrewTokens()
+      
     }, 
     
     insertEmptyTokenAfter() {
@@ -445,7 +454,7 @@ export const useQueryStore = defineStore('query', {
       const ts: TokenState =  emptyToken()
       this.tokens.splice(index,0,ts)
       this.fixTokenIds()
-      this.setGrewTokens()
+      //this.setGrewTokens()
     },
     fixTokenIds() {
       const idMapping = {}
@@ -475,8 +484,8 @@ export const useQueryStore = defineStore('query', {
       if (newActive !== undefined) token.fields[field].active = newActive;
    
       //updateTokenInReactiveSentence(this.reactiveSentence, id, field, newValue)
-      this.setGrewTokens()
-      this.updateQuery()
+      //this.setGrewTokens()
+     
     },
 
     updateTokenOrder(id: number, order: number) {
@@ -488,7 +497,7 @@ export const useQueryStore = defineStore('query', {
         } else {
           token.tokenOrder = -1
         }
-        this.updateQuery()
+        
       },
 
       updateTokenPolarity(id: number, p: Polarity) {
@@ -499,8 +508,8 @@ export const useQueryStore = defineStore('query', {
           } else {
            
           }
-          this.setGrewTokens()
-          this.updateQuery()
+          //this.setGrewTokens()
+         
         },
 
     setFieldActiveAllTokens(field: FieldName) {
@@ -510,7 +519,7 @@ export const useQueryStore = defineStore('query', {
       {
       
         self.tokens.forEach(token => token.fields[field.toLowerCase()].active = true)
-        self.updateQuery()
+        //self.updateQuery()
       }
       set()
       return set;
@@ -529,7 +538,7 @@ export const useQueryStore = defineStore('query', {
     function  set() 
       {
         self.tokens.forEach(token => token.fields[field.toLowerCase()].active = false)
-        self.updateQuery()
+        //self.updateQuery()
       }
       set()
       return set;
@@ -543,8 +552,8 @@ export const useQueryStore = defineStore('query', {
       const token = this.tokens.find(t => t.id === id);
       if (!token) return;
       token.fields[field].active = newValue;
-      this.updateQuery()
-      this.setGrewTokens()
+      //this.updateQuery()
+      // this.setGrewTokens()
     },
 
     removeRel() {
@@ -554,7 +563,7 @@ export const useQueryStore = defineStore('query', {
       console.log(`removeRel: rel removed from token ${this.currentTokenId}`)
       console.log(token)
       //removeRelInReactiveSentence(this.reactiveSentence, this.currentTokenId)
-      this.updateQuery()
+      //this.updateQuery()
     },
 
     setRoot(id: number) {
@@ -565,7 +574,7 @@ export const useQueryStore = defineStore('query', {
       token.deprel = 'root'
       //setHeadInReactiveSentence(this.reactiveSentence, id, 0)
       //updateTokenInReactiveSentence(this.reactiveSentence, id, 'deprel', 'root')
-      this.updateQuery()
+      //this.updateQuery()
     },
     hasCycles() {
 
@@ -596,16 +605,17 @@ export const useQueryStore = defineStore('query', {
 
       console.log(`sethead id=${id} head=${head_id} token=${token.id},${token.head}`)
       //setHeadInReactiveSentence(this.reactiveSentence, id, head_id)
-      this.updateQuery()
+      //this.updateQuery()
     },
 
  
     updateQuery() {
-      this.query = conlluToBlackLab(this.tokens,this.ignoreInterpunction, this.keepRoot)
+      //this.query = conlluToBlackLab(this.tokens,this.ignoreInterpunction, this.keepRoot)
     },
    
     setQuery(q: string) {
       this.query = q;
+      this.manualQuery  = true;
     },
   },
 });

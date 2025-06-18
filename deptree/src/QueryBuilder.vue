@@ -50,10 +50,7 @@
           <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
                 <input type="checkbox" :indeterminate="propertyIndeterminate(p)" v-model="propertyActive[p]" @change="toggleFieldActiveAllTokens(p)"> 
-               <!--
-                <span class='togglePropertyButton' @click="activeAll(p)">all</span><span style="color:white">_</span> 
-                <span class='togglePropertyButton' @click="inActiveAll(p)">none</span>
-              -->  
+           
               </div>
       
               <div class="b"></div>
@@ -98,7 +95,11 @@
 
      <h3>Query corpus</h3>
      <div class="queryEditing">
-     <textarea rows="5" cols="80" v-model="blacklabQuery"/>
+     
+     
+      <textarea rows="5" cols="80" v-model="blacklabQuery"/>
+
+
      Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
      Search language: <select v-model="searchLanguage"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select> 
      Limit to short sentences: <input type="checkbox" v-model="onlyShortSentences"/> <span> </span>
@@ -234,6 +235,7 @@ export default {
       'tokens',
       'query',
       'getQuery',
+      'computedQuery',
       'isActive'
 
     ]),
@@ -250,8 +252,8 @@ export default {
     },
     
     blacklabQuery: {
-      get()  { return this.getQuery },
-      set(v) { this.setQuery(v)}
+      get()  { console.log('getting query'); return this.computedQuery },
+      set(v) { console.log('setting query'); this.setQuery(v)}
     },
     
     
