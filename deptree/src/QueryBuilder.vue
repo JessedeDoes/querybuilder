@@ -560,10 +560,14 @@ h3 {
 
 
 .negativePolarity::before {
-  content: "🚫";
+  content: "🚫"; 
   position: absolute;
   transform: translate(-4pt, 0pt);
   font-size: 3rem;
+  
+ 
+
+
   color: rgba(255, 0, 0, 0.2); /* soft red tint */
   pointer-events: none;
   z-index: 10000;
