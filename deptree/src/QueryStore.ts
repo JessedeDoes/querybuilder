@@ -6,6 +6,8 @@ import {
   SentenceCaretaker,
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
+
+import { tokenJson_T, nodesJson_T, groupsJson_T, metaJson_T, sentenceJson_T, treeJson_T } from 'conllup/lib';
 /**
  * ----------------------------
  *  Typings
@@ -190,11 +192,12 @@ function  initialTokens() {
 } 
 
 
- 
+ // import 
   export interface featuresJson_T {
   [key: string]: string;
 }
 
+/* // dit slaat nergens op, importeer zoals het hoort
 export type tokenJson_T = {
   ID: string;
   FORM: string;
@@ -208,6 +211,7 @@ export type tokenJson_T = {
   MISC: featuresJson_T;
   [key: string]: string | number | featuresJson_T;
 };
+
 
 export interface nodesJson_T {
   [key: string]: tokenJson_T;
@@ -230,7 +234,8 @@ export interface sentenceJson_T {
   treeJson: treeJson_T;
   metaJson: metaJson_T;
 }
-
+*/
+// einde import 
 function getField(t: TokenState, field: string) {
   if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return `[${field}]`
 }
