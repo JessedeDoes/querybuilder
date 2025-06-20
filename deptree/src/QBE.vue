@@ -60,12 +60,6 @@ import TokenDisplay from './TokenDisplay.vue';
 import QueryBuilder from './QueryBuilder.vue'
 import { ref, onMounted, watch, useTemplateRef, nextTick } from 'vue';
 import axios from 'axios';
-import {
-  ReactiveSentence,
-  SentenceSVG,
-  SentenceCaretaker,
-  defaultSentenceSVGOptions
-} from 'dependencytreejs/lib';
 
 
 export default {

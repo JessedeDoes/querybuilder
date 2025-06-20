@@ -65,15 +65,6 @@ import GrewTree from './GrewTree.vue';
 import TokenEditor from './TokenEditor.vue';
 import TokenDisplay from './TokenDisplay.vue';
 import { ref, onMounted, watch, useTemplateRef, nextTick } from 'vue';
-import axios from 'axios';
-import {
-  ReactiveSentence,
-  SentenceSVG,
-  SentenceCaretaker,
-  defaultSentenceSVGOptions
-} from 'dependencytreejs/lib';
-
-
 
 export default {
   name: 'QueryBuilder',
@@ -167,30 +158,13 @@ export default {
       set(v) { console.log('setting query'); this.setQuery(v)}
     },
     
-    /*
-    
-    form : twoWayComputedTokenField('form'),
-    lemma: twoWayComputedTokenField('lemma'),
-    upos: twoWayComputedTokenField('upos'),
-    deprel: twoWayComputedTokenField('deprel'),
-    
-    form_active: tokenFieldActive('form'),
-    lemma_active: tokenFieldActive('lemma'),
-    upos_active: tokenFieldActive('upos'),
-    deprel_active: tokenFieldActive('deprel'),
-    */
 
     form_all_active: tokenFieldActiveAll('form'),
     lemma_all_active: tokenFieldActiveAll('lemma'),
     upos_all_active: tokenFieldActiveAll('upos'),
     deprel_all_active: tokenFieldActiveAll('deprel'),
 
-    /*
-    token_order : {
-       get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
-       set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
-    },
-    */
+
     token_polarity : {
        get() { if (!this.currentToken) return null; return this.currentToken.polarity },
        set(v)  { console.log('yep'); this.updateTokenPolarity(this.currentTokenId,  v) },
@@ -274,16 +248,6 @@ export default {
     reversePolarity() {
       if (this.token_polarity == 'negative') this.token_polarity = 'positive'; else this.token_polarity = 'negative'
     },
-
-    /*
-    clear() {
-      this.localSentence = 'Bruine bonen met spek';
-      this.setTokens([]);
-      this.setQuery('');
-      this.setParse(null);
-      this.setCurrentTokenId(null);
-    },
-    */
   },
 };
 </script>
