@@ -17,6 +17,7 @@
   "dependencies": {
     "axios": "^1.9.0",
     "dependencytreejs": "^2.4.4",
+    "dependencytreejs_fork": "file:../../DependencyTreeJS/dependencytreejs_fork-2.4.4.tgz",
     "lodash-es": "^4.17.21",
     "pinia": "^3.0.1",
     "vue": "^3.5.13",

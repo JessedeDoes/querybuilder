@@ -10,7 +10,8 @@
 import { onMounted, ref, watch, nextTick, useTemplateRef } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useQueryStore } from './QueryStore';
-
+import { layoutStore } from './box-watching/LayoutStore'
+const { boxes } = storeToRefs(layoutStore());
 import {
   ReactiveSentence,
   SentenceSVG,
@@ -19,7 +20,7 @@ import {
   SVG_CONFIG,
 
   type TokenLike, // <- helper type from dependencytreejs ¹
-} from 'dependencytreejs/lib';
+} from 'dependencytreejs_fork/lib';
 import {
   sentenceConllToJson,
   sentenceJsonToConll,
@@ -33,18 +34,21 @@ import {
 const qs = useQueryStore();
 const { tokens } = storeToRefs(qs);
 const { grewSentence }  =  storeToRefs(qs)
-
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); } 
 /* ------------------------------------------------------------------ *
  * DOM refs & DTJS instances
  * ------------------------------------------------------------------ */
 const svgEl            = useTemplateRef('svgElement')
 const reactiveSentence = new ReactiveSentence();
 let   svgRenderer: SentenceSVG | null = null;
-function renderTree() {
+async function renderTree() {
   if (!svgRenderer) return;
   
- 
+  await nextTick()
   reactiveSentence.fromSentenceJson(grewSentence.value);
+  console.log(boxes)
+  
+  svgRenderer.presetLocations = boxes.value // gebeurt te vaak?? pas doen als ALLE boxes klaar zijn...
   svgRenderer.refresh();
   //drawTree(svgRenderer)
 }
