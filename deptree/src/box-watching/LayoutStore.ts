@@ -17,11 +17,11 @@ export const layoutStore = defineStore('layout', {
       const prev = this.boxes[id];
       // avoid useless Vue updates
       if (
-        true || !prev ||
+        !prev ||
         prev.width  !== b.width  ||
-        prev.height !== b.height ||
-        prev.x      !== b.x      ||
-        prev.y      !== b.y
+        // prev.height !== b.height ||
+        prev.x      !== b.x    //  ||
+        // prev.y      !== b.y
       ) {
         this.boxes[id] = b;
       }

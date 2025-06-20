@@ -22,11 +22,11 @@ export default {
         width:  rect.width,
         height: rect.height,
         x:      rect.left,// + window.scrollX,
-        y:      rect.top  + window.scrollY,
+        y:      rect.top //  + window.scrollY,
       });
     })
     }
-    }, 16); // ± one animation frame
+    }, 100); // ± one animation frame
 
     /* watch size changes */
     const ro = new ResizeObserver(report);
