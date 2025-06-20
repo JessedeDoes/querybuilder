@@ -8,8 +8,8 @@
     <div style="overflow-x: auto">
       
     <div xml:id="treeWrapper" id="treeWrapper" style="padding-left: 4em !important; padding-top: 1em; padding-bottom: 1em; overflow-x: auto">
-      <GrewTree v-if="!oldTree"/>
-        <svg v-else width="1200px" height="800px" ref="svgEl" class="tree"></svg>
+      <GrewTree/>
+    
      </div>
 
      <div :style="{display: 'block', overflowX: auto}">
@@ -93,37 +93,9 @@ export default {
         'Lemma' : false,
         'Form' : false
       },
-      language: 'Dutch',
-      searchLanguage : 'Dutch',
+
       tokenProperties: ['Deprel', 'UPoS', 'Form', 'Lemma'],
-      onlyShortSentences: false,
-      languages : {
-      "Dutch" : "nl",
-      "English" : "en",
-      "German" : "de",
-      "French" : "fr",
-      "Italian" : "it",
-      "Latin" : "la",
-      'Ancient Greek' : 'grc',
-      'Sanskrit' : 'sa',
-      "Spanish" : "es",
-      "Japanese" : "ja",
-      'Chinese' : 'zh',
-      "Czech" : "cs",
-      "Polish" : "pl",
-      "Russian": "ru",
-      "Slovenian" : "sl",
-      "Finnish" : "fi",
-      "Estonian" : "et",
-      "Hungarian" : "hu",
-      "All" : "_"
-      },
-      corpus: "UD 2.16",
-      corpora : {
-        "UD 2.16" : "http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/",
-        "GCND" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
-      },
-      oldTree: false
+
 
     };
   },
