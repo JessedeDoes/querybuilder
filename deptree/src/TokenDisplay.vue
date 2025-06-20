@@ -12,36 +12,12 @@
 
 <script>
 import { mapState, mapActions } from 'pinia';
-import { useQueryStore  } from './QueryStore';
+import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll   } from './QueryStore';
 
-export function twoWayComputedTokenField(field) {
-  // ⬇ ordinary *function* expressions ⇒ their `this` is dynamic
-  return {
-    get() {
-      // Vue will later invoke this as  get.call(componentProxy)
-      return this.currentToken
-        ? this.currentToken.fields[field].value
-        : '';
-    },
-    set(v) {
-      if (this.currentTokenId != null)
-        this.updateTokenField(this.currentTokenId, field, v);
-    },
-  };
-}
-
-
-export function tokenFieldActive(field) {
-  return {
-    
-       get() { if (!this.currentToken ) return ''; return this.currentToken.fields[field].active},
-       set(v)  { this.setTokenFieldActive(this.currentTokenId, field, v) },
-    }
-}
 
 
 export default {
-  name: 'TokenEditor',
+  name: 'TokenDisplay',
 
   components: {
 
