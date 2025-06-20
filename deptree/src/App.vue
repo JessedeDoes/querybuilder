@@ -1,36 +1,6 @@
 <template>
   <main class="wrapper">
-    <QueryBuilder/>
-    <div v-if="false">
-    <hr/>
-    <h1 style="font-size: 14pt; margin-bottom: 1em">Example-based query building prototype</h1>
-
-    <!-- input box -->
-    <form @submit.prevent="parse">
-      <textarea v-model="sentence"
-                placeholder="Type any sentence …"
-                rows="2"></textarea>
-             
-      <select v-model="language"><option v-for="name in Object.keys(languages)" :key="name" :value="name">{{ name }}</option></select>
-      
-      <button :disabled="loading || !sentence.trim()">Parse</button>
-      
-    </form>
-
-    <!-- show errors -->
-    <p v-if="error" class="error">{{ error }}</p>
-
-    <!-- SVG target for DependencyTreeJS -->
-     <div v-if="false" xml:id="treeWrapper" id="treeWrapper" style="padding: 1em; overflow-x: scroll">
-        <svg width="1200px" height="600px" ref="svgEl" class="tree"></svg>
-     </div>
-    <!-- generated BlackLab query -->
-    <section v-if="blacklabQuery">
-      <h2>Query</h2>
-      <code class="query">{{ blacklabQuery }}</code>
-      <form @submit.prevent="search"><button>Search</button></form>
-    </section>
-  </div>
+    <QBE/>
   </main>
 
 </template>
@@ -46,8 +16,7 @@ import {
   defaultSentenceSVGOptions
 } from 'dependencytreejs/lib';
 
-
-import QueryBuilder from './QueryBuilder.vue';
+import QBE from "./QBE.vue";
 
 const sentence  = ref('Het is goed dat je fietst');
 const language = ref('Dutch')
