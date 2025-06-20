@@ -239,6 +239,7 @@ export default {
       set(v) { console.log('setting query'); this.setQuery(v)}
     },
     
+    /*
     
     form : twoWayComputedTokenField('form'),
     lemma: twoWayComputedTokenField('lemma'),
@@ -249,20 +250,24 @@ export default {
     lemma_active: tokenFieldActive('lemma'),
     upos_active: tokenFieldActive('upos'),
     deprel_active: tokenFieldActive('deprel'),
+    */
 
     form_all_active: tokenFieldActiveAll('form'),
     lemma_all_active: tokenFieldActiveAll('lemma'),
     upos_all_active: tokenFieldActiveAll('upos'),
     deprel_all_active: tokenFieldActiveAll('deprel'),
 
+    /*
     token_order : {
        get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
        set(v)  { console.log('yep'); this.updateTokenOrder(this.currentTokenId,  v) },
     },
+    */
     token_polarity : {
        get() { if (!this.currentToken) return null; return this.currentToken.polarity },
        set(v)  { console.log('yep'); this.updateTokenPolarity(this.currentTokenId,  v) },
     },
+  
   },
 
   watch: {
