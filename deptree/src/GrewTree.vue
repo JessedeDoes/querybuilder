@@ -40,69 +40,6 @@ const { grewSentence }  =  storeToRefs(qs)
 const svgEl            = useTemplateRef('svgElement')
 const reactiveSentence = new ReactiveSentence();
 let   svgRenderer: SentenceSVG | null = null;
-const SVG_CONFIG = {
-  startTextY: 10,
-  textgraphdistance: 10,
-  dragclickthreshold: 400, // ms
-  arrowheadsize: 5,
-  gapX: 18,
-  sizeFontY: 18,
-  reverseArcThreshold: 20, // pixels below tokens mouth need to be to reverse the arc
-};
-
-
-
-//volgende gaat niet werken, aanpassen van de grew component is onvermijdelijk als je tokens met tree wilt alignen
-
-function drawTree(ssgv: SentenceSVG) {
-
-  ssgv.clearTree();
-  ssgv.populateOrderOfTokens();
-  ssgv.populateLevels();
-  populateTokenSVGs(ssgv);
-  ssgv.drawRelations();
-  ssgv.drawEnhancedRelations();
-  ssgv.adaptSvgCanvas();
-  ssgv.showhighlights();
-
-    if (ssgv.options.matches.length > 0) {
-      ssgv.showmatches();
-    }
-
-    if (ssgv.options.packages !== null) {
-      ssgv.showpackages();
-    }
-
-    if (ssgv.options.interactive) {
-      ssgv.snapSentence.addClass('interactive');
-      ssgv.attachDraggers();
-      ssgv.attachEvents();
-      ssgv.attachHovers();
-    }
-    if (ssgv.teacherTreeJson) {
-      ssgv.showDiffs(ssgv.teacherTreeJson);
-    }
-}
-
-function populateTokenSVGs(ssgv: SentenceSVG): void {
-    let runningX = 0;
-    const maxLevelY = Math.max(...ssgv.levelsArray, 2); // 2 would be the minimum possible level size
-    const offsetY = SVG_CONFIG.startTextY + maxLevelY * ssgv.options.arcHeight;
-
-    let tokenSvgIndex = 0;
-    for (const tokenJsonIndex of ssgv.orderOfTokens) {
-      const tokenJson = getNodeFromTreeJson(ssgv.treeJson, tokenJsonIndex);
-      if (tokenJson) {
-        const tokenSVG = new TokenSVG(tokenJson, ssgv);
-        ssgv.tokenSVGs.push(tokenSVG);
-        tokenSVG.createSnap(ssgv.snapSentence, ssgv.options.shownFeatures, runningX, offsetY);
-        tokenSVG.ylevel = ssgv.levelsArray[tokenSvgIndex];
-        runningX += 300 // tokenSVG.width;
-        tokenSvgIndex += 1;
-      }
-    }
-  }
-
 function renderTree() {
   if (!svgRenderer) return;
   

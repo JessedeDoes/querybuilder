@@ -1,0 +1,43 @@
+// directives/v-report-box.ts
+import { layoutStore } from './LayoutStore.ts';
+import { throttle } from 'lodash-es';          // or roll your own
+
+export default {
+  mounted(el: HTMLElement, binding) {
+    const id    = binding.value;               // v-report-box=\"'token-7'\"
+    const store = layoutStore();
+
+    const report = throttle(() => {
+      const rect = el.getBoundingClientRect();
+      console.log('box layout change: ' + id);
+      console.log(rect);
+      store.updateBox(id, {
+        width:  rect.width,
+        height: rect.height,
+        x:      rect.left + window.scrollX,
+        y:      rect.top  + window.scrollY,
+      });
+    }, 16); // ± one animation frame
+
+    /* watch size changes */
+    const ro = new ResizeObserver(report);
+    ro.observe(el);
+
+    /* watch position changes (scroll, manual scrollLeft/Top) */
+    window.addEventListener('scroll', report, true); // capture phase
+
+    /* first measurement */
+    report();
+
+    /* cleanup */
+    el._boxCleanup = () => {
+      ro.disconnect();
+      window.removeEventListener('scroll', report, true);
+      store.removeBox(id);
+    };
+  },
+  unmounted(el) {
+    el._boxCleanup?.();
+  },
+};
+

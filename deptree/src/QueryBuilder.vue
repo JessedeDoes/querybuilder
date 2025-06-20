@@ -34,8 +34,8 @@
          
           <template v-for="t in tokens" :index="t.id">
 
-            <TokenEditor :t=currentToken v-if="currentTokenId == t.id"/>
-            <TokenDisplay v-else :t=t  @click="() => setCurrentTokenId(t.id)"/>
+            <TokenEditor :t=currentToken v-if="currentTokenId == t.id" v-report-box="'tokenEdit-' + t.id"/>
+            <TokenDisplay v-else :t=t  @click="() => setCurrentTokenId(t.id)" v-report-box="'tokenEdit-' + t.id"/>
 
         </template>
         
