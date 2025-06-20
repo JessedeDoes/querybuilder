@@ -7,18 +7,26 @@ export default {
     const id    = binding.value;               // v-report-box=\"'token-7'\"
     const store = layoutStore();
 
-    const report = //throttle(
+    const report = throttle(
       () => {
       const rect = el.getBoundingClientRect();
+      if (el) {
+      const siblings = el.parentElement.children;
+      const array = [...siblings];
       console.log(`box layout change for ${id}: x=${rect.x}`);
-      //console.log(rect);
+      //console.log(rect); // ook the siblings doen.....
+      array.forEach(c =>  {
+      const id = c.getAttribute("data-id")
+      const rect = c.getBoundingClientRect();
       store.updateBox(id, {
         width:  rect.width,
         height: rect.height,
         x:      rect.left,// + window.scrollX,
         y:      rect.top  + window.scrollY,
       });
-    }//, 16); // ± one animation frame
+    })
+    }
+    }, 16); // ± one animation frame
 
     /* watch size changes */
     const ro = new ResizeObserver(report);

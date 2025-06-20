@@ -8,6 +8,7 @@
  * GrewTree.vue
  * ------------------------------------------------------------------ */
 import { onMounted, ref, watch, nextTick, useTemplateRef } from 'vue';
+
 import { storeToRefs } from 'pinia';
 import { useQueryStore } from './QueryStore';
 import { layoutStore } from './box-watching/LayoutStore'
@@ -100,6 +101,7 @@ onMounted(async () => {
 
 // Re‑render whenever the token array changes
 watch(grewSentence, renderTree, { deep: true });
+watch(boxes, renderTree, { deep: true });
 </script>
 
 <style scoped>
