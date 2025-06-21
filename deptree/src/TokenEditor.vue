@@ -72,7 +72,7 @@ export default {
 
     ]),
  
-    
+    // deze dingetjes komen een paar keer terug dus moeten in apart bestandje of in QueryStore.ts
     form : twoWayComputedTokenField('form'),
     lemma: twoWayComputedTokenField('lemma'),
     upos: twoWayComputedTokenField('upos'),
