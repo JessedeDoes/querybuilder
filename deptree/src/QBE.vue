@@ -9,7 +9,7 @@
     
     <div class="sentenceEditing">
     <textarea
-      v-model="localSentence"
+      v-model="editableSentence"
       rows="2"
       placeholder="Type any sentence…"
       class="sentence-input"
@@ -69,7 +69,7 @@ export default {
     GrewTree, TokenEditor, TokenDisplay, QueryBuilder
   },
   props: {
-    modelValue: {
+    exampleSentence: {
       type: String,
       default: 'bruine bonen met spek',
     },
@@ -84,7 +84,7 @@ export default {
 
   data() {
     return {
-      localSentence: this.modelValue,
+      editableSentence: this.exampleSentence,
       
       propertyActive: {
         'Deprel' : true,
@@ -129,7 +129,7 @@ export default {
 
   computed: {
     isEmpty() {
-      return !this.localSentence.trim();
+      return !this.editableSentence.trim();
     },
 
     ...mapState(useQueryStore, [
@@ -153,11 +153,11 @@ export default {
   },
 
   watch: {
-    modelValue(val) {
-      this.localSentence = val;
+    exampleSentence(val) {
+      this.editableSentence = val;
     },
-    localSentence(val) {
-      this.$emit('update:modelValue', val);
+    editableSentence(val) {
+      this.$emit('update:exampleSentence', val);
     },
   },
 
@@ -200,7 +200,7 @@ export default {
 
           const url = `https://lindat.mff.cuni.cz/services/udpipe/api/process` +
                 `?tokenizer&tagger&parser&model=${this.languages[this.language]}` +
-                `&data=${encodeURIComponent(this.localSentence)}`;
+                `&data=${encodeURIComponent(this.editableSentence)}`;
 
           const { data } = await axios.get(url);
 
@@ -243,7 +243,7 @@ export default {
       window.open(url,'blacklab')
     },
     clear() {
-      this.localSentence = 'Bruine bonen met spek';
+      this.editableSentence = 'Bruine bonen met spek';
       this.setTokens([]);
       this.setQuery('');
       this.setParse(null);
