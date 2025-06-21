@@ -37,7 +37,7 @@
      <div class="queryEditing">
      
      
-      <textarea rows="5" cols="80" v-model="blacklabQuery"/>
+      <textarea rows="5" cols="80" v-model="editableQuery"/>
 
 
      Corpus: <select v-model="corpus"><option v-for="name in Object.keys(corpora)" :key="name" :value="name">{{ name }}</option></select> 
@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       editableSentence: this.exampleSentence,
+      editableQuery: this.blacklabQuery,
       
       propertyActive: {
         'Deprel' : true,
@@ -159,6 +160,9 @@ export default {
     editableSentence(val) {
       this.$emit('update:exampleSentence', val);
     },
+    blacklabQuery(val) {
+      this.editableQuery = val;
+    }
   },
 
   methods: {
@@ -231,7 +235,7 @@ export default {
       const groupByLanguage = lang=='All'
       let length_part = ' within <s sentence_length=in[5,14]/>'
       if (this.corpus != "UD 2.16" || !this.onlyShortSentences) length_part = "";
-      const pattern =  encodeURIComponent(`(${this.blacklabQuery}) ${length_part}`)
+      const pattern =  encodeURIComponent(`(${this.editableQuery}) ${length_part}`)
 
  
       const langFilter = `languageName:"${lang}"`
