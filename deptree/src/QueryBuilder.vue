@@ -26,7 +26,6 @@
           <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
                 <input type="checkbox" :indeterminate="propertyIndeterminate(p)" v-model="propertyActive[p]" @change="toggleFieldActiveAllTokens(p)"> 
-           
               </div>
       
               <div class="b"></div>
@@ -59,7 +58,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia';
-import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll } from './QueryStore';
+import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll,    tokenFields, tokenFieldsActive } from './QueryStore';
 const store = useQueryStore;
 
 import GrewTree from './GrewTree.vue';
@@ -90,13 +89,13 @@ export default {
       
       
       propertyActive: {
-        'Deprel' : true,
-        'UPoS' : true,
-        'Lemma' : false,
-        'Form' : false
+        'deprel' : true,
+        'upos' : true,
+        'lemma' : false,
+        'form' : false
       },
 
-      tokenProperties: ['Deprel', 'UPoS', 'Form', 'Lemma'],
+      tokenProperties: Object.keys(tokenFields) // ['Deprel', 'UPoS', 'Form', 'Lemma'],
 
 
     };
@@ -139,11 +138,8 @@ export default {
     },
     
 
-    form_all_active: tokenFieldActiveAll('form'),
-    lemma_all_active: tokenFieldActiveAll('lemma'),
-    upos_all_active: tokenFieldActiveAll('upos'),
-    deprel_all_active: tokenFieldActiveAll('deprel'),
-
+    ...tokenFields, 
+    ...tokenFieldsActive,
 
     token_polarity : {
        get() { if (!this.currentToken) return null; return this.currentToken.polarity },

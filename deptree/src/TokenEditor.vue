@@ -17,7 +17,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia';
-import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll, tokenFields   } from './QueryStore';
+import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll, tokenFields, tokenFieldsActive   } from './QueryStore';
 const store = useQueryStore;
 
 import GrewTree from './GrewTree.vue';

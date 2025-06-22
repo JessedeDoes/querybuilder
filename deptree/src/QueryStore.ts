@@ -269,7 +269,7 @@ function sentenceJsonFromTokens(tokens: TokenState[], currentTokenId: Number=-10
   }
 */
 
-const fields = ["form", "lemma", "upos", "deprel"];
+const fields = ["deprel", "upos", "form", "lemma"];
 
 function createTokenFields() {
   const x = {}
@@ -278,6 +278,14 @@ function createTokenFields() {
 }
 
 export const tokenFields = createTokenFields()
+
+function createTokenFieldsActive() {
+  const x = {}
+  fields.forEach(f => x[f + '_active'] = tokenFieldActive(f))
+  return x;
+}
+
+export const tokenFieldsActive = createTokenFieldsActive()
 
 export function twoWayComputedTokenField(field) {
   // ⬇ ordinary *function* expressions ⇒ their `this` is dynamic

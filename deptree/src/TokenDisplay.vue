@@ -12,7 +12,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia';
-import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll   } from './QueryStore';
+import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll, tokenFields, tokenFieldsActive   } from './QueryStore';
 
 
 
@@ -56,19 +56,10 @@ export default {
       'isActive'
 
     ]),
- 
     
-    form : twoWayComputedTokenField('form'),
-    lemma: twoWayComputedTokenField('lemma'),
-    upos: twoWayComputedTokenField('upos'),
-    deprel: twoWayComputedTokenField('deprel'),
-    
-    form_active: tokenFieldActive('form'),
-    lemma_active: tokenFieldActive('lemma'),
-    upos_active: tokenFieldActive('upos'),
-    deprel_active: tokenFieldActive('deprel'),
+    ...tokenFields, 
+    ...tokenFieldsActive,
 
-   
 
     token_order : {
        get() { if (!this.currentToken || this.currentToken.tokenOrder == -1) return ''; return this.currentToken.tokenOrder},
