@@ -33,11 +33,11 @@ export const layoutStore = defineStore('layout', {
         this.boxes[id] = b;
       }
       if (!prev || prev.width !== b.width) {
-        console.log(`width change for box ${id}: ${prev.width} -> ${b.width}`)
+        if (prev) console.log(`width change for box ${id}: ${prev.width} -> ${b.width}`)
         this.boxwidths[id]  = b.width
       }
     },
-    
+
     removeBox(id: string) {
       delete this.boxes[id];
     },

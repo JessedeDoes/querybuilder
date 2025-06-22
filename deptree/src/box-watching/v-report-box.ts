@@ -17,13 +17,14 @@ export default {
       //console.log(rect); // ook the siblings doen.....
       array.forEach(c =>  {
       const id = c.getAttribute("data-id")
+      if (id) {
       const rect = c.getBoundingClientRect();
       store.updateBox(id, {
         width:  rect.width,
         height: rect.height,
         x:     rect.left,// + window.scrollX, do not report position, would trigger unwelcome redraws
         y:     rect.top //  + window.scrollY,
-      });
+      });}
     })
     }
     }, 100); // ± one animation frame
