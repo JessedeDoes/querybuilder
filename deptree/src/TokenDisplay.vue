@@ -114,7 +114,11 @@ export default {
     },
     
     valueOrPlaceHolder(t,p) {
-      if (t.fields[p].value.length > 0) return  t.fields[p].value;
+      let v = t.fields[p].value
+      if (p == 'feats')
+         v = v.replace(/[^|=]+=/g, '').replace(/\|/g,',')
+
+      if (v.length > 0) return v;
       return `[${p}]`
     },
   },
