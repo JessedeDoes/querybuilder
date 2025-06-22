@@ -64,7 +64,7 @@ function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
   return false
 }
 
-function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=true, keepRoot: boolean=false) {
+function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=true, keepRoot: boolean=false, createCaptures: boolean=true) {
 
   console.log(`Options: ignore interpunction: ${ignoreInterpunction} keep root: ${keepRoot}`)
   tokens.forEach(t => t.children = [])
@@ -97,7 +97,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     const useLemma = t.fields.lemma.active
     const usePoS =  t.fields.upos.active
     const useForm =  t.fields.form.active
-    const capturePrefix = (t.tokenOrder != -1)? `n${t.tokenOrder}:` : ''
+    const capturePrefix = (t.tokenOrder != -1) || createCaptures? `n${t.id}:` : ''
     
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
@@ -139,7 +139,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
   }
 
   const sorted = tokensWithOrder.sort( (t1,t2) => t1.tokenOrder - t2.tokenOrder)
-  const orderPart = hasTokenOrder? ' :: ' + sorted.slice(0,-1).map((t,i) => `start(n${t.tokenOrder}) < start(n${sorted[i+1].tokenOrder})`).join(' & ') : ''
+  const orderPart = hasTokenOrder? ' :: ' + sorted.slice(0,-1).map((t,i) => `start(n${t.id}) < start(n${sorted[i+1].id})`).join(' & ') : ''
   console.log(`order clause: ${orderPart}`)
   // --- 5. stitch together ---------------------------------------------
    const rootPart = keepRoot? '^--> '  : '' 
