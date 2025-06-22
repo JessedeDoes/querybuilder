@@ -17,11 +17,19 @@ import {
   ReactiveSentence,
   SentenceSVG,
   defaultSentenceSVGOptions,
-
+  setStyleSheet,
   SVG_CONFIG,
 
   type TokenLike, // <- helper type from dependencytreejs ¹
 } from 'dependencytreejs_fork/lib';
+
+const myCustomCSS = `
+.FORM {
+ font-size: 11pt;
+}`
+setStyleSheet(myCustomCSS) 
+
+
 import {
   sentenceConllToJson,
   sentenceJsonToConll,
