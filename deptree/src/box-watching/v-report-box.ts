@@ -21,8 +21,8 @@ export default {
       store.updateBox(id, {
         width:  rect.width,
         height: rect.height,
-        x:      rect.left,// + window.scrollX,
-        y:      rect.top //  + window.scrollY,
+        x:     rect.left,// + window.scrollX, do not report position, would trigger unwelcome redraws
+        y:     rect.top //  + window.scrollY,
       });
     })
     }

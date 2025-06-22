@@ -109,7 +109,7 @@ onMounted(async () => {
 
 // Re‑render whenever the token array changes
 watch(grewSentence, renderTree, { deep: true });
-watch(boxes, renderTree, { deep: true });
+watch(boxes, renderTree, { deep: true }); // boxes moeten voor scrollen GEEN y bevatten....
 </script>
 
 <style scoped>
