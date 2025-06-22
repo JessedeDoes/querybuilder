@@ -47,6 +47,7 @@ export interface QueryState {
   currentTokenId: number | null;
   keepRoot: boolean;
   ignoreInterpunction: boolean;
+  createCaptures: boolean;
   query: string;
   manualQuery: boolean;
  
@@ -324,6 +325,7 @@ export const useQueryStore = defineStore('query', {
     currentTokenId: 1,
     keepRoot: false,
     ignoreInterpunction: true,
+    createCaptures: false,
     query: '',
     manualQuery: false
   }),
@@ -335,6 +337,7 @@ export const useQueryStore = defineStore('query', {
   getters: {
    
     getKeepRoot(state) : boolean { return state.keepRoot },
+    getCreateCaptures(state) : boolean { return state.createCaptures },
     getIgnoreInterpunction(state): boolean { 
       if (!state) 
       console.log("state not initialized");
@@ -353,7 +356,7 @@ export const useQueryStore = defineStore('query', {
     computedQuery(state) {
       console.log('change to computed query...')
       state.manualQuery = false;
-      return conlluToBlackLab(state.tokens,state.ignoreInterpunction, state.keepRoot)
+      return conlluToBlackLab(state.tokens,state.ignoreInterpunction, state.keepRoot, state.createCaptures)
     },
 
     getQuery(state) : string { 
@@ -382,6 +385,9 @@ export const useQueryStore = defineStore('query', {
     },
     setIgnoreInterpunction(b: boolean) {
       this.ignoreInterpunction = b;
+    },
+    setCreateCaptures(b: boolean) {
+      this.createCaptures = b;
     },
     resetTokens() {
       this.tokens = initialTokens() 

@@ -49,7 +49,8 @@
               </div>
               <div class="tokenTop">
                 Options: pattern root is sentence root <input type="checkbox" v-model="keepRoot" title="pattern root is sentence root"></input> 
-                | ignore punctuation <input type="checkbox" v-model="ignoreInterpunction" title="pattern root is sentence root"></input> 
+                | ignore punctuation <input type="checkbox" v-model="ignoreInterpunction" title="pattern root is sentence root"></input>
+                | label query tokens <input type="checkbox" v-model="createCaptures" title="label query tokens"></input> 
               </div>
      </div>
     </div>  
@@ -113,8 +114,8 @@ export default {
       'computedQuery',
       'getIgnoreInterpunction',
       'getKeepRoot',
+      'createCaptures',
       'isActive'
-
     ]),
     // volgende is redelijk debiel en laat zien dat we vue 3 niet snappen..
     
@@ -128,6 +129,10 @@ export default {
       set(v) {this.setKeepRoot(v); this.updateQuery() }
     },
     
+    createCaptures: {
+      get() { return this.createCaptures},
+      set(v) {this.setCreateCaptures(v); this.updateQuery() }
+    },
     blacklabQuery: {
       get()  { console.log('getting query'); return this.computedQuery },
       set(v) { console.log('setting query'); this.setQuery(v)}
@@ -177,6 +182,7 @@ export default {
       'resetTokens',
       'setKeepRoot',
       'setIgnoreInterpunction',
+      'setCreateCaptures',
       'getRoot',
 
     
