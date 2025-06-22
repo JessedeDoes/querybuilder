@@ -209,6 +209,16 @@ function getField(t: TokenState, field: string) {
   if (field in t.fields && t.fields[field].value != '') return t.fields[field].value; return `[${field}]`
 }
 
+function truncate(s, n) {
+  if (s.length <= n) return s;
+  return s.slice(0, n - 3) + '...';
+}
+
+function getFieldTruncated(t: TokenState, field: string) {
+   const z = field in t.fields && t.fields[field].value != ''?  t.fields[field].value: `[${field}]`
+   return truncate(z,12)
+}
+
 function getField2(t: TokenState, field: string) {
   if (field == 'deprel' && t.fields[field].value == 'root') return '';
   if (field in t.fields && t.fields[field].active && t.fields[field].value != '') return t.fields[field].value; return norel
@@ -218,7 +228,7 @@ function tokenToGrewJson(token: TokenState, isCurrentToken: boolean=false): toke
   console.log(isCurrentToken)
   return {
     ID: String(token.id),
-    FORM: (isCurrentToken? '☛': '') + getField(token, 'form'),
+    FORM: isCurrentToken? ('☛' + getFieldTruncated(token,'form')) : getField(token, 'form'),
     LEMMA: getField(token, 'lemma'),
     UPOS: getField(token, 'upos'),
     XPOS: getField(token, 'xpos'),
