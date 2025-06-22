@@ -14,10 +14,16 @@
 }
 
 .tokenTop {
-  xdisplay: flex; justify-content: space-between; width: 100%; 
+  xdisplay: flex; xjustify-content: space-between; width: 100%; 
   font-weight: normal;
   padding-left: 3pt; padding-right: 3pt;
   margin-top: 6pt;
+}
+.options {
+  text-align: left;
+}
+.actions {
+  text-align: left;
 }
 .left {
   text-align: left;

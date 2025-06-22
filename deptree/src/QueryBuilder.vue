@@ -78,7 +78,7 @@ export default {
 
   async mounted() {
     await nextTick();
-    this.parse()
+    // this.parse()
     //this.resetTokens()
     
   },
@@ -116,7 +116,7 @@ export default {
     // volgende is redelijk debiel en laat zien dat we vue 3 niet snappen..
     
     ignoreInterpunction: {
-      get() { return this.getIgnoreInterpunction},
+      get() { console.log('getting ignoreinterpunction'); return this.getIgnoreInterpunction},
       set(v) {this.setIgnoreInterpunction(v); this.updateQuery() }
     },
    

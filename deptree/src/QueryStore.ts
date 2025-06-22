@@ -307,7 +307,9 @@ export const useQueryStore = defineStore('query', {
   getters: {
    
     getKeepRoot(state) : boolean { return state.keepRoot },
-    getIgnoreInterpunction(state): boolean { return state.ignoreInterpunction},
+    getIgnoreInterpunction(state): boolean { 
+      console.log(state)
+      return state.ignoreInterpunction},
     currentToken(state): TokenState | undefined {
    
       return state.tokens.find(t => t.id === state.currentTokenId);
