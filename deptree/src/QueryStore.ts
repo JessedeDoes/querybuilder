@@ -90,7 +90,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
   const hasTokenOrder = tokensWithOrder.length > 1
 
   // --- 4. helpers ------------------------------------------------------
-  const esc = s => s.replace(/'/g, "\\'");
+  const esc = s => s.replace(/'/g, "\\'").replace(/\|/g,'\\|');
 
   function tokPattern(t: TokenState) {
     const props : string[] = [];
@@ -98,6 +98,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     const useLemma = t.fields.lemma.active
     const usePoS =  t.fields.upos.active
     const useForm =  t.fields.form.active
+    const useFeats = t.fields.feats.active
     const capturePrefix = (t.tokenOrder != -1) || createCaptures? `n${t.id}:` : ''
     
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
@@ -106,7 +107,9 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
       props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
-   
+    if (useFeats && t.fields.feats.value && t.fields.feats.value !== '_')
+      props.push(`xpos='.*${esc(t.fields.feats.value)}.*'`); // verbeteren in corpora: dit moet ook feats heten. evenzo pos->upos
+     // bovendien moet je dit per feature doen, meerdere clauses, anders niet volgorde-onafhankelijk 
     const propStr = props.length ? `[${props.join(' & ')}]` : '[]'; // AHEM: zou _ moeten zijn
     return `${capturePrefix}${propStr}`;
   }
@@ -269,7 +272,7 @@ function sentenceJsonFromTokens(tokens: TokenState[], currentTokenId: Number=-10
   }
 */
 
-const fields = ["deprel", "upos", "form", "lemma"];
+const fields = ["deprel", "upos", "feats", "form", "lemma"];
 
 function createTokenFields() {
   const x = {}

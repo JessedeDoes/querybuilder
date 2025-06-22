@@ -2,6 +2,7 @@
             <div @click="() => setCurrentTokenId(t.id)" :class="'tokenDisplay' + ' ' + polarityClass(t.polarity)">
               <div :class="propertyStyle(t.id,'deprel')">{{valueOrPlaceHolder(t,'deprel') }}</div>
               <div :class="propertyStyle(t.id,'upos')">{{valueOrPlaceHolder(t,'upos') }}</div>
+              <div :class="propertyStyle(t.id,'feats')">{{valueOrPlaceHolder(t,'feats') }}</div>
               <div :class="propertyStyle(t.id,'form')">{{ valueOrPlaceHolder(t,'form') }}</div>
               <div :class="propertyStyle(t.id,'lemma')">{{ valueOrPlaceHolder(t,'lemma') }}</div>
               
