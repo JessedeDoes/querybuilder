@@ -77,7 +77,8 @@ export default {
   },
 
   async mounted() {
-    await nextTick();
+    //await nextTick();
+    this.resetTokens();
     // this.parse()
     //this.resetTokens()
     
@@ -110,6 +111,8 @@ export default {
       'query',
       'getQuery',
       'computedQuery',
+      'getIgnoreInterpunction',
+      'getKeepRoot',
       'isActive'
 
     ]),
@@ -176,8 +179,7 @@ export default {
       'setIgnoreInterpunction',
       'getRoot',
 
-      'getKeepRoot',
-      'getIgnoreInterpunction'
+    
     ]),
     toggleFieldActiveAllTokens(p) {
   

@@ -13,7 +13,7 @@ export default {
       if (el) {
       const siblings = el.parentElement.children;
       const array = [...siblings];
-      console.log(`box layout change for ${id}: x=${rect.x}`);
+      // console.log(`box layout change for ${id}: x=${rect.x}`);
       //console.log(rect); // ook the siblings doen.....
       array.forEach(c =>  {
       const id = c.getAttribute("data-id")

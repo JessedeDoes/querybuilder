@@ -152,10 +152,18 @@ function findToken(reactiveSentence: ReactiveSentence, tokenId)  {
   return nodesJson[id]
 }
 
+const defaultpropertyActive =  {
+  'deprel' : true,
+  'upos' : true,
+  'lemma' : false,
+  'form' : false
+}
+
 function emptyToken() {
   function f(x: string) {
+    const isActive = x in defaultpropertyActive?defaultpropertyActive[x]:false;
     return {
-      active: true,
+      active: isActive,
       value: ''
     }
   }
@@ -308,7 +316,9 @@ export const useQueryStore = defineStore('query', {
    
     getKeepRoot(state) : boolean { return state.keepRoot },
     getIgnoreInterpunction(state): boolean { 
-      console.log(state)
+      if (!state) 
+      console.log("state not initialized");
+     console.log('in getter: ' + state.ignoreInterpunction)
       return state.ignoreInterpunction},
     currentToken(state): TokenState | undefined {
    
@@ -559,6 +569,11 @@ export const useQueryStore = defineStore('query', {
       const token = this.tokens.find(t => t.id == id);
       token.head = 0;
       token.deprel = 'root'
+      const oldRoot = this.tokens.find(t => t.id != id && t.head == 0);
+      if (oldRoot) 
+        oldRoot.head = -1;
+
+    
     },
     hasCycles() {
 
