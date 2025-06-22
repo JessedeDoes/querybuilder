@@ -22,6 +22,7 @@ export const layoutStore = defineStore('layout', {
     updateBox(id: string, b: Box) {
       const prev = this.boxes[id];
       // avoid useless Vue updates
+      
       if (
         !prev ||
         prev.width  !== b.width  ||
@@ -31,11 +32,12 @@ export const layoutStore = defineStore('layout', {
       ) {
         this.boxes[id] = b;
       }
-      if (!prev || prev.width != b.width) {
+      if (!prev || prev.width !== b.width) {
         console.log(`width change for box ${id}: ${prev.width} -> ${b.width}`)
         this.boxwidths[id]  = b.width
       }
     },
+    
     removeBox(id: string) {
       delete this.boxes[id];
     },
