@@ -7,12 +7,12 @@
     <div class="queryEditing">
     <div style="overflow-x: auto">
       
-    <div xml:id="treeWrapper" id="treeWrapper" style="padding-left: 4em !important; padding-top: 1em; padding-bottom: 1em; overflow-x: auto">
+    <div xml:id="treeWrapper" id="treeWrapper" style="padding-left: 4em !important; padding-top: 1em; padding-bottom: 1em; overflow-x: visible">
       <GrewTree/>
     
      </div>
 
-     <div :style="{display: 'block', overflowX: auto}">
+     <div :style="{display: 'block', overflowX: visible}">
       <!--
       Token id: <button  @click="previousToken">&lt;</button> {{ currentTokenId }} <button value="previous" @click="nextToken">&gt;</button>
       -->
