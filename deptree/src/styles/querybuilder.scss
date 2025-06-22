@@ -118,14 +118,15 @@ h3 {
   margin-top: 0em;
   margin-bottom: 0em;
   overflow-x: auto;
-  max-width: 1500px;
+  max-width: 4000px;
 }
 
 .flexParent {
   display: flex;
-  flex-grow: 0 0 visible;
+  flex-grow: 0 0 auto;
   column-gap: 4pt;
   margin-top: 4pt;
+  overflow-x: visible;
 }
 
 .tokenEditor input {
