@@ -123,7 +123,7 @@ h3 {
 
 .flexParent {
   display: flex;
-  flex-grow: 0 0 auto;
+  flex-grow: 0 0 visible;
   column-gap: 4pt;
   margin-top: 4pt;
 }
@@ -141,10 +141,6 @@ h3 {
   position: absolute;
   transform: translate(-4pt, 0pt);
   font-size: 3rem;
-  
- 
-
-
   color: rgba(255, 0, 0, 0.2); /* soft red tint */
   pointer-events: none;
   z-index: 10000;
