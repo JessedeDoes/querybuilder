@@ -17,7 +17,7 @@
 
 <script>
 import { mapState, mapActions } from 'pinia';
-import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll   } from './QueryStore';
+import { useQueryStore, twoWayComputedTokenField,   tokenFieldActive, tokenFieldActiveAll, tokenFields   } from './QueryStore';
 const store = useQueryStore;
 
 import GrewTree from './GrewTree.vue';
@@ -73,11 +73,13 @@ export default {
     ]),
  
     // deze dingetjes komen een paar keer terug dus moeten in apart bestandje of in QueryStore.ts
+    ...tokenFields,
+    /*
     form : twoWayComputedTokenField('form'),
     lemma: twoWayComputedTokenField('lemma'),
     upos: twoWayComputedTokenField('upos'),
     deprel: twoWayComputedTokenField('deprel'),
-    
+    */
     form_active: tokenFieldActive('form'),
     lemma_active: tokenFieldActive('lemma'),
     upos_active: tokenFieldActive('upos'),

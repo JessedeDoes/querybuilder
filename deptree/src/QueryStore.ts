@@ -268,6 +268,16 @@ function sentenceJsonFromTokens(tokens: TokenState[], currentTokenId: Number=-10
   }
 */
 
+const fields = ["form", "lemma", "upos", "deprel"];
+
+function createTokenFields() {
+  const x = {}
+  fields.forEach(f => x[f] = twoWayComputedTokenField(f))
+  return x;
+}
+
+export const tokenFields = createTokenFields()
+
 export function twoWayComputedTokenField(field) {
   // ⬇ ordinary *function* expressions ⇒ their `this` is dynamic
   return {
