@@ -11,12 +11,11 @@ interface Box {
 export const layoutStore = defineStore('layout', {
   state: () => ({
     boxes: {} as Record<string, Box>,   // id → measurements
+    boxwidths: {} as Record<string,Number>
   }),
   getters: {
 
-    boxwidths (state) {
-      return Object.values(state.boxes).map(b => b.width)
-    }
+
 
   },
   actions: {
@@ -31,6 +30,10 @@ export const layoutStore = defineStore('layout', {
         // prev.y      !== b.y
       ) {
         this.boxes[id] = b;
+      }
+      if (!prev || prev.width != b.width) {
+        console.log(`width change for box ${id}: ${prev.width} -> ${b.width}`)
+        this.boxwidths[id]  = b.width
       }
     },
     removeBox(id: string) {

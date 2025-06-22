@@ -58,6 +58,7 @@ async function renderTree() {
   reactiveSentence.fromSentenceJson(grewSentence.value);
   // console.log(boxes)
   console.log("rerender tree")
+  console.log(Object.values(boxwidths.value).join(', '))
   svgRenderer.presetLocations = boxes.value // gebeurt te vaak?? pas doen als ALLE boxes klaar zijn...
   svgRenderer.refresh();
   //drawTree(svgRenderer)
