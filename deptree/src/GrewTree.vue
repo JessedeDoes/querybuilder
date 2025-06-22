@@ -12,7 +12,7 @@ import { onMounted, ref, watch, nextTick, useTemplateRef } from 'vue';
 import { storeToRefs } from 'pinia';
 import { useQueryStore } from './QueryStore';
 import { layoutStore } from './box-watching/LayoutStore'
-const { boxes } = storeToRefs(layoutStore());
+const { boxes, boxwidths } = storeToRefs(layoutStore());
 import {
   ReactiveSentence,
   SentenceSVG,
@@ -42,6 +42,7 @@ import {
  * ------------------------------------------------------------------ */
 const qs = useQueryStore();
 const { tokens } = storeToRefs(qs);
+
 const { grewSentence }  =  storeToRefs(qs)
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); } 
 /* ------------------------------------------------------------------ *
@@ -109,7 +110,7 @@ onMounted(async () => {
 
 // Re‑render whenever the token array changes
 watch(grewSentence, renderTree, { deep: true });
-watch(boxes, renderTree, { deep: true }); // boxes moeten voor scrollen GEEN y bevatten....
+watch(boxwidths, renderTree, { deep: true }); // boxes moeten voor scrollen GEEN y bevatten....
 </script>
 
 <style scoped>

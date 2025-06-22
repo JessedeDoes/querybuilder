@@ -12,6 +12,13 @@ export const layoutStore = defineStore('layout', {
   state: () => ({
     boxes: {} as Record<string, Box>,   // id → measurements
   }),
+  getters: {
+
+    boxwidths (state) {
+      return Object.values(state.boxes).map(b => b.width)
+    }
+
+  },
   actions: {
     updateBox(id: string, b: Box) {
       const prev = this.boxes[id];
