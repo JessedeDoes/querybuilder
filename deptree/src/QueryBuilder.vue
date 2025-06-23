@@ -28,7 +28,7 @@
                 <input type="checkbox" :indeterminate="propertyIndeterminate(p)" v-model="propertyActive[p]" @change="toggleFieldActiveAllTokens(p)"> 
               </div>
       
-              <div class="b"><input type="checkbox" :indeterminate="sortIsIndeterminate" v-model="sortActive" @change="toggleSortActive"> </div>
+              <div class="b"><input type="checkbox" :indeterminate="sortIsIndeterminate" v-model="tokensOrdered"> </div>
           </div>
          
           <template v-for="t in tokens" :index="t.id">
@@ -114,10 +114,16 @@ export default {
       'getIgnoreInterpunction',
       'getKeepRoot',
       'createCaptures',
-      'isActive'
+      'isActive',
+      'allTokensOrdered',
+      'sortIsIndeterminate'
     ]),
     // volgende is redelijk debiel en laat zien dat we vue 3 niet snappen..
     
+    tokensOrdered : {
+      get() { return this.allTokensOrdered },
+      set(v) { if (v) this.setOrderAllTokens(); else this.removeOrderAllTokens() }
+    },
     ignoreInterpunction: {
       get() { console.log('getting ignoreinterpunction'); return this.getIgnoreInterpunction},
       set(v) {this.setIgnoreInterpunction(v); this.updateQuery() }
@@ -180,14 +186,13 @@ export default {
       'setIgnoreInterpunction',
       'setCreateCaptures',
       'getRoot',
-      'removeOrderAllTokens',
-      'setOrderAllTokens'
+      'setOrderAllTokens',
+      'removeOrderAllTokens'
+
 
     
     ]),
-    toggleSortActive() {
-      if (this.sortActive) this.removeOrderAllTokens(); else this.setOrderAllTokens();
-    },
+
     toggleFieldActiveAllTokens(p) {
   
       const self=this;

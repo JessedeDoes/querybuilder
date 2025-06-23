@@ -57,8 +57,8 @@ async function renderTree() {
   await nextTick()
   reactiveSentence.fromSentenceJson(grewSentence.value);
   // console.log(boxes)
-  console.log("rerender tree")
-  console.log(Object.values(boxwidths.value).join(', '))
+  //console.log("rerender tree")
+  // console.log(Object.values(boxwidths.value).join(', '))
   svgRenderer.presetLocations = boxes.value // gebeurt te vaak?? pas doen als ALLE boxes klaar zijn...
   svgRenderer.refresh();
   //drawTree(svgRenderer)
@@ -87,13 +87,13 @@ onMounted(async () => {
   svgRenderer.addEventListener('svg-drop', e => {
       const depId   = e.detail.hovered;
       const headId  = e.detail.dragged;
-      console.log(e.detail);
+      // console.log(e.detail);
       const treeNode = e.detail.treeNode
       if (e.detail.isRoot)
          self.setRoot(headId);
       else {
       
-      console.log(`depId ${depId} headId ${headId}`)
+      // console.log(`depId ${depId} headId ${headId}`)
       if (!depId || !headId) return;
      
       self.setHead(depId,headId)

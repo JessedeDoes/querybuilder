@@ -223,6 +223,11 @@ function getFieldTruncated(t: TokenState, field: string) {
    return truncate(z,12)
 }
 
+function getFeats(t: TokenState) {
+  const field = t.fields.feats.value
+  return field.replace(/[^|=]=/g, '')
+}
+
 function getField2(t: TokenState, field: string) {
   if (field == 'deprel' && t.fields[field].value == 'root') return '';
   if (field in t.fields && t.fields[field].active && t.fields[field].value != '') return t.fields[field].value; return norel
@@ -385,7 +390,22 @@ export const useQueryStore = defineStore('query', {
         return false
       }
       return f
-    } 
+    },
+    allTokensOrdered(state): boolean {
+      let b=true
+      const s = new Set(state.tokens.map(t => t.tokenOrder == -1))
+   
+      
+      state.tokens.forEach(t => {if (t.tokenOrder == -1) return b=false })
+      console.log(`allOrdered b=${b}? s=`)
+      console.log(s)
+      return b
+    },
+    sortIsIndeterminate(state) {
+      const s = new Set(state.tokens.map(t => t.tokenOrder == -1))
+      console.log(`Indeterminate? ${s.size} ${s}`)
+      return s.size > 1 || s.size == 0
+    },
   },
 
   /** actions -------------------- */
@@ -582,6 +602,12 @@ export const useQueryStore = defineStore('query', {
       return set;
     },
 
+    removeOrderAllTokens() {
+      this.tokens.forEach(t => t.tokenOrder = -1)
+    },
+    setOrderAllTokens() {
+      this.tokens.forEach(t => t.tokenOrder = t.id)
+    },
     setTokenFieldActive(
       id: number,
       field: FieldName,
