@@ -28,7 +28,7 @@
                 <input type="checkbox" :indeterminate="propertyIndeterminate(p)" v-model="propertyActive[p]" @change="toggleFieldActiveAllTokens(p)"> 
               </div>
       
-              <div class="b"></div>
+              <div class="b"><input type="checkbox" :indeterminate="sortIsIndeterminate" v-model="sortActive" @change="toggleSortActive"> </div>
           </div>
          
           <template v-for="t in tokens" :index="t.id">
@@ -87,7 +87,7 @@ export default {
   data() {
     return {
       
-      
+      sortActive: false,
       propertyActive: {
         'deprel' : true,
         'upos' : true,
@@ -180,9 +180,14 @@ export default {
       'setIgnoreInterpunction',
       'setCreateCaptures',
       'getRoot',
+      'removeOrderAllTokens',
+      'setOrderAllTokens'
 
     
     ]),
+    toggleSortActive() {
+      if (this.sortActive) this.removeOrderAllTokens(); else this.setOrderAllTokens();
+    },
     toggleFieldActiveAllTokens(p) {
   
       const self=this;
