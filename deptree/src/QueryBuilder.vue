@@ -21,7 +21,7 @@
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">{{ p }} 
                 </div>
       
-              <div class="b">Order</div>
+              <div class="b">order</div>
           </div>
           <div class="flexChild tokenHeader">
               <div v-for="p in tokenProperties" :index="p" class="tokenPropertyHeader">
