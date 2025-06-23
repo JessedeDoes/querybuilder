@@ -90,8 +90,8 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
   const hasTokenOrder = tokensWithOrder.length > 1
 
   // --- 4. helpers ------------------------------------------------------
-  const esc = s => s.replace(/'/g, "\\'").replace(/\|/g,'\\|');
-
+  const esc = s => s.replace(/'/g, "\\'") // .replace(/\|/g,'\\|');
+  const escfeats = s => s.replace(/'/g, "\\'").replace(/\|/g,'\\|');
   function tokPattern(t: TokenState) {
     const props : string[] = [];
     // console.log(t)
@@ -108,7 +108,7 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
       props.push(`pos='${esc(t.fields.upos.value)}'`);
     if (useFeats && t.fields.feats.value && t.fields.feats.value !== '_')
-      props.push(`xpos='.*${esc(t.fields.feats.value)}.*'`); // verbeteren in corpora: dit moet ook feats heten. evenzo pos->upos
+      props.push(`xpos='.*${escfeats(t.fields.feats.value)}.*'`); // verbeteren in corpora: dit moet ook feats heten. evenzo pos->upos
      // bovendien moet je dit per feature doen, meerdere clauses, anders niet volgorde-onafhankelijk 
     const propStr = props.length ? `[${props.join(' & ')}]` : '[]'; // AHEM: zou _ moeten zijn
     return `${capturePrefix}${propStr}`;
