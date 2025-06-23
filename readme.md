@@ -13,7 +13,7 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 * uitgesloten properties anders weergeven dan ingeschakelde (done)
 * onbereikbare nodes markeren (done)
 * volgorderestricties
-* negatie
+* [-] negatie
 * check op resultaat parser: bij meerdere zinnen in de parse gaat het mis
 * PoS features (number, tense, etc...) opnemen in matrix
 * nice to have
