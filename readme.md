@@ -1,7 +1,8 @@
 # Example based query building prototype
 
 Concept van GrETEL, natuurlijk.
-Implementatie met behulp van grew conllu-editcomponent, zie https://github.com/kirianguiller/reactive-dep-tree 
+Implementatie met behulp van de grew conllu-weergavecomponent, zie https://github.com/kirianguiller/DependencyTreeJS
+Let op, er wordt nu een fork gebruikt, https://github.com/JessedeDoes/DependencyTreeJS
 
 Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/static/qbe/index.html
 
