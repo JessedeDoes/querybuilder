@@ -15,17 +15,17 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 - [x] volgorderestricties
 - [x] negatie
 - [ ] check op resultaat parser: bij meerdere zinnen in de parse gaat het mis
-- PoS features (number, tense, etc...) opnemen in matrix
+- [ ] PoS features (number, tense, etc...) netjes opnemen in matrix
 
 * nice to have
-  * "top node is really sentence root" boolean option
-  * boolean voor sentence length filter
-  * boolean exclude punct
-  * status en polarity dependent styling binnen de grew treeview
-  * matrix alignen met treeview nodes (niet per se nodig voor queries, wel als je een corpus zou willen taggen)
-  * Multiword tokens!
-  * Enhanced dependencies?
-  * Taalidentificatie
+  - [x] "top node is really sentence root" boolean option
+  - [x] boolean voor sentence length filter
+  - [x] boolean exclude punct
+  - [ ] status en polarity dependent styling binnen de grew treeview
+  - [x] matrix alignen met treeview nodes (niet per se nodig voor queries, wel als je een corpus zou willen taggen)
+  - [ ] Multiword tokens!
+  - [ ] Enhanced dependencies?
+  - [ ] Taalidentificatie
 
 ## Use scenario
 
