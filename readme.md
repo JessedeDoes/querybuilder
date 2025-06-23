@@ -8,11 +8,13 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 
 ## To do:
 
-* Token geheel uitsluiten
+* [x] Token geheel weggooien
+* token met recursief alle descendants weggooien
 * uitgesloten properties anders weergeven dan ingeschakelde (done)
 * onbereikbare nodes markeren (done)
 * volgorderestricties
 * negatie
+* check op resultaat parser: bij meerdere zinnen in de parse gaat het mis
 * PoS features (number, tense, etc...) opnemen in matrix
 * nice to have
   * "top node is really sentence root" boolean option
