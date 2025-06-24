@@ -134,3 +134,24 @@ Querybenadering:
 Ook Duits doet ccomp:
 
 ![image](https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064)
+
+## Afwijkende comparatieve voegwoorden (of, als, gelijk als, gelijk of dat)
+```
+[word='meer|minder' & pos='PRON']
+ -advcl-> ([pos='NOUN']
+   -mark-> [pos='SCONJ'] )  
+```
+(En groepeer op de conjunctie)
+
+Of met adjectieven:
+
+```
+[pos='ADJ' & xpos='.*Degree=Cmp.*']
+ -advcl-> ([]
+   -mark-> [pos='SCONJ'] )  
+```
+![image](https://github.com/user-attachments/assets/87a2de95-dd96-46f7-bec7-37d0374e310e)
+
+
+![image](https://github.com/user-attachments/assets/f8d2a4ad-ce62-4bd2-ae9d-b3a576fec900)
+
