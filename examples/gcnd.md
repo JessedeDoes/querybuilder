@@ -199,3 +199,30 @@ Geen fixed, annotatie lijkt nogal wild te varieren.
 ```
 Groepeer op het voorzetsel 
 ![image](https://github.com/user-attachments/assets/0561a4fd-3bf8-4154-9ecb-4b92c5363297)
+
+## Afhankelijke ja/nee-vragen ingeleid door als ipv of
+```
+[pos='VERB']
+ -advmod-> [pos='ADV'];
+ -ccomp-> ([pos='VERB' & xpos='.*verbform=fin.*']
+   -mark-> [pos='SCONJ'  & lemma != 'dat'] )
+```
+
+# Negatieverschijnselen
+
+## Dubbele negatie
+
+### a en ... niet
+ ```
+[pos='VERB']
+ -advmod-> [word='en'];
+ -advmod-> [word='niet']  
+```
+
+### b niemand ... niet (etc)
+
+```
+[pos='VERB']
+ --> [lemma='niemand|niets|nooit' & pos='PRON'];
+ -advmod-> [lemma='niet' & pos='ADV']  
+```
