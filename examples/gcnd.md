@@ -53,7 +53,7 @@ Onderzoek welke relatie tussen 'het' en het hoofdwerkwoord uit de alpino-ud-conv
 
 Overeenkomstig de `mod` die in de alpino-analyses gekozen is, geeft `obl` deze gevallen terug. 
 
-Willen we dat overigens wel? in het duits werkt het zo:
+Willen we dat overigens wel? in het Duits werkt het zo:
 
 ![image](https://github.com/user-attachments/assets/4d7e39bc-705b-47bb-8a20-eb38775828c5)
 
