@@ -93,4 +93,5 @@ Alweer lastig...
 
 ## Inversieloos V-later-dan-2 / V>2 / Noninverted V3
 
+![image](https://github.com/user-attachments/assets/16be44ef-d3c5-4b22-a32b-697db04a9685)
 
