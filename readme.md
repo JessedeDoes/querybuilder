@@ -16,7 +16,8 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 - [x] negatie
 - [ ] check op resultaat parser: bij meerdere zinnen in de parse gaat het mis
 - [ ] PoS features (number, tense, etc...) netjes opnemen in matrix
-
+- [ ] Use something more like the token boxes in the blacklab frontend advance query builder
+      
 * nice to have
   - [x] "top node is really sentence root" boolean option
   - [x] boolean voor sentence length filter
@@ -27,6 +28,11 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
   - [ ] Enhanced dependencies?
   - [ ] Taalidentificatie
 
+* problems
+   - No way to produce disjunctive queries like below:
+```
+([pos="verb" & lemma="geven"] -iobj-> []) | ([pos="verb" & lemma="geven"] -obl-> [] -case-> "aan")
+```+
 ## Use scenario
 
 ### 1. enter a sentence, choose language, and parse
