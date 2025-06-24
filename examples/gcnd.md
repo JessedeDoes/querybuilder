@@ -53,5 +53,6 @@ Willen we dat overigens wel? in het duits werkt het zo:
 
 
 
+![image](https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230)
 
 
