@@ -46,6 +46,7 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 * Editing the tree
 	* Delete an edge in the 'matrix' by pressing the 'x' button to the right of deprel
 	* Drag from 'head' to 'dependent' to create a new edge
+        * To make a token root, drag upwards. In order for q query to be generated, there must be exactly one root token	
 
 In this case the subject is irrelevant and can be dropped, and including the the lemma 'way' in the query is essential:
 
