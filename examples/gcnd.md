@@ -131,3 +131,6 @@ Querybenadering:
 ![image](https://github.com/user-attachments/assets/7faa8e2b-0c32-4f65-888a-b60bfc108531)
 
 
+Ook Duits doet ccomp:
+
+![image](https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064)
