@@ -136,6 +136,8 @@ Ook Duits doet ccomp:
 ![image](https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064)
 
 ## Afwijkende comparatieve voegwoorden (of, als, gelijk als, gelijk of dat)
+
+Hier mis je wel de expliciete markering van vergelijkingsconstructies die Alpino wel heeft. 
 ```
 [word='meer|minder' & pos='PRON']
  -advcl-> ([pos='NOUN']
@@ -155,3 +157,11 @@ Of met adjectieven:
 
 ![image](https://github.com/user-attachments/assets/f8d2a4ad-ce62-4bd2-ae9d-b3a576fec900)
 
+Voor meerwoordige voegwoorden bijvoorbeeld:
+
+```
+[pos='ADJ' & xpos='.*Degree=Cmp.*']
+ -advcl-> ([]
+   -mark-> ([pos='SCONJ']
+     -fixed-> [] ) )  
+```
