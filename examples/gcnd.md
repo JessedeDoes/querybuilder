@@ -1,3 +1,7 @@
+# UD versie van GCND-dialectconstructies
+
+Zie voor de Alpino-versie https://portal.clarin.ivdnt.org/gcnd-frontend/GCND/static/files/dialectconstructies.pdf 
+
 ## Subjectverdubbeling
 
 voorbeeld: ik loop ik
@@ -31,6 +35,8 @@ De algemenere query
 faalt wegens veel tagfouten van "je"
 
 ## Presentatief het
+
+(https://portal.clarin.ivdnt.org/gcnd-frontend/GCND/static/files/dialectconstructies.pdf#page=9.45)
 
 Voorbeeld: _het komen ginder twee duitsers_
 
