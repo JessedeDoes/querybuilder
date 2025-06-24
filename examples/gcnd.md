@@ -165,3 +165,29 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
    -mark-> ([pos='SCONJ']
      -fixed-> [] ) )  
 ```
+
+## Directe rede ingeleid door van
+
+(Versie in gcnd-gretelverhaal is wat te breed, het afhankelijke werkwoord moet finiet zijn)
+
+![image](https://github.com/user-attachments/assets/53b65eae-f56e-4c20-91bb-6ed1e2fb12ad)
+
+```
+[]
+ -ccomp-> ([pos='verb' & xpos='.*verbform=fin.*']
+   -mark-> [word='van'] )  
+```
+
+## expletief dat
+
+### Na onderschikkend voegwoord
+
+```
+[pos='sconj']
+ -fixed-> [word='dat']  
+```
+
+### Na vraagwoord
+
+Geen fixed, annotatie lijkt nogal wild te varieren.
+
