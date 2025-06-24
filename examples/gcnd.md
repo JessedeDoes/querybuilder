@@ -103,4 +103,31 @@ Alweer lastig...
 [pos='INTJ']
  -fixed-> [pos='PRON' & xpos='.*prontype=prs.*']  
 ```
+## V2-bijzinnen - pseudodirecte rede
+
+Voor het Engels ccomp, bijvoorbeeld:
+```
+[lemma='say|know' & pos='VERB']
+ -nsubj-> [pos='PRON'];
+ -ccomp-> ([pos='VERB']
+   !--> [pos='SCONJ'];
+   !--> [word='wh.*' & pos='PRON|adv'] )  
+```
+![image](https://github.com/user-attachments/assets/b17d9672-dfa7-4fdc-8e49-ed6470be3c4e)
+
+Voor het nederlands: parataxis
+
+![image](https://github.com/user-attachments/assets/4051e296-3fcf-4f92-ba61-19817594e1ef)
+
+Querybenadering:
+```
+[lemma='zeggen|weten' & pos='VERB']
+ -nsubj-> [];
+ -parataxis-> ([pos='VERB']
+   !-mark-> [pos='SCONJ'];
+   !--> [word='w.*' & pos='PRON|adv'] );
+ !-ccomp-> []  
+```
+![image](https://github.com/user-attachments/assets/7faa8e2b-0c32-4f65-888a-b60bfc108531)
+
 
