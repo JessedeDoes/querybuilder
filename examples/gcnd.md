@@ -95,3 +95,12 @@ Alweer lastig...
 
 ![image](https://github.com/user-attachments/assets/16be44ef-d3c5-4b22-a32b-697db04a9685)
 
+## ja ik, nee het, etc
+
+![image](https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac)
+
+```
+[pos='INTJ']
+ -fixed-> [pos='PRON' & xpos='.*prontype=prs.*']  
+```
+
