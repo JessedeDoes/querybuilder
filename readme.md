@@ -22,7 +22,7 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
 	* Drag from 'head' to 'dependent' to create a new edge
         * To make a token root, drag upwards. In order for q query to be generated, there must be exactly one root token	
 
-In this case the subject is irrelevant and can be dropped, and including the the lemma 'way' in the query is essential:
+In this case the subject is irrelevant and can be dropped, and including the lemma 'way' in the query is essential:
 
 <img src="https://github.com/user-attachments/assets/686e4fe6-7cdb-469b-a7fc-2a6ad8fd0ede" width="400px"/>
 
