@@ -61,4 +61,26 @@ Willen we dat overigens wel? in het Duits werkt het zo:
 
 ![image](https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230)
 
+# sat, tag etc
 
+- Geen verschil in UD tussen tag en sat!
+- positie van constituenten is lastig te bevragen
+   
+## Aanloopconstructies
+
+![image](https://github.com/user-attachments/assets/cb48f681-1194-4c08-acb0-162d531c13e4)
+
+## Hanging topic
+
+Lastig te vinden door het constituentpositieprobleem.
+Poging:
+
+![image](https://github.com/user-attachments/assets/cecd44f3-d190-48d8-9584-f11264528b0d)
+
+```
+[pos='VERB']
+ -parataxis-> (n3:[pos='NOUN']
+   -nmod:poss|det-> [];
+   !-case-> [] );
+ -nsubj-> n5:[pos='PRON' & xpos='.*Person=3\|PronType=Prs.*']   :: start(n3) < start(n5)
+```
