@@ -1,4 +1,4 @@
-##Subjectverdubbeling
+## Subjectverdubbeling
 
 voorbeeld: ik loop ik
 
@@ -10,7 +10,7 @@ query:
  -nsubj-> [pos='PRON']  
 ```
 
-##Subject in objectvorm
+## Subject in objectvorm
 
 voorbeeld: hem loopt
 ! query aanpassen 
@@ -30,7 +30,7 @@ De algemenere query
 
 faalt wegens veel tagfouten van "je"
 
-##Presentatief het
+## Presentatief het
 
 Voorbeeld: _het komen ginder twee duitsers_
 
