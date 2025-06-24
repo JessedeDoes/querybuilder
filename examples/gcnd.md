@@ -191,3 +191,11 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
 
 Geen fixed, annotatie lijkt nogal wild te varieren.
 
+## Beknopte bijzinnen ingeleid door voor of van in plaats van om
+```
+[pos='VERB']
+ -mark-> [pos='ADP'];
+ -mark-> [word='te' & pos='ADP']  
+```
+Groepeer op het voorzetsel 
+![image](https://github.com/user-attachments/assets/0561a4fd-3bf8-4154-9ecb-4b92c5363297)
