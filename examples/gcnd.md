@@ -84,3 +84,13 @@ Poging:
    !-case-> [] );
  -nsubj-> n5:[pos='PRON' & xpos='.*Person=3\|PronType=Prs.*']   :: start(n3) < start(n5)
 ```
+
+## Tussenwerpsels en aansporingen 
+
+Alweer lastig...
+
+![image](https://github.com/user-attachments/assets/6eccba2b-206f-485c-a125-af1a8b877463)
+
+## Inversieloos V-later-dan-2 / V>2 / Noninverted V3
+
+
