@@ -32,7 +32,8 @@ Probeer uit op http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/s
    - No way to produce disjunctive queries like below:
 ```
 ([pos="verb" & lemma="geven"] -iobj-> []) | ([pos="verb" & lemma="geven"] -obl-> [] -case-> "aan")
-```+
+```
+
 ## Use scenario
 
 ### 1. enter a sentence, choose language, and parse
