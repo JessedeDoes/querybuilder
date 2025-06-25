@@ -230,4 +230,9 @@ Groepeer op het voorzetsel
 
 ## Doen-replieken
 
-
+Iets als
+```
+[lemma='doen' & pos='VERB' & xpos='.*verbform=fin.*']
+ -nsubj-> [pos='PRON' & xpos='.*PronType=Prs.*'];
+ !-(obj|iobj|obl|advmod|advcl|ccomp|xcomp)-> []  
+```
