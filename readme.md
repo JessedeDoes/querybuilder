@@ -35,6 +35,7 @@ In this case the subject is irrelevant and can be dropped, and including the lem
 ## To do:
 
 - [x] Token geheel weggooien
+- [ ] Net als bij gretel ipv de checkboxes driewaard =/is niet/niet meegenomen
 - [ ] token met recursief alle descendants weggooien
 - [x] uitgesloten properties anders weergeven dan ingeschakelde (done)
 - [x] onbereikbare nodes markeren (done)
