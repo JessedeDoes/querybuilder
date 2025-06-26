@@ -285,3 +285,5 @@ n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
 ```
 
 Werkt niet door tagfouten
+
+## Circumpositie
