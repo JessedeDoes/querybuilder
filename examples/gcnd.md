@@ -42,24 +42,24 @@ Voorbeeld: _het komen ginder twee duitsers_
 
 De aanvankelijke parse slaat nergens op. 
 
-![image](https://github.com/user-attachments/assets/e5cf52ee-8d0b-4cc2-82cc-c88e4d0055dd)
+<img width="50%" src="https://github.com/user-attachments/assets/e5cf52ee-8d0b-4cc2-82cc-c88e4d0055dd"/>
 
 
 Onderzoek welke relatie tussen 'het' en het hoofdwerkwoord uit de alpino-ud-conversie komt door de query vereenvoudigen, de relatie open te laten en in het frontend te groeperen:
 
-![image](https://github.com/user-attachments/assets/e1517729-7780-46c3-8dd4-d30c4039dcd3)
+<img width="50%" src="https://github.com/user-attachments/assets/e1517729-7780-46c3-8dd4-d30c4039dcd3"/>
 
-![image](https://github.com/user-attachments/assets/2aa27f17-85f1-4cb2-9afb-1205d67d34c2)
+<img width="50%" src="https://github.com/user-attachments/assets/2aa27f17-85f1-4cb2-9afb-1205d67d34c2"/>
 
 Overeenkomstig de `mod` die in de alpino-analyses gekozen is, geeft `obl` deze gevallen terug. 
 
 Willen we dat overigens wel? in het Duits werkt het zo:
 
-![image](https://github.com/user-attachments/assets/4d7e39bc-705b-47bb-8a20-eb38775828c5)
+<img width="50%" src="https://github.com/user-attachments/assets/4d7e39bc-705b-47bb-8a20-eb38775828c5"/>
 
 
 
-![image](https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230)
+<img width="50%" src="https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230"/>
 
 # sat, tag etc
 
@@ -68,14 +68,14 @@ Willen we dat overigens wel? in het Duits werkt het zo:
    
 ## Aanloopconstructies
 
-![image](https://github.com/user-attachments/assets/cb48f681-1194-4c08-acb0-162d531c13e4)
+<img width="50%" src="https://github.com/user-attachments/assets/cb48f681-1194-4c08-acb0-162d531c13e4"/>
 
 ## Hanging topic
 
 Lastig te vinden door het constituentpositieprobleem.
 Poging:
 
-![image](https://github.com/user-attachments/assets/cecd44f3-d190-48d8-9584-f11264528b0d)
+<img width="50%" src="https://github.com/user-attachments/assets/cecd44f3-d190-48d8-9584-f11264528b0d"/>
 
 ```
 [pos='VERB']
@@ -89,15 +89,15 @@ Poging:
 
 Alweer lastig...
 
-![image](https://github.com/user-attachments/assets/6eccba2b-206f-485c-a125-af1a8b877463)
+<img width="50%" src="https://github.com/user-attachments/assets/6eccba2b-206f-485c-a125-af1a8b877463"/>
 
 ## Inversieloos V-later-dan-2 / V>2 / Noninverted V3
 
-![image](https://github.com/user-attachments/assets/16be44ef-d3c5-4b22-a32b-697db04a9685)
+<img width="50%" src="https://github.com/user-attachments/assets/16be44ef-d3c5-4b22-a32b-697db04a9685"/>
 
 ## ja ik, nee het, etc
 
-![image](https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac)
+<img width="50%" src="https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac"/>
 
 ```
 [pos='INTJ']
@@ -113,11 +113,11 @@ Voor het Engels ccomp, bijvoorbeeld:
    !--> [pos='SCONJ'];
    !--> [word='wh.*' & pos='PRON|adv'] )  
 ```
-![image](https://github.com/user-attachments/assets/b17d9672-dfa7-4fdc-8e49-ed6470be3c4e)
+<img width="50%" src="https://github.com/user-attachments/assets/b17d9672-dfa7-4fdc-8e49-ed6470be3c4e"/>
 
 Voor het nederlands: parataxis
 
-![image](https://github.com/user-attachments/assets/4051e296-3fcf-4f92-ba61-19817594e1ef)
+<img width="50%" src="https://github.com/user-attachments/assets/4051e296-3fcf-4f92-ba61-19817594e1ef"/>
 
 Querybenadering:
 ```
@@ -128,12 +128,12 @@ Querybenadering:
    !--> [word='w.*' & pos='PRON|adv'] );
  !-ccomp-> []  
 ```
-![image](https://github.com/user-attachments/assets/7faa8e2b-0c32-4f65-888a-b60bfc108531)
+<img width="50%" src="https://github.com/user-attachments/assets/7faa8e2b-0c32-4f65-888a-b60bfc108531"/>
 
 
 Ook Duits doet ccomp:
 
-![image](https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064)
+<img width="50%" src="https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064"/>
 
 ## Afwijkende comparatieve voegwoorden (of, als, gelijk als, gelijk of dat)
 
@@ -152,10 +152,10 @@ Of met adjectieven:
  -advcl-> ([]
    -mark-> [pos='SCONJ'] )  
 ```
-![image](https://github.com/user-attachments/assets/87a2de95-dd96-46f7-bec7-37d0374e310e)
+<img width="50%" src="https://github.com/user-attachments/assets/87a2de95-dd96-46f7-bec7-37d0374e310e"/>
 
 
-![image](https://github.com/user-attachments/assets/f8d2a4ad-ce62-4bd2-ae9d-b3a576fec900)
+<img width="50%" src="https://github.com/user-attachments/assets/f8d2a4ad-ce62-4bd2-ae9d-b3a576fec900"/>
 
 Voor meerwoordige voegwoorden bijvoorbeeld:
 
@@ -170,7 +170,7 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
 
 (Versie in gcnd-gretelverhaal is wat te breed, het afhankelijke werkwoord moet finiet zijn)
 
-![image](https://github.com/user-attachments/assets/53b65eae-f56e-4c20-91bb-6ed1e2fb12ad)
+<img width="50%" src="https://github.com/user-attachments/assets/53b65eae-f56e-4c20-91bb-6ed1e2fb12ad"/>
 
 ```
 []
@@ -198,7 +198,7 @@ Geen fixed, annotatie lijkt nogal wild te varieren.
  -mark-> [word='te' & pos='ADP']  
 ```
 Groepeer op het voorzetsel 
-![image](https://github.com/user-attachments/assets/0561a4fd-3bf8-4154-9ecb-4b92c5363297)
+<img width="50%" src="https://github.com/user-attachments/assets/0561a4fd-3bf8-4154-9ecb-4b92c5363297"/>
 
 ## Afhankelijke ja/nee-vragen ingeleid door als ipv of
 ```
@@ -253,11 +253,11 @@ n2:[pos='VERB']
 ```
 Hierarchie kan zo zijn:
 
-![image](https://github.com/user-attachments/assets/5dc7ccad-90bb-4a15-babe-6d050a6144e9)
+<img width="50%" src="https://github.com/user-attachments/assets/5dc7ccad-90bb-4a15-babe-6d050a6144e9"/>
 
 Of zo:
 
-![image](https://github.com/user-attachments/assets/ae2727db-39da-4181-a99b-502942eb436e)
+<img width="50%" src="https://github.com/user-attachments/assets/ae2727db-39da-4181-a99b-502942eb436e"/>
 
 
 De query is dan iets als:
