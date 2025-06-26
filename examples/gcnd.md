@@ -236,3 +236,24 @@ Iets als
  -nsubj-> [pos='PRON' & xpos='.*PronType=Prs.*'];
  !-(obj|iobj|obl|advmod|advcl|ccomp|xcomp)-> []  
 ```
+
+# Andere
+
+## Woordherhaling
+
+## Spiegelconstructies
+
+
+```
+n2:[pos='VERB']
+ -nsubj-> n1:[pos='PRON'];
+ -parataxis-> n3:[pos='VERB'];
+ -parataxis-> (n6:[pos='VERB']
+   -nsubj-> n7:[pos='PRON'] )   :: start(n1) < start(n2) & start(n2) < start(n3) & start(n3) < start(n6) & start(n6) < start(n7) & n2.lemma=n6.lemma
+```
+Hierarchie kan zo zijn:
+
+![image](https://github.com/user-attachments/assets/5dc7ccad-90bb-4a15-babe-6d050a6144e9)
+
+
+
