@@ -255,5 +255,19 @@ Hierarchie kan zo zijn:
 
 ![image](https://github.com/user-attachments/assets/5dc7ccad-90bb-4a15-babe-6d050a6144e9)
 
+Of zo:
+
+![image](https://github.com/user-attachments/assets/ae2727db-39da-4181-a99b-502942eb436e)
+
+
+De query is dan iets als:
+```
+n3:[lemma='komen' & pos='VERB']
+ -parataxis-> (n2:[lemma='zeggen' & pos='VERB']
+   -nsubj-> n1:[lemma='ik' & pos='PRON'] );
+ -parataxis-> (n4:[lemma='zeggen' & pos='VERB']
+   -nsubj-> n5:[lemma='ik' & pos='PRON'] )  :: n2.lemma = n4.lemma
+```
+
 
 
