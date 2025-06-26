@@ -269,5 +269,19 @@ n3:[lemma='komen' & pos='VERB']
    -nsubj-> n5:[lemma='ik' & pos='PRON'] )  :: n2.lemma = n4.lemma
 ```
 
+## Apokoinou
+
+Wordt in de alpino-annotatie via het categorielabel gevonden, is in de ud-annotatie hier onvindbaar.
 
 
+## exclamatieve infinitiefzinnen 
+
+De voor de hand liggend oplossing (infinitief met een subject, geen hulp of koppen werkwoord)
+
+```
+n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
+ -nsubj-> n1:[pos='PRON'];
+ !-aux|cop-> n2:[pos='AUX']  
+```
+
+Werkt niet door tagfouten
