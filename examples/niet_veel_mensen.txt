@@ -1,0 +1,57 @@
+Probleem: 
+
+niet veel X op twee manieren geannoteerd.
+
+De ene manier vind je
+
+
+met:
+
+(n1:[pos='VERB']
+ -advmod-> n2:[lemma='niet'];
+ -nsubj-> (n4:[pos='NOUN']
+   --> n3:[lemma='veel'] )  )
+
+
+de andere met
+
+(n3:[pos='NOUN']
+ -det-> (n2:[lemma='veel' & pos='DET']
+   -amod-> n1:[lemma='niet' & pos='DET'] )  )
+
+
+
+Engels:
+
+
+n3:[pos='NOUN']
+ -amod-> (n2:[word='many' & pos='ADJ']
+   -advmod-> n1:[word='not' & pos='PART'] )  
+
+"not many folks" is dan weer anders gedaan (not hangt aan folks)
+
+
+Japans: 多くない人
+
+n3:[pos='NOUN']
+ -acl-> (n2:[lemma='無い' & pos='ADJ']
+   -advcl-> n1:[lemma='多い' & pos='ADJ'] )  
+
+
+Italiaans (non molto tempo fa)
+
+(n3:[pos='NOUN']
+ --> (n2:[lemma='molto']
+   -advmod-> n1:[lemma='non' & pos='ADV'] )  )
+
+Chinees 没有多少人出现
+
+
+t vindt iets:
+
+n1:[lemma='有']
+ -ccomp-> (n4:[]
+   --> (n3:[]
+     --> n2:[lemma='多'] ) )  
+
+Alternatieven genereren??

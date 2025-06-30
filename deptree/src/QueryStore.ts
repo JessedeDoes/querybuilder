@@ -617,13 +617,19 @@ export const useQueryStore = defineStore('query', {
       if (!token) return;
       token.fields[field].active = newValue;
     },
-
+    children(t: TokenState) {
+      return this.tokens.filter(x => x.head == t.id)
+    },
+    removeRelIn(tid: number = this.currentTokenId) {
+      const t = this.tokens.find(t => t.id == tid)
+      delete t.head
+      this.children(t).forEach(x => this.removeRelIn(x.id))
+    },
     removeRel() {
       // console.log(`store: removing rel from ${this.currentTokenId}`)
-      const token = this.currentToken
-      delete token.head;
+      this.removeRelIn(this.currentTokenId);
       console.log(`removeRel: rel removed from token ${this.currentTokenId}`)
-      console.log(token)
+   
     },
     // to handle multiple root situation
     setRoot(id: number) {
