@@ -121,7 +121,7 @@ export default {
       corpus: "UD 2.16",
       corpora : {
         "UD 2.16" : "https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/",
-        "Current corpus" : "../../search",
+        "Current corpus" : "../../",
         "GCND (alleen intern)" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
       },
       oldTree: false
