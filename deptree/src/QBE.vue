@@ -120,11 +120,11 @@ export default {
       },
       corpus: "UD 2.16",
       corpora : {
-        "UD 2.16" : "http://svotmc10.ivdnt.loc/corpus-frontend/UD_TEI_ALLSENTENCES/",
-        "GCND" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
+        "UD 2.16" : "https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/",
+        "Current corpus" : "../../search",
+        "GCND (alleen intern)" : "http://svotmc10.ivdnt.loc/blacklab-frontend/GCND_UD/"
       },
       oldTree: false
-
     };
   },
 
