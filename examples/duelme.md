@@ -12,9 +12,19 @@ Expressions headed by a verb, taking a direct object constisting of a fixed dete
 			hij heeft zijn land gediend
 			iets heeft zijn intrede gedaan
 			zij hebben woorden gehad
-			hij heeft zijneigen zin gedaan
+			hij heeft zijn eigen zin gedaan
 			hij heeft zijn zinnen verzet
 ```
+
+```
+[pos='VERB']
+ -obj-> ([pos='NOUN']
+   -det-> [pos='DET'] )  
+```
+
+Groepering:
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Asource%2Ccapture%3Alemma%3Ai%3Adet%3Atarget%2Ccapture%3Aword%3Ai%3Aobj%3Atarget&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-det-%3E+%5Bpos%3D%27DET%27%5D+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
 
 ## ec4
 
