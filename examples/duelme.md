@@ -75,7 +75,9 @@ https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits
 
 
 ## ec124
-                Expressions headed by a verb, taking a direct object consisting of a fixed determiner, an unmodifiable noun and a modifier headed by a fixed preposition taking variable complement.
+Expressions headed by a verb, taking a direct object consisting of a fixed determiner, an unmodifiable noun and a modifier headed by a fixed preposition taking variable complement.
+
+
 ```
                         n.a.hij heeft de kloof tussen iets overbrugd
                         hij heeft het gezicht van iets bepaald
@@ -93,7 +95,8 @@ https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits
 
 
 ## ec73 
-                Expressions headed by a verb, taking (1) a variable indirect object, and (2) a locative/directional complement headed by a fixed preposition taking a complement consisting of a fixed determiner and an unmodifiable noun.
+
+Expressions headed by a verb, taking (1) a variable indirect object, and (2) a locative/directional complement headed by a fixed preposition taking a complement consisting of a fixed determiner and an unmodifiable noun.
 
 ```
                         iets is iemand in handen gevallen
@@ -109,7 +112,8 @@ Dit wil niet zo lekker omdat het ld-complement niet gecodeerd is in UD
 
 
 ## ec65
-                Expressions headed by a verb, taking (1) a variable indirect object, and (2) a direct object consisting of a fixed determiner and a modifiable noun.
+
+Expressions headed by a verb, taking (1) a variable indirect object, and (2) a direct object consisting of a fixed determiner and a modifiable noun.
 
 ```
                         hij heeft iemand een dienst bewezen
@@ -185,6 +189,67 @@ Gegroepeerd:
 
 
 https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Adet%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Asource&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-det-%3E+%5Bpos%3D%27DET%27%5D%3B%0A+++-acl-%3E+%28%5Bpos%3D%27VERB%27%5D%0A+++++-mark-%3E+%5Blemma%3D%27dat%27+%26+pos%3D%27SCONJ%27%5D+%29+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
+
+
+
+## ec58 
+
+Expressions headed by a verb, taking (1) variable direct object, and (2) a predicative complement consisting of a fixed determiner and an unmodifiable noun.
+```
+                        hij is iemand de baas geworden
+                        hij heeft iemand de baas gekund
+                        hij heeft iets het einde gevonden
+                        hij is iemand de baas gebleven
+                        hij heeft iemand kandidaat gesteld
+                        hij heeft iemand gezelschap gehouden
+                        hij heeft iemand een compliment gemaakt
+                        hij heeft iemand het hof gemaakt
+```
+
+Beetje heterogeen: kandidaat stellen is natuurlijk anders dan een compliment maken, etc
+
+```
+[pos='VERB']
+ -obj-> [];
+ -xcomp-> [pos='NOUN'] !--> []
+```
+
+en andere varianten
+
+## ec36 
+
+
+Expressions headed by a verb, taking a direct object constisting of a modifiable adjective and an unmodifiable noun.
+
+```
+                        hij heeft een grote mond gegeven
+                        hij heeft een prominente plaats gehad
+                        hij heeft een lange adem gehad
+                        iets heeft een aanzuigende werking gehad
+                        hij heeft een goede pers gekregen
+                        hij heeft een goede naam gehad
+                        hij heeft een goede naam gehouden
+                        hij heeft een goede naam gekregen
+                        hij heeft een grote mond gehad
+                        hij heeft een grote mond gekregen
+                        hij heeft een grote mond opgezet
+                        hij heeft een prominente plaats gekregen
+                        hij heeft een grote bek gegeven
+                        hij heeft een grote bek gehad
+                        hij heeft een grote bek gekregen
+                        iets heeft een heilzame werking gehad
+                        hij heeft een levendige fantasie gehad
+```
+
+Gegroepeerd:
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aamod%3Atarget%2Ccapture%3Alemma%3Ai%3Aamod%3Asource%2Ccapture%3Alemma%3Ai%3Aobj%3Asource&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-det-%3E+%5Bpos%3D%27DET%27%5D%3B%0A+++-amod-%3E+%5Bpos%3D%27ADJ%27%5D+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
+
+
+
+
+
+
 
 
 
