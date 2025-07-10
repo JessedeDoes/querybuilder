@@ -186,6 +186,18 @@ Expressions headed by a verb, taking (1) a direct object consisting of a fixed d
 			hij heeft de bevoegdheid gehad om iets te doen
 ```
 
+```
+([pos='VERB']
+ -obj-> ([pos='NOUN']
+   -acl-> ([pos='VERB']
+     -mark-> [word='om' & pos='ADP'];
+     -mark-> [word='te' & pos='ADP'] ) )  )
+```
+
+Gegroepeerd
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Asource%2Ccapture%3Alemma%3Ai%3Aobj%3Atarget&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-acl-%3E+%28%5Bpos%3D%27VERB%27%5D%0A+++++-mark-%3E+%5Bword%3D%27om%27+%26+pos%3D%27ADP%27%5D%3B%0A+++++-mark-%3E+%5Bword%3D%27te%27+%26+pos%3D%27ADP%27%5D+%29+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
+
 ## ec11
 
 Expressions headed by a verb, taking (1) a variable indirect object, (2) a direct object consisting of a fixed determiner and an unmodifiable noun, and (3) a variable verbal complement consisting of a subordinate clause.
@@ -195,7 +207,15 @@ Expressions headed by a verb, taking (1) a variable indirect object, (2) a direc
 			hij heeft iemand de indruk gegeven dat zij iets wil doen
 			hij heeft iemand de garantie gegeven dat zij iets wil doen
 ```
+```
+([pos='VERB']
+ -iobj-> [];
+ -obj-> ([pos='NOUN']
+   -acl-> ([pos='VERB']
+     -mark-> [pos='SCONJ'] ) )  )
+```
 
+     
 ## ec13
 
 Expressions headed by a verb, taking a direct object consisting of a pronoun.
