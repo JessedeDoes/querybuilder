@@ -147,7 +147,9 @@ https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits
 
 
 ## ec115 
-                Expressions headed by a verb, taking (1) a direct object consisting of a fixed determiner and a modifiable noun, and (2) a variable verbal complement consisting of a subordinate clause.
+
+Expressions headed by a verb, taking (1) a direct object consisting of a fixed determiner and a modifiable noun, and (2) a variable verbal complement consisting of a subordinate clause.
+
 ```
                         hij heeft de indruk gegeven dat zij iets wil doen
                         hij heeft de indruk gewekt dat zij iets wil doen
