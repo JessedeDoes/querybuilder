@@ -52,7 +52,8 @@ https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits
 
 
 ## ec64
-                Expressions headed by a verb, taking a direct object consisting of a modifiable noun and a modifier headed by a fixed preposition taking variable complement.
+              
+Expressions headed by a verb, taking a direct object consisting of a modifiable noun and a modifier headed by a fixed preposition taking variable complement.
 
 ```
                         iets heeft sporen van iets gedragen
