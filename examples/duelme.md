@@ -42,6 +42,15 @@ Expressions headed by a verb, taking (1) a variable indirect object, and (2) a d
 			hij heeft iemand een advies gegeven
 			hij heeft iemand een voorstel gedaan
 ```
+```
+[pos='VERB']
+ -iobj-> [];
+ -obj-> [pos='NOUN']  
+```
+
+Gegroepeerd:
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aiobj%3Asource&number=20&patt=%5Bpos%3D%27VERB%27%5D%0A+-iobj-%3E+%5B%5D%3B%0A+-obj-%3E+%5Bpos%3D%27NOUN%27%5D&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
 
 ## ec6
 
@@ -60,6 +69,8 @@ Expressions headed by a verb, taking (1) a variable locative/directional complem
 			hij heeft ergens halt gehouden
 ```
 
+Probleem: ld complement niet gecodeerd
+
 ## ec7
 
 Expressions headed by a verb, taking a direct object consisting of a fixed determiner and a modifiable noun.
@@ -71,11 +82,23 @@ Expressions headed by a verb, taking a direct object consisting of a fixed deter
 			hij heeft zijn best gedaan
 			hij heeft de gevolgen overzien
 			hij heeft iemands belangen behartigd
-			hij heeft plannen gemaakt
+			hij heeft plannen gemaakt (hier geen determiner)
 			hij heeft de stap gewaagd
 			hij heeft stappen ondernomen
 			hij heeft de aandacht opgeëist
 ```
+
+* Verschil tussen nmod:poss, det en juist geen determiner maken? (varianten van constructie)
+* noun juist niet modifiable? (in de zin dat de groeperin natuurlijkerwijs op woord is, niet op lemma)
+
+Met nmod:poss bijvoorbeeld
+```
+([pos='VERB']
+ -obj-> ([pos='NOUN']
+   -nmod:poss-> [] )  )
+```
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Asource%2Ccapture%3Aword%3Ai%3Aobj%3Atarget&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-nmod%3Aposs-%3E+%5B%5D+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
 
 ## ec8
 
@@ -93,6 +116,17 @@ Expressions headed by a verb, taking (1) a direct object consisting of a modifia
 			hij heeft het risico genomen dat zij iets wil doen
 			we hebben de afspraak gehad dat wij iets gaan doen
 ```
+
+```
+[pos='VERB']
+ -obj-> ([pos='NOUN']
+   -acl-> ([pos='VERB']
+     -mark-> [pos='SCONJ'] ) ) 
+```
+
+Gegroepeerd: 
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Asource&number=20&patt=%28%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-acl-%3E+%28%5Bpos%3D%27VERB%27%5D%0A+++++-mark-%3E+%5Bpos%3D%27SCONJ%27%5D+%29+%29++%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
 
 ## ec9
 
