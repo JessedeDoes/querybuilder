@@ -147,6 +147,7 @@ Expressions headed by a verb, taking (1) a direct object consisting of a modifia
 
 In principe zal de PP hier meestal aan het znw hangen:
 
+```
 [pos='VERB']
  -obj-> ([pos='NOUN']
    -nmod-> ([]
