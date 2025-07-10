@@ -156,7 +156,7 @@ In principe zal de PP hier meestal aan het znw hangen:
 
 Gegroepeerd:
 
-https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Asource&number=20&patt=%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-nmod-%3E+%28%5B%5D%0A+++++-case-%3E+%5Bpos%3D%27ADP%27%5D+%29+%29++&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D
+[https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Asource&number=20&patt=%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-nmod-%3E+%28%5B%5D%0A+++++-case-%3E+%5Bpos%3D%27ADP%27%5D+%29+%29++&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D](https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22Dutch%22%29&first=0&group=capture%3Alemma%3Ai%3Aobj%3Atarget%2Ccapture%3Alemma%3Ai%3Aobj%3Asource%2Ccapture%3Alemma%3Ai%3Acase%3Atarget&number=20&patt=%5Bpos%3D%27VERB%27%5D%0A+-obj-%3E+%28%5Bpos%3D%27NOUN%27%5D%0A+++-nmod-%3E+%28%5B%5D%0A+++++-case-%3E+%5Bpos%3D%27ADP%27%5D+%29+%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D)
 
 Maar soms wellicht ook:
 
