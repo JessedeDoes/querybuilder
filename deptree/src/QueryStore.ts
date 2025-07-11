@@ -65,6 +65,17 @@ function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
   return false
 }
 
+function isTokenReachableAndPositive(state, tokens: TokenState[], id: number): boolean {
+  const token = tokens.find(t => t.id == id)
+  if (token) {
+    if (token.head == 0) return true;
+    if (token.head < 0) return false;
+    else if ((state.ignoreInterpunction && token.fields['deprel'].value == 'punct') ||  !token.head || token.head == -1 || token.polarity == 'negative') return false;
+    else return isTokenReachableAndPositive(state, tokens, token.head)
+  }
+  return false
+}
+
 function conlluToBlackLab(state: QueryState) {
   
   const tokens: TokenState[] = state.tokens
@@ -91,7 +102,7 @@ function conlluToBlackLab(state: QueryState) {
   if (!root) return '';                 // malformed input
   
   
-  const tokensWithOrder = tokens.filter(t => isTokenReachable(state, tokens, t.id) && t.tokenOrder != -1 && t.polarity == 'positive')
+  const tokensWithOrder = tokens.filter(t => isTokenReachableAndPositive(state, tokens, t.id) && t.tokenOrder != -1 && t.polarity == 'positive')
   
   const hasTokenOrder = tokensWithOrder.length > 1
 
@@ -106,7 +117,7 @@ function conlluToBlackLab(state: QueryState) {
     const useForm =  t.fields.form.active
     const useFeats = t.fields.feats.active
 
-    const capturePrefix = (t.polarity == 'positive' && isTokenReachable(state,tokens,t.id)) &&  ((t.tokenOrder != -1) || createCaptures) ? `n${t.id}:` : ''
+    const capturePrefix = (t.polarity == 'positive' && isTokenReachableAndPositive(state,tokens,t.id)) &&  ((t.tokenOrder != -1) || createCaptures) ? `n${t.id}:` : ''
     
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
