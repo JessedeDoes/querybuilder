@@ -65,7 +65,12 @@ function isTokenReachable(state, tokens: TokenState[], id: number): boolean {
   return false
 }
 
-function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=true, keepRoot: boolean=false, createCaptures: boolean=true) {
+function conlluToBlackLab(state: QueryState) {
+  
+  const tokens: TokenState[] = state.tokens
+  const ignoreInterpunction: boolean=state.ignoreInterpunction
+  const keepRoot: boolean= state.keepRoot
+  const createCaptures: boolean=state.createCaptures
 
   console.log(`Options: ignore interpunction: ${ignoreInterpunction} keep root: ${keepRoot}`)
   tokens.forEach(t => t.children = [])
@@ -86,7 +91,8 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
   if (!root) return '';                 // malformed input
   
   
-  const tokensWithOrder = tokens.filter(t => t.tokenOrder != -1)
+  const tokensWithOrder = tokens.filter(t => isTokenReachable(state, tokens, t.id) && t.tokenOrder != -1 && t.polarity == 'positive')
+  
   const hasTokenOrder = tokensWithOrder.length > 1
 
   // --- 4. helpers ------------------------------------------------------
@@ -99,7 +105,8 @@ function conlluToBlackLab(tokens: TokenState[], ignoreInterpunction: boolean=tru
     const usePoS =  t.fields.upos.active
     const useForm =  t.fields.form.active
     const useFeats = t.fields.feats.active
-    const capturePrefix = (t.tokenOrder != -1) || createCaptures? `n${t.id}:` : ''
+
+    const capturePrefix = (t.polarity == 'positive' && isTokenReachable(state,tokens,t.id)) &&  ((t.tokenOrder != -1) || createCaptures) ? `n${t.id}:` : ''
     
     if (useLemma && t.fields.lemma.value && t.fields.lemma.value !== '_')
       props.push(`lemma='${esc(t.fields.lemma.value)}'`);
@@ -372,7 +379,7 @@ export const useQueryStore = defineStore('query', {
     computedQuery(state) {
       console.log('change to computed query...')
       state.manualQuery = false;
-      return conlluToBlackLab(state.tokens,state.ignoreInterpunction, state.keepRoot, state.createCaptures)
+      return conlluToBlackLab(state)
     },
 
     getQuery(state) : string { 
