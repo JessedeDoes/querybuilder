@@ -124,9 +124,9 @@ function conlluToBlackLab(state: QueryState) {
     if (useForm && t.fields.form.value && t.fields.form.value !== '_')
       props.push(`word='${esc(t.fields.form.value)}'`);
     if (usePoS && t.fields.upos.value && t.fields.upos.value !== '_')
-      props.push(`pos='${esc(t.fields.upos.value)}'`);
+      props.push(`upos='${esc(t.fields.upos.value)}'`);
     if (useFeats && t.fields.feats.value && t.fields.feats.value !== '_')
-      props.push(`xpos='.*${escfeats(t.fields.feats.value)}.*'`); // verbeteren in corpora: dit moet ook feats heten. evenzo pos->upos
+      props.push(`feats='.*${escfeats(t.fields.feats.value)}.*'`); // verbeteren in corpora: dit moet ook feats heten. evenzo pos->upos
      // bovendien moet je dit per feature doen, meerdere clauses, anders niet volgorde-onafhankelijk 
     const propStr = props.length ? `[${props.join(' & ')}]` : '[]'; // AHEM: zou _ moeten zijn
     return `${capturePrefix}${propStr}`;
