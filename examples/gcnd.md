@@ -1,3 +1,9 @@
+# Algemene problemen
+
+* Zoek naar ww me precies 1,2 etc subjecten
+* Iets met constituenten en constituentlabels
+* Zoek naar een bepaalde structuur 'en verder niets'  
+
 # UD versie van GCND-dialectconstructies
 
 Zie voor de Alpino-versie https://portal.clarin.ivdnt.org/gcnd-frontend/GCND/static/files/dialectconstructies.pdf 
