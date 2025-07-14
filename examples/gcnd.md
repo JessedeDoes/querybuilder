@@ -2,7 +2,8 @@
 
 * Zoek naar ww me precies 1,2 etc subjecten
 * Iets met constituenten en constituentlabels
-* Zoek naar een bepaalde structuur 'en verder niets'  
+* Zoek naar een bepaalde structuur 'en verder niets'
+* het kenmerk met-e komt niet terug in de universal features
 
 # UD versie van GCND-dialectconstructies
 
@@ -382,6 +383,17 @@ Structuur:
  -obj-> ([upos='NOUN']
    -det-> [lemma='geen' & upos='DET'] )  )
 ```
+
+## 4.2 Adjectieven met 'geen'
+
+_Dat is geen waar_
+
+```
+[upos='ADJ']
+ -det-> [lemma='geen' & upos='DET']  
+```
+vindt ook een hoop ruis (e-vormen van adjectieven)
+
 
 ## Doen-replieken
 
