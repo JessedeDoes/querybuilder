@@ -181,12 +181,18 @@ Niets zinnigs gevonden.
 
 ## ja ik, nee het, etc
 
-<img width="50%" src="https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac"/>
+<img width="35%" src="https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac"/>
 
 ```
-[pos='INTJ']
- -fixed-> [pos='PRON' & xpos='.*prontype=prs.*']  
+^--> [upos='INTJ']
+ -fixed-> [upos='PRON']  
 ```
+
+Deze query vindt trouwens ook nog deze gevallen:
+
+<img width="40%" src="https://github.com/user-attachments/assets/2443cb11-cee8-4bd3-96a4-3676f1532edb" />
+
+
 ## V2-bijzinnen - pseudodirecte rede
 
 Voor het Engels ccomp, bijvoorbeeld:
