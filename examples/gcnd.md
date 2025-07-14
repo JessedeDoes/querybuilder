@@ -102,7 +102,7 @@ n4:[upos='VERB']
  -nsubj-> n3:[word='die' & upos='PRON']   :: start(n1) < start(n3) & start(n3) < start(n4)
 ```
 
-## Hanging topic
+## Hanging topic (2.1.b)
 
 Lastig te vinden door het constituentpositieprobleem.
 Poging:
@@ -117,15 +117,67 @@ Poging:
  -nsubj-> n5:[pos='PRON' & xpos='.*Person=3\|PronType=Prs.*']   :: start(n3) < start(n5)
 ```
 
-## Tussenwerpsels en aansporingen 
+<img width="40%" alt="image" src="https://github.com/user-attachments/assets/b47f2135-c785-42e3-a30e-22e77945eb98" />
 
-Alweer lastig...
+## Tussenwerpsels en aansporingen  (2.1.c)
+
+Alweer lastig een precieze query op te stellen.
 
 <img width="50%" src="https://github.com/user-attachments/assets/6eccba2b-206f-485c-a125-af1a8b877463"/>
 
-## Inversieloos V-later-dan-2 / V>2 / Noninverted V3
+In het geval van een enkel woord kan je wel eisen dat het aan het begin val de zin staat:
+
+```
+<s> rspan(((n5:[]) -parataxis-> (n1:[upos='ADV'])) :: (start(n1) < start(n5)),'all')
+```
+
+## Inversieloos V-later-dan-2 / V>2 / Noninverted V3 (2.1.d)
 
 <img width="50%" src="https://github.com/user-attachments/assets/16be44ef-d3c5-4b22-a32b-697db04a9685"/>
+
+Gaat niet echt lekker!
+
+```
+^--> n5:[upos='VERB' & feats='.*=fin.*']
+ -advmod|obl-> n1:[upos='ADV|NOUN'];
+ -nsubj-> n2:[];
+ !-mark-> [];
+ !-aux-> []   :: start(n1) < start(n2) & start(n2) < start(n5)
+```
+
+is een poging maar vindt niet veel.
+
+Je ziet dat de query wel redelijk voor het Engels werkt:
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits?filter=languageName%3A%28%22English%22%29&first=20&number=20&patt=%28%5E--%3E+%28%28n5%3A%5Bupos%3D%27VERB%27+%26+feats%3D%27.%2A%3Dfin.%2A%27%5D%29+-advmod%7Cobl-%3E+%28n1%3A%5Bupos%3D%27ADV%7CNOUN%27%5D%29+%3B+-nsubj-%3E+%28n2%3A%5B%5D%29+%3B+%21-mark-%3E+%5B%5D+%3B+%21-aux-%3E+%5B%5D%29%29+%3A%3A+%28%28start%28n1%29+%3C+start%28n2%29%29+%26+%28start%28n2%29+%3C+start%28n5%29%29%29&adjusthits=true&withspans=true&interface=%7B%22form%22%3A%22search%22%2C%22patternMode%22%3A%22expert%22%7D 
+
+
+## Ingebedde dislocaties (2.1.e)
+
+(CGN syntactische annotatiem https://taalmaterialen.ivdnt.org/wp-content/uploads/documentatie/cgn_website/doc_Dutch/topics/annot/syntax/syn_prot.pdf)
+
+_wat vindt u d’r eigenlijk van dat zulke zinnen dat die zo geanalyseerd worden?_
+
+Op grond van
+
+<img width="40%" src="https://github.com/user-attachments/assets/91b16785-1a7f-48e4-a175-6368d8db285e" />
+
+Verwacht je een UD-structuur als
+
+<img width="915" height="221" alt="image" src="https://github.com/user-attachments/assets/3502b960-6719-4496-b425-aedc4c575059" />
+
+En dus een query als
+
+```
+(^--> [upos='VERB']
+ -mark-> ([upos='SCONJ']
+ );
+ -parataxis-> [upos='NOUN'];
+ -mark-> [upos='SCONJ']  )
+```
+
+Niets zinnigs gevonden.
+
 
 ## ja ik, nee het, etc
 
