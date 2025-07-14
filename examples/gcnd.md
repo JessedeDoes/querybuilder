@@ -154,7 +154,7 @@ https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/search/hits
 
 ## Ingebedde dislocaties (2.1.e)
 
-(CGN syntactische annotatiem https://taalmaterialen.ivdnt.org/wp-content/uploads/documentatie/cgn_website/doc_Dutch/topics/annot/syntax/syn_prot.pdf)
+(CGN syntactische annotatie, https://taalmaterialen.ivdnt.org/wp-content/uploads/documentatie/cgn_website/doc_Dutch/topics/annot/syntax/syn_prot.pdf)
 
 _wat vindt u d’r eigenlijk van dat zulke zinnen dat die zo geanalyseerd worden?_
 
@@ -179,7 +179,7 @@ En dus een query als
 Niets zinnigs gevonden.
 
 
-## ja ik, nee het, etc
+## ja ik, nee het, etc (2.1.f)
 
 <img width="35%" src="https://github.com/user-attachments/assets/a25a0f39-0037-463a-9cb3-5f2f57ec18ac"/>
 
@@ -193,7 +193,10 @@ Deze query vindt trouwens ook nog deze gevallen:
 <img width="40%" src="https://github.com/user-attachments/assets/2443cb11-cee8-4bd3-96a4-3676f1532edb" />
 
 
-## V2-bijzinnen - pseudodirecte rede
+## V2-bijzinnen - pseudodirecte rede (2.2)
+
+! query in xpath-stuk is fout, verbeteren!
+
 
 Voor het Engels ccomp, bijvoorbeeld:
 ```
@@ -205,23 +208,34 @@ Voor het Engels ccomp, bijvoorbeeld:
 ```
 <img width="50%" src="https://github.com/user-attachments/assets/b17d9672-dfa7-4fdc-8e49-ed6470be3c4e"/>
 
-Voor het nederlands: parataxis
+Voor het nederlands: parataxis, op grond van de Alpino-annotatierichtlijn verwachten we voor UD:
 
-<img width="50%" src="https://github.com/user-attachments/assets/4051e296-3fcf-4f92-ba61-19817594e1ef"/>
+<img width="50%" alt="image" src="https://github.com/user-attachments/assets/f3e906f4-9d17-4bde-9373-23ebac76f97d" />
+
 
 Querybenadering:
 ```
-[lemma='zeggen|weten' & pos='VERB']
- -nsubj-> [];
- -parataxis-> ([pos='VERB']
-   !-mark-> [pos='SCONJ'];
-   !--> [word='w.*' & pos='PRON|adv'] );
- !-ccomp-> []  
+^--> n4:[upos='VERB']
+ -parataxis-> (n2:[lemma='zeggen' & upos='VERB']
+   -nsubj-> [upos='PRON'] );
+ -nsubj-> [upos='PRON'];
+ -obj-> [upos='PRON'];
+ -advmod-> [upos='ADV']   :: start(n2) < start(n4)
 ```
-<img width="50%" src="https://github.com/user-attachments/assets/7faa8e2b-0c32-4f65-888a-b60bfc108531"/>
+
+Hoe zie je het verschil met de gewone directe rede?
+
+In ieder geval vind je een paar matchende gevallen door twee keer 'hij' te vragen:
+
+```
+^--> n4:[upos='VERB']
+ -parataxis-> (n2:[lemma='zeggen' & upos='VERB']
+   -nsubj-> [lemma='hij' & upos='PRON'] );
+ -nsubj-> [lemma='hij' & upos='PRON']   :: start(n2) < start(n4)
+```
 
 
-Ook Duits doet ccomp:
+Net als het Engels doet ook Duits _ccomp_:
 
 <img width="50%" src="https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064"/>
 
