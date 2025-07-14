@@ -1,6 +1,6 @@
 # Algemene problemen
 
-* Zoek naar ww me precies 1,2 etc subjecten
+* Zoek (bijvoorbeeld) naar ww met _precies_ 1,2 etc subjecten
 * Iets met constituenten en constituentlabels
 * Zoek naar een bepaalde structuur 'en verder niets'
 * het kenmerk met-e komt niet terug in de universal features
@@ -401,7 +401,8 @@ Iets als
 ```
 [lemma='doen' & upos='VERB' & feats='.*verbform=fin.*']
  -nsubj-> [upos='PRON' & feats='.*PronType=Prs.*'];
- !-(obj|iobj|obl|advmod|advcl|ccomp|xcomp)-> []  
+ !-(obj|iobj|obl.*|advcl|ccomp|xcomp)-> [];
+ !-advmod-> [word != "en"]  
 ```
 
 # Andere
