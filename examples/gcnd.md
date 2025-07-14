@@ -291,14 +291,20 @@ n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
 ```
 
 Werkt niet door tagfouten in verbform
-
 ```
-^--> [upos='VERB' & feats='.*verbform=inf.*']
- -nsubj-> [upos='PRON' & feats='.*prs.*' & lemma != 'het|dat'];
+^--> [upos='VERB' & feats='.*inf.*']
+ -nsubj-> [lemma='jij|ik|gij' & upos='PRON'];
  !-aux-> []  
 ```
-
 geeft een paar resultaten
+
+Alternatief voor gevallen met foute verbform:
+
+```
+^--> [upos='VERB' & feats='.*plur.*pres.*']
+ -nsubj-> [lemma='jij|ik|gij' & upos='PRON'];
+ !-aux-> []  
+```
 
 ## Circumpositie
 ```
