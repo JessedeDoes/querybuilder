@@ -15,9 +15,9 @@ voorbeeld: ik loop ik
 
 query: 
 
-```[pos='VERB']
- -nsubj-> [pos='PRON'];
- -nsubj-> [pos='PRON']  
+```[upos='VERB']
+ -nsubj-> [upos='PRON'];
+ -nsubj-> [upos='PRON']  
 ```
 
 **Issue**: het is nu niet mogelijk naar _precies twee subjecten_ te zoeken; deze query matcht ook gevallen met drie subjecten.
@@ -28,16 +28,16 @@ voorbeeld: hem loopt
 ! query aanpassen 
 
 ```
-[pos='VERB']
- -nsubj-> [word='hem' & pos='PRON']  
+[upos='VERB']
+ -nsubj-> [word='hem' & upos='PRON']  
 ```
 
 
 De algemenere query 
 
 ```
-[pos='VERB']
- -nsubj-> [pos='PRON' & xpos='.*Case=Acc.*']  
+[upos='VERB']
+ -nsubj-> [upos='PRON' & feats='.*Case=Acc.*']  
 ```
 
 faalt wegens veel tagfouten van "je"
@@ -110,11 +110,11 @@ Poging:
 <img width="50%" src="https://github.com/user-attachments/assets/cecd44f3-d190-48d8-9584-f11264528b0d"/>
 
 ```
-[pos='VERB']
- -parataxis-> (n3:[pos='NOUN']
+[upos='VERB']
+ -parataxis-> (n3:[upos='NOUN']
    -nmod:poss|det-> [];
    !-case-> [] );
- -nsubj-> n5:[pos='PRON' & xpos='.*Person=3\|PronType=Prs.*']   :: start(n3) < start(n5)
+ -nsubj-> n5:[upos='PRON' & feats='.*Person=3\|PronType=Prs.*']   :: start(n3) < start(n5)
 ```
 
 <img width="40%" alt="image" src="https://github.com/user-attachments/assets/b47f2135-c785-42e3-a30e-22e77945eb98" />
@@ -200,11 +200,11 @@ Deze query vindt trouwens ook nog deze gevallen:
 
 Voor het Engels ccomp, bijvoorbeeld:
 ```
-[lemma='say|know' & pos='VERB']
- -nsubj-> [pos='PRON'];
- -ccomp-> ([pos='VERB']
-   !--> [pos='SCONJ'];
-   !--> [word='wh.*' & pos='PRON|adv'] )  
+[lemma='say|know' & upos='VERB']
+ -nsubj-> [upos='PRON'];
+ -ccomp-> ([upos='VERB']
+   !--> [upos='SCONJ'];
+   !--> [word='wh.*' & upos='PRON|adv'] )  
 ```
 <img width="50%" src="https://github.com/user-attachments/assets/b17d9672-dfa7-4fdc-8e49-ed6470be3c4e"/>
 
@@ -243,18 +243,18 @@ Net als het Engels doet ook Duits _ccomp_:
 
 Hier mis je wel de expliciete markering van vergelijkingsconstructies die Alpino wel heeft. 
 ```
-[word='meer|minder' & pos='PRON']
- -advcl-> ([pos='NOUN']
-   -mark-> [pos='SCONJ'] )  
+[word='meer|minder' & upos='PRON']
+ -advcl-> ([upos='NOUN']
+   -mark-> [upos='SCONJ'] )  
 ```
 (En groepeer op de conjunctie)
 
 Of met adjectieven:
 
 ```
-[pos='ADJ' & xpos='.*Degree=Cmp.*']
+[upos='ADJ' & feats='.*Degree=Cmp.*']
  -advcl-> ([]
-   -mark-> [pos='SCONJ'] )  
+   -mark-> [upos='SCONJ'] )  
 ```
 <img width="50%" src="https://github.com/user-attachments/assets/87a2de95-dd96-46f7-bec7-37d0374e310e"/>
 
@@ -264,9 +264,9 @@ Of met adjectieven:
 Voor meerwoordige voegwoorden bijvoorbeeld:
 
 ```
-[pos='ADJ' & xpos='.*Degree=Cmp.*']
+[upos='ADJ' & feats='.*Degree=Cmp.*']
  -advcl-> ([]
-   -mark-> ([pos='SCONJ']
+   -mark-> ([upos='SCONJ']
      -fixed-> [] ) )  
 ```
 
@@ -278,7 +278,7 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
 
 ```
 []
- -ccomp-> ([pos='verb' & xpos='.*verbform=fin.*']
+ -ccomp-> ([upos='verb' & feats='.*verbform=fin.*']
    -mark-> [word='van'] )  
 ```
 
@@ -287,7 +287,7 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
 ### Na onderschikkend voegwoord
 
 ```
-[pos='sconj']
+[upos='sconj']
  -fixed-> [word='dat']  
 ```
 
@@ -297,19 +297,19 @@ Geen fixed, annotatie lijkt nogal wild te varieren.
 
 ## Beknopte bijzinnen ingeleid door voor of van in plaats van om
 ```
-[pos='VERB']
- -mark-> [pos='ADP'];
- -mark-> [word='te' & pos='ADP']  
+[upos='VERB']
+ -mark-> [upos='ADP'];
+ -mark-> [word='te' & upos='ADP']  
 ```
 Groepeer op het voorzetsel 
 <img width="50%" src="https://github.com/user-attachments/assets/0561a4fd-3bf8-4154-9ecb-4b92c5363297"/>
 
 ## Afhankelijke ja/nee-vragen ingeleid door als ipv of
 ```
-[pos='VERB']
- -advmod-> [pos='ADV'];
- -ccomp-> ([pos='VERB' & xpos='.*verbform=fin.*']
-   -mark-> [pos='SCONJ'  & lemma != 'dat'] )
+[upos='VERB']
+ -advmod-> [upos='ADV'];
+ -ccomp-> ([upos='VERB' & feats='.*verbform=fin.*']
+   -mark-> [upos='SCONJ'  & lemma != 'dat'] )
 ```
 
 # Negatieverschijnselen
@@ -318,7 +318,7 @@ Groepeer op het voorzetsel
 
 ### a en ... niet
  ```
-[pos='VERB']
+[upos='VERB']
  -advmod-> [word='en'];
  -advmod-> [word='niet']  
 ```
@@ -326,9 +326,9 @@ Groepeer op het voorzetsel
 ### b niemand ... niet (etc)
 
 ```
-[pos='VERB']
- --> [lemma='niemand|niets|nooit' & pos='PRON'];
- -advmod-> [lemma='niet' & pos='ADV']  
+[upos='VERB']
+ --> [lemma='niemand|niets|nooit' & upos='PRON'];
+ -advmod-> [lemma='niet' & upos='ADV']  
 ```
 
 
@@ -336,8 +336,8 @@ Groepeer op het voorzetsel
 
 Iets als
 ```
-[lemma='doen' & pos='VERB' & xpos='.*verbform=fin.*']
- -nsubj-> [pos='PRON' & xpos='.*PronType=Prs.*'];
+[lemma='doen' & upos='VERB' & feats='.*verbform=fin.*']
+ -nsubj-> [upos='PRON' & feats='.*PronType=Prs.*'];
  !-(obj|iobj|obl|advmod|advcl|ccomp|xcomp)-> []  
 ```
 
@@ -349,11 +349,11 @@ Iets als
 
 
 ```
-n2:[pos='VERB']
- -nsubj-> n1:[pos='PRON'];
- -parataxis-> n3:[pos='VERB'];
- -parataxis-> (n6:[pos='VERB']
-   -nsubj-> n7:[pos='PRON'] )   :: start(n1) < start(n2) & start(n2) < start(n3) & start(n3) < start(n6) & start(n6) < start(n7) & n2.lemma=n6.lemma
+n2:[upos='VERB']
+ -nsubj-> n1:[upos='PRON'];
+ -parataxis-> n3:[upos='VERB'];
+ -parataxis-> (n6:[upos='VERB']
+   -nsubj-> n7:[upos='PRON'] )   :: start(n1) < start(n2) & start(n2) < start(n3) & start(n3) < start(n6) & start(n6) < start(n7) & n2.lemma=n6.lemma
 ```
 Hierarchie kan zo zijn:
 
@@ -366,11 +366,11 @@ Of zo:
 
 De query is dan iets als:
 ```
-n3:[lemma='komen' & pos='VERB']
- -parataxis-> (n2:[lemma='zeggen' & pos='VERB']
-   -nsubj-> n1:[lemma='ik' & pos='PRON'] );
- -parataxis-> (n4:[lemma='zeggen' & pos='VERB']
-   -nsubj-> n5:[lemma='ik' & pos='PRON'] )  :: n2.lemma = n4.lemma
+n3:[lemma='komen' & upos='VERB']
+ -parataxis-> (n2:[lemma='zeggen' & upos='VERB']
+   -nsubj-> n1:[lemma='ik' & upos='PRON'] );
+ -parataxis-> (n4:[lemma='zeggen' & upos='VERB']
+   -nsubj-> n5:[lemma='ik' & upos='PRON'] )  :: n2.lemma = n4.lemma
 ```
 
 ## Apokoinou
@@ -383,9 +383,9 @@ Wordt in de alpino-annotatie via het categorielabel gevonden, is in de ud-annota
 De voor de hand liggend oplossing (infinitief met een subject, geen hulp of koppen werkwoord)
 
 ```
-n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
- -nsubj-> n1:[pos='PRON'];
- !-aux|cop-> n2:[pos='AUX']  
+n3:[upos='VERB' & feats='.*VerbForm=Inf.*']
+ -nsubj-> n1:[upos='PRON'];
+ !-aux|cop-> n2:[upos='AUX']  
 ```
 
 Werkt niet door tagfouten in verbform
