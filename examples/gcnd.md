@@ -20,6 +20,8 @@ query:
  -nsubj-> [pos='PRON']  
 ```
 
+**Issue**: het is nu niet mogelijk naar _precies twee subjecten_ te zoeken; deze query matcht ook gevallen met drie subjecten.
+
 ## Subject in objectvorm
 
 voorbeeld: hem loopt
@@ -39,6 +41,8 @@ De algemenere query
 ```
 
 faalt wegens veel tagfouten van "je"
+
+**Issue**: PoS features niet erg precies getagd (zie ook verderop mbt verbform).
 
 ## Presentatief het
 
@@ -65,16 +69,38 @@ Willen we dat overigens wel? in het Duits werkt het zo:
 
 
 
-<img width="50%" src="https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230"/>
+<img width="35%" src="https://github.com/user-attachments/assets/61ee5aa4-97c2-474a-ab5b-2fd869fe3230"/>
 
 # sat, tag etc
 
 - Geen verschil in UD tussen tag en sat!
 - positie van constituenten is lastig te bevragen
    
-## Aanloopconstructies
+## Aanloopconstructies (2.1.a)
+
+Dit is _sat_ in Alpino.
 
 <img width="50%" src="https://github.com/user-attachments/assets/cb48f681-1194-4c08-acb0-162d531c13e4"/>
+
+
+Een poging (die maar een deel van de gevallen dekt, PROPN en object):
+
+```
+n4:[upos='VERB']
+ -parataxis-> (n1:[upos='PROPN']
+ );
+ -obj-> n3:[word='die' & upos='PRON']   :: start(n1) < start(n3) & start(n3) < start(n4)
+```
+<img width="40%" alt="image" src="https://github.com/user-attachments/assets/e9ea176b-23eb-4acf-95a3-0319353c9739" />
+
+Voor NOUN en subject bijvoorbeeld
+
+```
+n4:[upos='VERB']
+ -parataxis-> (n1:[upos='NOUN']
+ );
+ -nsubj-> n3:[word='die' & upos='PRON']   :: start(n1) < start(n3) & start(n3) < start(n4)
+```
 
 ## Hanging topic
 
