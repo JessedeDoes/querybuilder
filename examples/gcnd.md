@@ -296,12 +296,22 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
 <img width="50%" src="https://github.com/user-attachments/assets/53b65eae-f56e-4c20-91bb-6ed1e2fb12ad"/>
 
 ```
-[]
- -ccomp-> ([upos='verb' & feats='.*verbform=fin.*']
-   -mark-> [word='van'] )  
+[upos='VERB']
+ -ccomp-> ([]
+   -mark-> [lemma='van'] )  
 ```
 
-## expletief dat
+Waarmee dus ook wat te veel opgehaald wordt.
+
+Preciezer is
+
+```
+([upos='VERB']
+ -ccomp-> ([upos != 'verb' | feats = '.*=fin.*']
+   -mark-> [lemma='van'] )  )
+```
+
+## expletief dat (3.3)
 
 ### Na onderschikkend voegwoord
 
