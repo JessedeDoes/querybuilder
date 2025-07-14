@@ -293,3 +293,10 @@ n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
 Werkt niet door tagfouten
 
 ## Circumpositie
+```
+n2:[upos='NOUN']
+ -case-> n1:[upos='ADP'];
+ -case-> n3:[upos='ADP']   :: start(n3) < start(n2) & start(n2) < start(n1)
+```
+
+De versie uit de querybuilder werkt niet vanwege een complexe blacklab-issue
