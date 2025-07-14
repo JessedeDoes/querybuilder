@@ -239,7 +239,26 @@ Net als het Engels doet ook Duits _ccomp_:
 
 <img width="50%" src="https://github.com/user-attachments/assets/fac97e56-5669-41ca-9743-319f5cccf064"/>
 
-## Afwijkende comparatieve voegwoorden (of, als, gelijk als, gelijk of dat)
+## Intercalaties (2.3)
+
+Hier loop je weer tegen het constituent-probleem aan, waardoor een algemene query niet goed op te stellen is.
+
+Afgaande op een verwachte structuur als
+
+<img width="50%" src="https://github.com/user-attachments/assets/fc383ad6-27bb-450f-b554-2efbe8f0381b" />
+
+kan je bepaalde deelklasse wel vinden met een query als
+
+```
+^--> n7:[upos='VERB']
+ -advmod-> n1:[upos='ADV'];
+ -parataxis-> (n4:[upos='VERB']
+ )   :: start(n1) < start(n4) & start(n4) < start(n7)
+ ```
+
+# Complementizer-fenomenen
+
+## Afwijkende comparatieve voegwoorden (of, als, gelijk als, gelijk of dat) (3.1)
 
 Hier mis je wel de expliciete markering van vergelijkingsconstructies die Alpino wel heeft. 
 ```
@@ -270,7 +289,7 @@ Voor meerwoordige voegwoorden bijvoorbeeld:
      -fixed-> [] ) )  
 ```
 
-## Directe rede ingeleid door van
+## Directe rede ingeleid door van (3.2)
 
 (Versie in gcnd-gretelverhaal is wat te breed, het afhankelijke werkwoord moet finiet zijn)
 
