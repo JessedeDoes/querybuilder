@@ -343,16 +343,16 @@ Groepeer op het voorzetsel
 
 # Negatieverschijnselen
 
-## Dubbele negatie
+## Dubbele negatie (4.1)
 
-### a en ... niet
+### (a) en ... niet
  ```
 [upos='VERB']
  -advmod-> [word='en'];
  -advmod-> [word='niet']  
 ```
 
-### b niemand ... niet (etc)
+### (b) niemand ... niet, nooit niet (etc)
 
 ```
 [upos='VERB']
@@ -360,6 +360,28 @@ Groepeer op het voorzetsel
  -advmod-> [lemma='niet' & upos='ADV']  
 ```
 
+### (c) Ik heb niets niet gedaan
+
+### (d) Ik heb dat nooit niet gedaan
+
+```
+[upos='VERB']
+ --> [lemma='niemand|niets|nooit' & upos='PRON'];
+ -advmod-> [lemma='niet' & upos='ADV']  
+```
+
+### (e) nooit geen 
+
+Structuur:
+
+<img width="50%" alt="image" src="https://github.com/user-attachments/assets/2e929696-7cc7-4349-8a60-bbe5b08cfbc0" />
+
+```
+([upos='VERB']
+ -advmod-> [lemma='nooit|nergens' & upos='ADV'];
+ -obj-> ([upos='NOUN']
+   -det-> [lemma='geen' & upos='DET'] )  )
+```
 
 ## Doen-replieken
 
