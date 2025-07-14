@@ -290,7 +290,15 @@ n3:[pos='VERB' & xpos='.*VerbForm=Inf.*']
  !-aux|cop-> n2:[pos='AUX']  
 ```
 
-Werkt niet door tagfouten
+Werkt niet door tagfouten in verbform
+
+```
+^--> [upos='VERB' & feats='.*verbform=inf.*']
+ -nsubj-> [upos='PRON' & feats='.*prs.*' & lemma != 'het|dat'];
+ !-aux-> []  
+```
+
+geeft een paar resultaten
 
 ## Circumpositie
 ```
@@ -299,4 +307,7 @@ n2:[upos='NOUN']
  -case-> n3:[upos='ADP']   :: start(n3) < start(n2) & start(n2) < start(n1)
 ```
 
-De versie uit de querybuilder werkt niet vanwege een complexe blacklab-issue
+De versie uit de querybuilder (n1 en n3 omgekeerd) werkt niet vanwege een complexe blacklab-kwestie (https://github.com/instituutnederlandsetaal/BlackLab/issues/453)
+
+
+
