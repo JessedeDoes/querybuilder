@@ -6,7 +6,11 @@ Implementatie met behulp van de grew conllu-weergavecomponent, zie https://githu
 
 Let op, er wordt nu een fork gebruikt, https://github.com/JessedeDoes/DependencyTreeJS
 
-Probeer uit op [http://svotmc10.ivdnt.loc/blacklab-frontend/UD_TEI_ALLSENTENCES/static/qbe/index.html](https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/static/qbe/index.html)
+Probeer uit op 
+
+https://corpora.ato2.ivdnt.org/blacklab-frontend/UD_TEI_ALLSENTENCES/static/qbe/index.html
+
+
 
 ## How to use
 
